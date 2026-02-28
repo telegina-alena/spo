@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../style/style.css" />
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  </head>
+
+  <body>
+    <header>
+      <!--logo + navigation НУЖНО БУДЕТ ПОМЕНЯТЬ ЛОГОТИП И КОРЗИНУ-->
+      <div class="nav container">
+        <div class="nav__left">
+          <img src="../img/logo.svg" alt="logotip" />
+        </div>
+        <div class="nav__right">
+          <!-- да будет мясо в виде выпадающего меню -->
+<div class="dropdown" style="background-color: #123413;">
+  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+    <img src="../img/menu.svg" alt="menu">
+  </a>
+
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="#">Меню</a></li>
+    <li><a class="dropdown-item" href="#">Контакты</a></li>
+    <li><a class="dropdown-item" href="#">Обратная связь</a></li>
+  </ul>
+</div>
+          <button><img src="../img/account.svg" alt="account" /></button>
+          <button><img src="../img/trash.png" alt="trash" /></button>
+        </div>
+      </div>
+    </header>
+
+    <!--content (intro + categories + why we + maps + button for order)-->
+    <main>
+      <!--intro (name + some information)-->
+      <div class="intro">
+        <div class="intro__info container">
+          <div class="intro__text">
+            <h1>POWER CONTROL</h1>
+            <p>SOME HEALTHE FOOD</p>
+          </div>
+        </div>
+      </div>
+
+      <!--categories-->
+      <div class="categories container">
+        <h2 class="categ_h">КАТЕГОРИИ НАШЕГО МЕНЮ</h2>
+        <div class="categories__menu">
+          <!--для худых, чтобы набрать вес-->
+          <div class="categ">
+            <img src="../img/nabor.jpg" alt="skinny" />
+            <p>Для набора веса</p>
+          </div>
+          <!--для толстых, чтобы сбросить-->
+          <div class="categ">
+            <img src="../img/poterya.jpg" alt="dieta" />
+            <p>Диетический</p>
+          </div>
+          <!--для поддержание веса-->
+          <div class="categ">
+            <img src="../img/baza.jpg" alt="normal" />
+            <p>Для поддержание веса</p>
+          </div>
+        </div>
+        <!--вегатерианское меню-->
+        <div class="categ_veg">
+          <img src="../img/vegan.jpg" alt="vegan" />
+          <p>Вегатерианское меню</p>
+        </div>
+      </div>
+
+      <div class="why-we container">
+        <h2 class="why_h">ПОЧЕМУ МЫ</h2>
+        <p class="why_p">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis,
+          impedit? Atque enim magni ipsam distinctio omnis laudantium labore
+          esse consectetur!
+        </p>
+      </div>
+
+      <div class="map container">
+        <h3 class="map_h">ПОСТМАТЫ В ГОРОДЕ</h3>
+        <script
+          type="text/javascript"
+          charset="utf-8"
+          async
+          src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A2b10a371c39ffa9bae16b860f2ff66aaccb4b316330df055601bf7530840d0d4&amp;width=1140&amp;height=400&amp;lang=ru_RU&amp;scroll=true"
+        ></script>
+      </div>
+    </main>
+    <footer>
+      <div class="footer_m container">
+        <div class="top-footer">
+          <div class="work-w-u">
+            <h3>Intersted to woek with our team?</h3>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam.
+            </p>
+          </div>
+          <button class="but_with">Let’s Talk</button>
+        </div>
+      <hr />
+      <div class="bottom-footer">
+        <ol class="bottom-footer-ol">
+          <li>Lorem ipsum dolor sit amet.</li>
+          <li>+79771688655</li>
+          <li>mail@mail.ru</li>
+        </ol>
+        <p class="bottom-footer-p">Все права защищены</p>
+      </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  </body>
+</html>
