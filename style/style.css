@@ -24,7 +24,7 @@ header .nav__left {
   justify-content: space-between;
 }
 header .nav__right {
-  width: 170px;
+  width: 220px;
   display: flex;
   justify-content: space-between;
 }
@@ -54,7 +54,7 @@ main .intro__info {
 }
 main .intro__text {
   margin-left: 15px;
-  color: #123413;
+  color: #ffffff;
 }
 main .intro__text h1 {
   font-weight: 900;
@@ -84,6 +84,15 @@ main .categories__menu .categ {
   position: relative;
   margin-bottom: 20px;
 }
+main .categories__menu .categ button {
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease-in-out;
+}
+
+main .categories__menu .categ button:hover {
+  transform: scale(1.1);
+}
 
 main .categories__menu .categ img {
   width: 380px;
@@ -93,7 +102,7 @@ main .categories__menu .categ p {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: 0px; 
+  bottom: 0px;
   color: white;
   font-size: 28px;
 }
@@ -106,7 +115,7 @@ main .categories .categ_veg p {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: 0px; 
+  bottom: 0px;
   color: white;
   font-size: 28px;
 }
@@ -134,7 +143,12 @@ main .map {
   margin-top: 50px;
   padding-bottom: 50px;
 }
+/* main .map li {
+  list-style-type: none;
+} */
+
 main .map .map_h {
+  width: 100%;
   text-align: center;
   font-size: 35px;
   font-weight: bold;
@@ -143,11 +157,13 @@ main .map .map_h {
 
 footer {
   background-color: #123413;
-  height: 400px;
+  height: 250px;
 }
+
 footer .footer_m {
   height: inherit;
 }
+
 footer .top-footer {
   height: 50%;
   padding-top: 50px;
@@ -158,19 +174,31 @@ footer .work-w-u {
   color: whitesmoke;
   text-align: center;
   font-size: 22px;
+  margin-bottom: 10px;
 }
 footer .but_with {
   width: 200px;
   align-self: center;
+  border-radius: 30px;
+  width: 200px;
 }
 footer .bottom-footer {
   height: 29%;
 }
+footer hr {
+  color: #ffffff;
+}
 footer .bottom-footer-ol {
   display: flex;
-  justify-content: space-around;
+  padding: 0px;
+  justify-content: space-between;
   color: whitesmoke;
   font-size: 22px;
+}
+footer .bottom-footer-ol li {
+  list-style-type: none;
+  width: 300px;
+  text-align: center;
 }
 footer .bottom-footer-p {
   text-align: center;
