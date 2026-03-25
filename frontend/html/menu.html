@@ -1,0 +1,811 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FOODPOST - Доставка в постаматы</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /* Общие стили */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f9f9f9;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Шапка сайта */
+      header {
+        background-color: #2c5e2e;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 80px;
+      }
+
+      .nav__left img {
+        height: 50px;
+      }
+
+      .nav__right {
+        display: flex;
+        gap: 25px;
+        align-items: center;
+      }
+
+      .nav__right img {
+        width: 28px;
+        height: 28px;
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+
+      .nav__right img:hover {
+        transform: scale(1.1);
+      }
+
+      /* Навигационное меню */
+      .nav-links {
+        display: flex;
+        gap: 30px;
+        margin-right: 20px;
+      }
+
+      .nav-links a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+
+      .nav-links a:hover {
+        color: #ffd966;
+      }
+
+      /* Интро-блок */
+      .intro {
+        background: linear-gradient(135deg, #2c5e2e 0%, #1e3a1f 100%);
+        padding: 80px 0;
+        text-align: center;
+        color: white;
+      }
+
+      .intro__info h1 {
+        font-size: 48px;
+        margin-bottom: 15px;
+      }
+
+      .intro__info p {
+        font-size: 20px;
+        opacity: 0.9;
+      }
+
+      /* Категории и карточки */
+      .categories {
+        padding: 60px 0;
+      }
+
+      .section-title {
+        text-align: center;
+        font-size: 36px;
+        color: #2c5e2e;
+        margin-bottom: 20px;
+        position: relative;
+      }
+
+      .section-title:after {
+        content: "";
+        display: block;
+        width: 80px;
+        height: 3px;
+        background: #ffd966;
+        margin: 15px auto 0;
+      }
+
+      .section-subtitle {
+        text-align: center;
+        color: #666;
+        margin-bottom: 50px;
+        font-size: 18px;
+      }
+
+      /* Сетка карточек */
+      .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        margin-bottom: 60px;
+      }
+
+      /* Карточка товара */
+      .food-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        transition:
+          transform 0.3s,
+          box-shadow 0.3s;
+        cursor: pointer;
+      }
+
+      .food-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      }
+
+      .card-image {
+        height: 220px;
+        overflow: hidden;
+      }
+
+      .card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s;
+      }
+
+      .food-card:hover .card-image img {
+        transform: scale(1.05);
+      }
+
+      .card-content {
+        padding: 20px;
+      }
+
+      .card-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .card-description {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 15px;
+        line-height: 1.5;
+      }
+
+      .card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .price {
+        font-size: 24px;
+        font-weight: bold;
+        color: #2c5e2e;
+      }
+
+      .add-to-cart {
+        background: #ffd966;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-weight: 600;
+        color: #2c5e2e;
+        transition: background 0.3s;
+      }
+
+      .add-to-cart:hover {
+        background: #ffcd4d;
+      }
+
+      /* Веган секция */
+      .vegan-section {
+        margin-top: 40px;
+      }
+
+      .vegan-badge {
+        background: #e8f5e9;
+        border-radius: 30px;
+        padding: 8px 16px;
+        display: inline-block;
+        font-size: 12px;
+        color: #2c5e2e;
+        margin-bottom: 10px;
+      }
+
+      .map {
+        text-align: center;
+      }
+
+      .map_h {
+        font-size: 36px;
+        font-weight: 800;
+        color: #2c5e2e;
+        margin-bottom: 30px;
+        position: relative;
+      }
+
+      .map_h:after {
+        content: "";
+        display: block;
+        width: 60px;
+        height: 3px;
+        background: #ffd966;
+        margin: 15px auto 0;
+      }
+
+      /* Подвал */
+      footer {
+        background: #1e3a1f;
+        color: white;
+        margin-top: 60px;
+      }
+
+      .footer-content {
+        padding: 50px 0 30px;
+      }
+
+      .footer-top {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 50px;
+        margin-bottom: 40px;
+      }
+
+      .footer-info h3 {
+        font-size: 24px;
+        margin-bottom: 15px;
+      }
+
+      .footer-info p {
+        opacity: 0.8;
+        line-height: 1.6;
+      }
+
+      .footer-links {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+      }
+
+      .footer-links-column h4 {
+        margin-bottom: 15px;
+        color: #ffd966;
+      }
+
+      .footer-links-column ul {
+        list-style: none;
+      }
+
+      .footer-links-column li {
+        margin-bottom: 10px;
+      }
+
+      .footer-links-column a {
+        color: white;
+        text-decoration: none;
+        opacity: 0.7;
+        transition: opacity 0.3s;
+      }
+
+      .footer-links-column a:hover {
+        opacity: 1;
+      }
+
+      .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 20px;
+        text-align: center;
+        font-size: 14px;
+        opacity: 0.7;
+      }
+
+      /* Кнопка "Забрать в постамате" */
+      .postamat-btn {
+        display: inline-block;
+        background: #ffd966;
+        color: #2c5e2e;
+        padding: 12px 30px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: bold;
+        margin-top: 20px;
+        transition: all 0.3s;
+      }
+
+      .postamat-btn:hover {
+        background: #ffcd4d;
+        transform: scale(1.05);
+      }
+
+      /* Адаптивность */
+      @media (max-width: 768px) {
+        .footer-top {
+          grid-template-columns: 1fr;
+          gap: 30px;
+        }
+
+        .footer-links {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .nav-links {
+          display: none;
+        }
+
+        .cards-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="nav container">
+        <div class="nav__left">
+          <img
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23ffd966'/%3E%3Ctext x='50' y='70' text-anchor='middle' fill='%232c5e2e' font-size='40' font-weight='bold'%3EFP%3C/text%3E%3C/svg%3E"
+            alt="FOODPOST"
+            style="height: 50px"
+          />
+        </div>
+        <div class="nav__right">
+          <div class="nav-links">
+            <a href="../html/main.html">Главная</a>
+            <a href="#menu">Меню</a>
+            <a href="#map">Постаматы</a>
+            <a href="#">Контакты</a>
+          </div>
+          <img
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E"
+            alt="account"
+          />
+          <img
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-1.99.9-1.99 2L3 20c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm0 10c-2.76 0-5-2.24-5-5h2c0 1.66 1.34 3 3 3s3-1.34 3-3h2c0 2.76-2.24 5-5 5z'/%3E%3C/svg%3E"
+            alt="cart"
+          />
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="intro">
+        <div class="intro__info container">
+          <div>
+            <h1>ГОТОВАЯ ЕДА В ПОСТАМАТЫ</h1>
+            <p id="menu">Закажи заранее — забери за секунду между парами</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Категория 1: Меню для набора веса -->
+      <div class="categories container">
+        <h2 class="section-title">🍽️ МЕНЮ ДЛЯ НАБОРА ВЕСА</h2>
+        <p class="section-subtitle">
+          Высококалорийные блюда для активного образа жизни
+        </p>
+
+        <div class="cards-grid">
+          <div class="food-card">
+            <div class="card-image">
+              <img
+                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23e8f5e9'/%3E%3Ctext x='150' y='110' text-anchor='middle' fill='%232c5e2e' font-size='20'%3E🍚 Рис с курицей%3C/text%3E%3C/svg%3E"
+                alt="Рис с курицей"
+              />
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">Рис с курицей и овощами</h3>
+              <p class="card-description">
+                600 ккал | Белки: 35г | Жиры: 15г | Углеводы: 75г
+              </p>
+              <div class="card-footer">
+                <span class="price">320 ₽</span>
+                <button
+                  class="add-to-cart"
+                  onclick="alert('Добавлено в корзину!')"
+                >
+                  + В корзину
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="food-card">
+            <div class="card-image">
+              <img
+                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23fff3e0'/%3E%3Ctext x='150' y='110' text-anchor='middle' fill='%232c5e2e' font-size='20'%3E🥩 Говядина с картофелем%3C/text%3E%3C/svg%3E"
+                alt="Говядина с картофелем"
+              />
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">Говядина с картофелем</h3>
+              <p class="card-description">
+                720 ккал | Белки: 42г | Жиры: 28г | Углеводы: 65г
+              </p>
+              <div class="card-footer">
+                <span class="price">380 ₽</span>
+                <button
+                  class="add-to-cart"
+                  onclick="alert('Добавлено в корзину!')"
+                >
+                  + В корзину
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="food-card">
+            <div class="card-image">
+              <img
+                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23ffe0f0'/%3E%3Ctext x='150' y='110' text-anchor='middle' fill='%232c5e2e' font-size='20'%3E🥛 Протеиновый коктейль%3C/text%3E%3C/svg%3E"
+                alt="Протеиновый коктейль"
+              />
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">Протеиновый коктейль</h3>
+              <p class="card-description">
+                450 ккал | Белки: 45г | Жиры: 8г | Углеводы: 50г
+              </p>
+              <div class="card-footer">
+                <span class="price">250 ₽</span>
+                <button
+                  class="add-to-cart"
+                  onclick="alert('Добавлено в корзину!')"
+                >
+                  + В корзину
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Категория 2: Меню для снижения веса -->
+      <div class="categories container">
+        <h2 class="section-title">🥗 МЕНЮ ДЛЯ СНИЖЕНИЯ ВЕСА</h2>
+        <p class="section-subtitle">
+          Легкие и полезные блюда с низкой калорийностью
+        </p>
+
+        <div class="cards-grid">
+          <div class="food-card">
+            <div class="card-image">
+              <img
+                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23e0f7fa'/%3E%3Ctext x='150' y='110' text-anchor='middle' fill='%232c5e2e' font-size='20'%3E🥗 Греческий салат%3C/text%3E%3C/svg%3E"
+                alt="Греческий салат"
+              />
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">Греческий салат</h3>
+              <p class="card-description">
+                180 ккал | Белки: 8г | Жиры: 12г | Углеводы: 10г
+              </p>
+              <div class="card-footer">
+                <span class="price">220 ₽</span>
+                <button
+                  class="add-to-cart"
+                  onclick="alert('Добавлено в корзину!')"
+                >
+                  + В корзину
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="food-card">
+            <div class="card-image">
+              <img
+                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23fff9c4'/%3E%3Ctext x='150' y='110' text-anchor='middle' fill='%232c5e2e' font-size='20'%3E🐟 Запеченная рыба%3C/text%3E%3C/svg%3E"
+                alt="Запеченная рыба"
+              />
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">Запеченная рыба с овощами</h3>
+              <p class="card-description">
+                250 ккал | Белки: 28г | Жиры: 12г | Углеводы: 15г
+              </p>
+              <div class="card-footer">
+                <span class="price">340 ₽</span>
+                <button
+                  class="add-to-cart"
+                  onclick="alert('Добавлено в корзину!')"
+                >
+                  + В корзину
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="food-card">
+            <div class="card-image">
+              <img
+                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23e8f5e9'/%3E%3Ctext x='150' y='110' text-anchor='middle' fill='%232c5e2e' font-size='20'%3E🥣 Овощной суп%3C/text%3E%3C/svg%3E"
+                alt="Овощной суп"
+              />
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">Овощной суп-пюре</h3>
+              <p class="card-description">
+                120 ккал | Белки: 5г | Жиры: 3г | Углеводы: 18г
+              </p>
+              <div class="card-footer">
+                <span class="price">190 ₽</span>
+                <button
+                  class="add-to-cart"
+                  onclick="alert('Добавлено в корзину!')"
+                >
+                  + В корзину
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Категория 3: Меню для поддержания веса -->
+      <div class="categories container">
+        <h2 class="section-title">⚖️ МЕНЮ ДЛЯ ПОДДЕРЖАНИЯ ВЕСА</h2>
+        <p class="section-subtitle">
+          Сбалансированное питание для активных студентов
+        </p>
+
+        <div class="cards-grid">
+          <div class="food-card">
+            <div class="card-image">
+              <img
+                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23f3e5f5'/%3E%3Ctext x='150' y='110' text-anchor='middle' fill='%232c5e2e' font-size='20'%3E🍝 Паста с курицей%3C/text%3E%3C/svg%3E"
+                alt="Паста с курицей"
+              />
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">Паста с курицей и грибами</h3>
+              <p class="card-description">
+                480 ккал | Белки: 32г | Жиры: 14г | Углеводы: 58г
+              </p>
+              <div class="card-footer">
+                <span class="price">350 ₽</span>
+                <button
+                  class="add-to-cart"
+                  onclick="alert('Добавлено в корзину!')"
+                >
+                  + В корзину
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="food-card">
+            <div class="card-image">
+              <img
+                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23e1f5fe'/%3E%3Ctext x='150' y='110' text-anchor='middle' fill='%232c5e2e' font-size='20'%3E🥑 Тосты с авокадо%3C/text%3E%3C/svg%3E"
+                alt="Тосты с авокадо"
+              />
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">Тосты с авокадо и яйцом</h3>
+              <p class="card-description">
+                320 ккал | Белки: 14г | Жиры: 22г | Углеводы: 24г
+              </p>
+              <div class="card-footer">
+                <span class="price">270 ₽</span>
+                <button
+                  class="add-to-cart"
+                  onclick="alert('Добавлено в корзину!')"
+                >
+                  + В корзину
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="food-card">
+            <div class="card-image">
+              <img
+                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23fff3e0'/%3E%3Ctext x='150' y='110' text-anchor='middle' fill='%232c5e2e' font-size='20'%3E🍲 Гречка с котлетой%3C/text%3E%3C/svg%3E"
+                alt="Гречка с котлетой"
+              />
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">Гречка с куриной котлетой</h3>
+              <p class="card-description">
+                450 ккал | Белки: 28г | Жиры: 16г | Углеводы: 52г
+              </p>
+              <div class="card-footer">
+                <span class="price">300 ₽</span>
+                <button
+                  class="add-to-cart"
+                  onclick="alert('Добавлено в корзину!')"
+                >
+                  + В корзину
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Категория 4: Вегетарианское меню -->
+      <div class="categories container">
+        <h2 class="section-title">🌱 ВЕГЕТАРИАНСКОЕ МЕНЮ</h2>
+        <p class="section-subtitle">
+          Растительная пища, полная энергии и вкуса
+        </p>
+
+        <div class="cards-grid">
+          <div class="food-card">
+            <div class="card-image">
+              <img
+                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23e8f0e8'/%3E%3Ctext x='150' y='110' text-anchor='middle' fill='%232c5e2e' font-size='20'%3E🍛 Нут с овощами%3C/text%3E%3C/svg%3E"
+                alt="Нут с овощами"
+              />
+            </div>
+            <div class="card-content">
+              <div class="vegan-badge">🌱 VEGAN</div>
+              <h3 class="card-title">Нут с тушеными овощами</h3>
+              <p class="card-description">
+                380 ккал | Белки: 14г | Жиры: 8г | Углеводы: 62г
+              </p>
+              <div class="card-footer">
+                <span class="price">290 ₽</span>
+                <button
+                  class="add-to-cart"
+                  onclick="alert('Добавлено в корзину!')"
+                >
+                  + В корзину
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="food-card">
+            <div class="card-image">
+              <img
+                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23fce4ec'/%3E%3Ctext x='150' y='110' text-anchor='middle' fill='%232c5e2e' font-size='20'%3E🥙 Вегетарианский бургер%3C/text%3E%3C/svg%3E"
+                alt="Вегетарианский бургер"
+              />
+            </div>
+            <div class="card-content">
+              <div class="vegan-badge">🌿 VEGETARIAN</div>
+              <h3 class="card-title">Вегетарианский бургер</h3>
+              <p class="card-description">
+                420 ккал | Белки: 16г | Жиры: 14г | Углеводы: 58г
+              </p>
+              <div class="card-footer">
+                <span class="price">310 ₽</span>
+                <button
+                  class="add-to-cart"
+                  onclick="alert('Добавлено в корзину!')"
+                >
+                  + В корзину
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="food-card">
+            <div class="card-image">
+              <img
+                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'%3E%3Crect width='300' height='200' fill='%23fff9c4'/%3E%3Ctext x='150' y='110' text-anchor='middle' fill='%232c5e2e' font-size='20'%3E🥗 Киноа с овощами%3C/text%3E%3C/svg%3E"
+                alt="Киноа с овощами"
+              />
+            </div>
+            <div class="card-content">
+              <div class="vegan-badge">🌱 VEGAN</div>
+              <h3 class="card-title">Киноа с запеченными овощами</h3>
+              <p class="card-description">
+                350 ккал | Белки: 12г | Жиры: 10г | Углеводы: 54г
+              </p>
+              <div class="card-footer">
+                <span class="price">340 ₽</span>
+                <button
+                  class="add-to-cart"
+                  onclick="alert('Добавлено в корзину!')"
+                >
+                  + В корзину
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Место для модального окна (по заданию не нужно писать) -->
+      <!-- Здесь будет модальное окно для оформления заказа -->
+
+      <!-- Информация о постаматах -->
+      <div class="categories container">
+        <div
+          style="
+            background: #e8f5e9;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-top: 30px;
+          "
+        >
+          <h3 style="color: #2c5e2e; margin-bottom: 15px">
+            📦 КАК ЭТО РАБОТАЕТ?
+          </h3>
+          <p style="margin-bottom: 20px; color: #555">
+            1. Выбери блюда → 2. Оплати онлайн → 3. Получи QR-код → 4. Забери в
+            постамате между парами!
+          </p>
+          <a href="#map" class="postamat-btn">Найти ближайший постамат</a>
+        </div>
+      </div>
+
+      <div class="map container" id="map">
+        <h3 class="map_h">ПОСТМАТЫ В ВАШЕМ ГОРОДЕ</h3>
+        <script
+          type="text/javascript"
+          charset="utf-8"
+          async
+          src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A2b10a371c39ffa9bae16b860f2ff66aaccb4b316330df055601bf7530840d0d4&amp;width=1140&amp;height=400&amp;lang=ru_RU&amp;scroll=true"
+        ></script>
+      </div>
+    </main>
+
+    <footer>
+      <div class="footer-content container">
+        <div class="footer-top">
+          <div class="footer-info">
+            <h3>FOODPOST</h3>
+            <p>
+              Готовая еда в постаматы для студентов и преподавателей. Заказывай
+              заранее — забирай за секунду!
+            </p>
+          </div>
+          <div class="footer-links">
+            <div class="footer-links-column">
+              <h4>Меню</h4>
+              <ul>
+                <li><a href="#">Для набора веса</a></li>
+                <li><a href="#">Для снижения веса</a></li>
+                <li><a href="#">Для поддержания</a></li>
+                <li><a href="#">Вегетарианское</a></li>
+              </ul>
+            </div>
+            <div class="footer-links-column">
+              <h4>Информация</h4>
+              <ul>
+                <li><a href="#">О нас</a></li>
+                <li><a href="#">Постаматы</a></li>
+                <li><a href="#">Доставка</a></li>
+                <li><a href="#">Контакты</a></li>
+              </ul>
+            </div>
+            <div class="footer-links-column">
+              <h4>Контакты</h4>
+              <ul>
+                <li>📞 +7 (999) 123-45-67</li>
+                <li>✉️ foodpost@mail.ru</li>
+                <li>📍 г. Москва, ул. Студенческая, 1</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>
+            © 2026 FOODPOST. Все права защищены. Закажи еду в постамат — экономь
+            время между парами!
+          </p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
