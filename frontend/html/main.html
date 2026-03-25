@@ -3,127 +3,663 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="../style/style.css" />
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>FOODPOST - Готовая еда в постаматы</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", "Lato", sans-serif;
+        background: #fef8f0;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Улучшенная шапка с навигационными ссылками */
+      header {
+        background: linear-gradient(135deg, #2c5e2e 0%, #1e3a1f 100%);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 80px;
+      }
+
+      .nav__left img {
+        height: 50px;
+        transition: transform 0.3s;
+      }
+
+      .nav__left img:hover {
+        transform: scale(1.05);
+      }
+
+      /* Навигационные ссылки */
+      .nav__center {
+        display: flex;
+        gap: 35px;
+        align-items: center;
+      }
+
+      .nav__center a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 16px;
+        transition: color 0.3s;
+        position: relative;
+      }
+
+      .nav__center a:hover {
+        color: #ffd966;
+      }
+
+      .nav__center a.active {
+        color: #ffd966;
+      }
+
+      .nav__center a.active::after {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #ffd966;
+        border-radius: 2px;
+      }
+
+      .nav__center a::after {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: #ffd966;
+        transition: width 0.3s;
+        border-radius: 2px;
+      }
+
+      .nav__center a:hover::after {
+        width: 100%;
+      }
+
+      .nav__right {
+        display: flex;
+        gap: 25px;
+        align-items: center;
+      }
+
+      .nav__right img {
+        width: 28px;
+        height: 28px;
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+
+      .nav__right img:hover {
+        transform: scale(1.1);
+      }
+
+      /* Улучшенный intro с новым текстом */
+      .intro {
+        background:
+          linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+          url("../img/background_main.jpeg");
+        background-size: cover;
+        background-position: center;
+        height: 600px;
+        display: flex;
+        align-items: center;
+        position: relative;
+      }
+
+      .intro__info {
+        text-align: center;
+        color: white;
+      }
+
+      .intro__text h1 {
+        font-size: 56px;
+        font-weight: 900;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        animation: fadeInUp 1s ease;
+      }
+
+      .intro__text p {
+        font-size: 24px;
+        font-weight: 500;
+        margin-bottom: 30px;
+        animation: fadeInUp 1s ease 0.2s both;
+      }
+
+      .intro-btn {
+        display: inline-block;
+        background: #ffd966;
+        color: #2c5e2e;
+        padding: 14px 40px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 18px;
+        transition: all 0.3s;
+        animation: fadeInUp 1s ease 0.4s both;
+      }
+
+      .intro-btn:hover {
+        background: #ffcd4d;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Улучшенные категории */
+      .categories {
+        padding: 80px 0 60px;
+      }
+
+      .categ_h {
+        text-align: center;
+        font-size: 42px;
+        font-weight: 800;
+        color: #2c5e2e;
+        margin-bottom: 20px;
+        position: relative;
+      }
+
+      .categ_h:after {
+        content: "";
+        display: block;
+        width: 80px;
+        height: 4px;
+        background: #ffd966;
+        margin: 20px auto 0;
+        border-radius: 2px;
+      }
+
+      .categories__menu {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        margin: 50px 0 30px;
+      }
+
+      .categ {
+        position: relative;
+        border-radius: 20px;
+        overflow: hidden;
+        cursor: pointer;
+        transition:
+          transform 0.3s,
+          box-shadow 0.3s;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        background-color: darkgreen;
+        height: 180px;
+      }
+
+      .categ:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+      }
+
+      .categ img {
+        width: 100%;
+        height: 280px;
+        object-fit: cover;
+        transition: transform 0.5s;
+      }
+
+      .categ:hover img {
+        transform: scale(1.05);
+      }
+
+      .categ p {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+        color: white;
+        padding: 60px 20px 20px;
+        margin: 0;
+        font-size: 22px;
+        font-weight: bold;
+        text-transform: uppercase;
+        text-align: center;
+        height: inherit;
+      }
+
+      .categ_veg {
+        position: relative;
+        border-radius: 20px;
+        overflow: hidden;
+        margin-top: 30px;
+        cursor: pointer;
+        transition: transform 0.3s;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        height: 125px;
+        background-color: darkgreen;
+      }
+
+      .categ_veg:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+      }
+
+      .categ_veg img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+      }
+
+      .categ_veg p {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+        color: white;
+        padding: 40px 20px 20px;
+        margin: 0;
+        font-size: 28px;
+        font-weight: bold;
+        text-transform: uppercase;
+        text-align: center;
+      }
+
+      .categ_veg a {
+        height: inherit;
+      }
+
+      /* Блок "Почему мы" улучшенный */
+      .why-we {
+        background: linear-gradient(135deg, #2c5e2e 0%, #1e3a1f 100%);
+        padding: 70px 0;
+        border-radius: 30px;
+        color: white;
+        text-align: center;
+      }
+
+      .why_h {
+        font-size: 42px;
+        font-weight: 800;
+        margin-bottom: 30px;
+        color: #ffd966;
+      }
+
+      .why_p {
+        font-size: 20px;
+        line-height: 1.6;
+        max-width: 800px;
+        margin: 0 auto;
+        opacity: 0.95;
+      }
+
+      /* Преимущества */
+      .features {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px;
+        margin: 60px 0;
+      }
+
+      .feature-item {
+        text-align: center;
+        padding: 30px 20px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s;
+      }
+
+      .feature-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .feature-icon {
+        font-size: 48px;
+        margin-bottom: 15px;
+      }
+
+      .feature-item h4 {
+        font-size: 20px;
+        color: #2c5e2e;
+        margin-bottom: 10px;
+      }
+
+      .feature-item p {
+        color: #666;
+        font-size: 14px;
+      }
+
+      /* Карта */
+      .map {
+        text-align: center;
+        margin-top: 70px;
+      }
+
+      .map_h {
+        font-size: 36px;
+        font-weight: 800;
+        color: #2c5e2e;
+        margin-bottom: 30px;
+        position: relative;
+      }
+
+      .map_h:after {
+        content: "";
+        display: block;
+        width: 60px;
+        height: 3px;
+        background: #ffd966;
+        margin: 15px auto 0;
+      }
+
+      /* Подвал улучшенный */
+      footer {
+        background: #1e3a1f;
+        margin-top: 60px;
+      }
+
+      .footer_m {
+        padding: 60px 0 30px;
+      }
+
+      .top-footer {
+        text-align: center;
+        margin-bottom: 50px;
+      }
+
+      .work-w-u h3 {
+        font-size: 32px;
+        color: #ffd966;
+        margin-bottom: 20px;
+      }
+
+      .work-w-u p {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 18px;
+        max-width: 600px;
+        margin: 0 auto 30px;
+        line-height: 1.6;
+      }
+
+      .but_with {
+        background: #ffd966;
+        border: none;
+        padding: 14px 40px;
+        border-radius: 50px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #2c5e2e;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .but_with:hover {
+        background: #ffcd4d;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      hr {
+        border: none;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.2);
+        margin: 30px 0;
+      }
+
+      .bottom-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .bottom-footer-ol {
+        display: flex;
+        gap: 40px;
+        list-style: none;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 16px;
+      }
+
+      .bottom-footer-ol li {
+        cursor: pointer;
+        transition: color 0.3s;
+      }
+
+      .bottom-footer-ol li a {
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .bottom-footer-ol li:hover {
+        color: #ffd966;
+      }
+
+      .bottom-footer-p {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 14px;
+      }
+
+      /* Адаптивность */
+      @media (max-width: 992px) {
+        .nav__center {
+          display: none;
+        }
+
+        .features {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .categories__menu {
+          grid-template-columns: 1fr;
+        }
+
+        .features {
+          grid-template-columns: 1fr;
+        }
+
+        .bottom-footer {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .bottom-footer-ol {
+          flex-direction: column;
+          gap: 15px;
+        }
+
+        .intro__text h1 {
+          font-size: 36px;
+        }
+
+        .intro__text p {
+          font-size: 18px;
+        }
+
+        .categ_h {
+          font-size: 32px;
+        }
+
+        .why_h {
+          font-size: 32px;
+        }
+      }
+    </style>
   </head>
 
   <body>
     <header>
-      <!--logo + navigation НУЖНО БУДЕТ ПОМЕНЯТЬ ЛОГОТИП И КОРЗИНУ-->
       <div class="nav container">
         <div class="nav__left">
-          <img src="../img/logo.svg" alt="logotip" />
+          <img
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23ffd966'/%3E%3Ctext x='50' y='70' text-anchor='middle' fill='%232c5e2e' font-size='40' font-weight='bold'%3EFP%3C/text%3E%3C/svg%3E"
+            alt="FOODPOST"
+            style="height: 50px"
+          />
+        </div>
+        <!-- Навигационные ссылки (как на странице с меню) -->
+        <div class="nav__center">
+          <a href="#" class="active">Главная</a>
+          <a href="menu.html">Меню</a>
+          <a href="#map">Постаматы</a>
+          <a href="#about_us">О нас</a>
+          <a href="#">Контакты</a>
+          <!--будет вести на модальное окно-->
         </div>
         <div class="nav__right">
-          <!-- да будет мясо в виде выпадающего меню -->
-          <div class="dropdown" style="background-color: #123413;">
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-              <img src="../img/menu.svg" alt="menu">
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#menu">Меню</a></li>
-              <li><a class="dropdown-item" href="#contacts">Контакты</a></li>
-              <li><a class="dropdown-item" href="#map">Наши постаматы</a></li>
-              <li><a class="dropdown-item" href="#lets-talk">Обратная связь</a></li>
-            </ul>
-          </div>
-          <button><img src="../img/account.svg" alt="account" /></button>
-          <!-- модальное окно для входа в аккаунт и регистрации-->
-           <div class="modal">
-
-           </div>
-          <button><img src="../img/trash.png" alt="trash" /></button>
+          <img
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E"
+            alt="account"
+          />
+          <img
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-1.99.9-1.99 2L3 20c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm0 10c-2.76 0-5-2.24-5-5h2c0 1.66 1.34 3 3 3s3-1.34 3-3h2c0 2.76-2.24 5-5 5z'/%3E%3C/svg%3E"
+            alt="cart"
+          />
         </div>
       </div>
     </header>
 
-    <!--content (intro + categories + why we + maps + button for order)-->
     <main>
-      <!--intro (name + some information)-->
+      <!-- Улучшенный intro блок с актуальным текстом -->
       <div class="intro">
         <div class="intro__info container">
           <div class="intro__text">
-            <h1>POWER CONTROL</h1>
-            <p>SOME HEALTHY FOOD</p>
+            <h1>FOODPOST</h1>
+            <p>Готовая еда в постаматы для студентов</p>
+            <a href="menu.html" class="intro-btn">Заказать сейчас</a>
           </div>
         </div>
       </div>
 
-      <!--categories-->
-      <div class="categories container" id="menu">
-        <h2 class="categ_h">КАТЕГОРИИ НАШЕГО МЕНЮ</h2>
+      <!-- Блок категорий (улучшенный) -->
+      <div class="categories container">
+        <h2 class="categ_h">КАТЕГОРИИ МЕНЮ</h2>
         <div class="categories__menu">
-          <!--для худых, чтобы набрать вес-->
           <div class="categ">
-            <button>
-            <img src="../img/baza.jpg" alt="skinny" />
-            <p>Для набора веса</p>
-          </button>
+            <a href="../html/menu.html"><p>🍽️ МЕНЮ ДЛЯ НАБОРА ВЕСА</p></a>
           </div>
-          <!--для толстых, чтобы сбросить-->
           <div class="categ">
-            <button>
-            <img src="../img/poterya.jpg" alt="dieta" />
-            <p>Диетический</p>
-            </button>
+            <a href="../html/menu.html"><p>🥗 МЕНЮ ДЛЯ СНИЖЕНИЯ ВЕСА</p></a>
           </div>
-          <!--для поддержание веса-->
           <div class="categ">
-            <button>
-            <img src="../img/nabor.jpg" alt="normal" />
-            <p>Для поддержание веса</p>
-            </button>
+            <a href="../html/menu.html"><p>⚖️ МЕНЮ ДЛЯ ПОДДЕРЖАНИЯ ВЕСА</p></a>
           </div>
         </div>
-        <!--вегатерианское меню-->
-        <!-- <div class="categ_veg">
-          <img src="../img/vegan.jpg" alt="vegan" />
-          <p>Вегатерианское меню</p>
-        </div> -->
+        <div class="categ_veg" id="about_us">
+          <a href="../html/menu.html"><p>🌱 ВЕГЕТАРИАНСКОЕ МЕНЮ</p></a>
+        </div>
       </div>
 
+      <!-- Блок преимуществ -->
+      <div class="container">
+        <div class="features">
+          <div class="feature-item">
+            <div class="feature-icon">📦</div>
+            <h4>Забирай в постамате</h4>
+            <p>Без очередей, в любое удобное время между парами</p>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">⏱️</div>
+            <h4>Экономия времени</h4>
+            <p>Закажи с вечера — получи за секунду утром</p>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🍱</div>
+            <h4>Сбалансированное питание</h4>
+            <p>Блюда с просчитанной калорийностью для любых целей</p>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">💳</div>
+            <h4>Оплата онлайн</h4>
+            <p>Без наличных — быстро и безопасно</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Блок "Почему мы" улучшенный -->
       <div class="why-we container">
-        <h2 class="why_h">ПОЧЕМУ МЫ</h2>
+        <h2 class="why_h">ПОЧЕМУ СТУДЕНТЫ ВЫБИРАЮТ НАС</h2>
         <p class="why_p">
-          Забудьте про толпу в&nbsp;буфете на&nbsp;перемене. С&nbsp;нашим сервисом вы&nbsp;выбираете блюда вечером, а&nbsp;утром еда уже ждёт вас в&nbsp;постамате. Быстро, удобно и&nbsp;без лишнего стресса. Один QR-код&nbsp;&mdash; и&nbsp;вы&nbsp;сыты до&nbsp;обеда.
+          Мы понимаем, как важно для студентов экономить время между парами.
+          FOODPOST — это возможность заказать вкусную и полезную еду заранее и
+          забрать её за секунду в ближайшем постамате. Никаких очередей, никакой
+          спешки — только ваше удобство!
         </p>
       </div>
+
+      <!-- Блок с картой -->
       <div class="map container" id="map">
-        <h3 class="map_h">ПОСТМАТЫ В ГОРОДЕ</h3>
-        <div style="display: flex;">
+        <h3 class="map_h">ПОСТМАТЫ В ВАШЕМ ГОРОДЕ</h3>
         <script
           type="text/javascript"
           charset="utf-8"
           async
-          src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A2b10a371c39ffa9bae16b860f2ff66aaccb4b316330df055601bf7530840d0d4&amp;width=650&amp;height=400&amp;lang=ru_RU&amp;scroll=true"
+          src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A2b10a371c39ffa9bae16b860f2ff66aaccb4b316330df055601bf7530840d0d4&amp;width=1140&amp;height=400&amp;lang=ru_RU&amp;scroll=true"
         ></script>
-        <div style="display: flex; flex-direction: column; margin-left: 50px; font-size: 22px; margin-top: 20px;">
-        <li>Проспект Вернадского, 76</li>
-        <li>ул. Покрышкина, 4</li>
-        <li>просп. Вернадского, 84, стр. 1</li>
-        </div>
-        </div>
       </div>
     </main>
+
+    <!-- Улучшенный подвал -->
     <footer>
-      <div class="footer_m container" id="contacts">
+      <div class="footer_m container">
         <div class="top-footer">
           <div class="work-w-u">
-            <h3>Хотите работать с нашей командой?</h3>
+            <h3>Готовы попробовать?</h3>
+            <p>
+              Присоединяйтесь к тысячам студентов, которые уже экономят время с
+              FOODPOST. Закажите свою первую порцию здоровой еды прямо сейчас!
+            </p>
           </div>
-          <button class="but_with">Свяжитесь с нами</button>
+          <button class="but_with" onclick="location.href = 'menu.html'">
+            Заказать еду
+          </button>
         </div>
-      <hr />
-      <div class="bottom-footer" id="lets-talk">
-        <ol class="bottom-footer-ol">
-          <li>Проспект Вернадского, 78</li>
-          <li>+79771688655</li>
-          <li>mail@mail.ru</li>
-        </ol>
-        <p class="bottom-footer-p">Все права защищены</p>
+        <hr />
+        <div class="bottom-footer">
+          <ol class="bottom-footer-ol">
+            <li><a href="#about_us">О нас</a></li>
+            <li>Как это работает</li>
+            <li>Доставка</li>
+            <li>Контакты</li>
+          </ol>
+          <p class="bottom-footer-p">
+            © 2026 FOODPOST. Все права защищены. Еда в постаматы для студентов.
+          </p>
+        </div>
       </div>
     </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   </body>
 </html>
