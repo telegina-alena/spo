@@ -260,9 +260,10 @@
       }
 
       .footer-top {
+        width: 1200px;
         display: grid;
-        grid-template-columns: 1fr 2fr;
-        gap: 50px;
+        grid-template-columns: 1fr 1fr;
+        gap: 90px;
         margin-bottom: 40px;
       }
 
@@ -388,7 +389,9 @@
         <div class="intro__info container">
           <div>
             <h1>ГОТОВАЯ ЕДА В ПОСТАМАТЫ</h1>
-            <p id="menu">Закажи заранее — забери за секунду между парами</p>
+            <p id="menu">
+              Закажи заранее — забери за секунду в обеденный перерыв!
+            </p>
           </div>
         </div>
       </div>
@@ -561,7 +564,7 @@
       <div class="categories container">
         <h2 class="section-title">⚖️ МЕНЮ ДЛЯ ПОДДЕРЖАНИЯ ВЕСА</h2>
         <p class="section-subtitle">
-          Сбалансированное питание для активных студентов
+          Сбалансированное питание для активных людей
         </p>
 
         <div class="cards-grid">
@@ -728,35 +731,38 @@
       <!-- Здесь будет модальное окно для оформления заказа -->
 
       <!-- Информация о постаматах -->
-      <div class="categories container">
+      <h3 class="section-title" style="margin-bottom: 30px">
+        📦 КАК ЭТО РАБОТАЕТ?
+      </h3>
+      <div style="display: flex">
         <div
           style="
             background: #e8f5e9;
             border-radius: 20px;
             padding: 40px;
             text-align: center;
-            margin-top: 30px;
+            height: 400px;
+            margin-left: 100px;
+            width: 600px;
           "
         >
-          <h3 style="color: #2c5e2e; margin-bottom: 15px">
-            📦 КАК ЭТО РАБОТАЕТ?
-          </h3>
-          <p style="margin-bottom: 20px; color: #555">
-            1. Выбери блюда → 2. Оплати онлайн → 3. Получи QR-код → 4. Забери в
-            постамате между парами!
+          <p style="margin-bottom: 50px; color: #555; font-size: 22px">
+            1. Выбери блюда <br />
+            2. Оплати онлайн <br />
+            3. Получи QR-код <br />
+            4. Забери в постамате в свободное время!
           </p>
           <a href="#map" class="postamat-btn">Найти ближайший постамат</a>
         </div>
-      </div>
 
-      <div class="map container" id="map">
-        <h3 class="map_h">ПОСТМАТЫ В ВАШЕМ ГОРОДЕ</h3>
-        <script
-          type="text/javascript"
-          charset="utf-8"
-          async
-          src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A2b10a371c39ffa9bae16b860f2ff66aaccb4b316330df055601bf7530840d0d4&amp;width=1140&amp;height=400&amp;lang=ru_RU&amp;scroll=true"
-        ></script>
+        <div class="map container" id="map">
+          <script
+            type="text/javascript"
+            charset="utf-8"
+            async
+            src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A2b10a371c39ffa9bae16b860f2ff66aaccb4b316330df055601bf7530840d0d4&amp;width=650&amp;height=400&amp;lang=ru_RU&amp;scroll=true"
+          ></script>
+        </div>
       </div>
     </main>
 
@@ -766,12 +772,12 @@
           <div class="footer-info">
             <h3>FOODPOST</h3>
             <p>
-              Готовая еда в постаматы для студентов и преподавателей. Заказывай
-              заранее — забирай за секунду!
+              Готовая еда в постаматы для студентов и офисных работников.
+              Заказывай заранее — забирай за секунду!
             </p>
           </div>
           <div class="footer-links">
-            <div class="footer-links-column">
+            <!-- <div class="footer-links-column">
               <h4>Меню</h4>
               <ul>
                 <li><a href="#">Для набора веса</a></li>
@@ -779,7 +785,7 @@
                 <li><a href="#">Для поддержания</a></li>
                 <li><a href="#">Вегетарианское</a></li>
               </ul>
-            </div>
+            </div> -->
             <div class="footer-links-column">
               <h4>Информация</h4>
               <ul>
@@ -802,7 +808,7 @@
         <div class="footer-bottom">
           <p>
             © 2026 FOODPOST. Все права защищены. Закажи еду в постамат — экономь
-            время между парами!
+            время!
           </p>
         </div>
       </div>
