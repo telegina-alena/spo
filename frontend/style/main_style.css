@@ -378,16 +378,86 @@ header {
 /* Подвал улучшенный */
 footer {
   background: #1e3a1f;
+  color: white;
   margin-top: 60px;
 }
 
-.footer_m {
-  padding: 60px 0 30px;
+.footer-content {
+  padding: 50px 0 30px;
 }
 
-.top-footer {
+.footer-top {
+  width: 1200px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 90px;
+  margin-bottom: 40px;
+}
+
+.footer-info h3 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.footer-info p {
+  opacity: 0.8;
+  line-height: 1.6;
+}
+
+.footer-links {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.footer-links-column h4 {
+  margin-bottom: 15px;
+  color: #ffd966;
+}
+
+.footer-links-column ul {
+  list-style: none;
+}
+
+.footer-links-column li {
+  margin-bottom: 10px;
+}
+
+.footer-links-column a {
+  color: white;
+  text-decoration: none;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.footer-links-column a:hover {
+  opacity: 1;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 20px;
   text-align: center;
-  margin-bottom: 50px;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+/* Кнопка "Забрать в постамате" */
+.postamat-btn {
+  display: inline-block;
+  background: #ffd966;
+  color: #2c5e2e;
+  padding: 12px 30px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  margin-top: 20px;
+  transition: all 0.3s;
+}
+
+.postamat-btn:hover {
+  background: #ffcd4d;
+  transform: scale(1.05);
 }
 
 .work-w-u h3 {
@@ -427,41 +497,6 @@ hr {
   height: 1px;
   background: rgba(255, 255, 255, 0.2);
   margin: 30px 0;
-}
-
-.bottom-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.bottom-footer-ol {
-  display: flex;
-  gap: 40px;
-  list-style: none;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 16px;
-}
-
-.bottom-footer-ol li {
-  cursor: pointer;
-  transition: color 0.3s;
-}
-
-.bottom-footer-ol li a {
-  text-decoration: none;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.bottom-footer-ol li:hover {
-  color: #ffd966;
-}
-
-.bottom-footer-p {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 14px;
 }
 
 /* Адаптивность */

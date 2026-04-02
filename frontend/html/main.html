@@ -22,18 +22,22 @@
           <a href="menu.html">Меню</a>
           <a href="#map">Постаматы</a>
           <a href="#about_us">О нас</a>
-          <a href="#">Контакты</a>
+          <a href="#contacts">Контакты</a>
           <!--будет вести на модальное окно-->
         </div>
         <div class="nav__right">
-          <img
-            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E"
-            alt="account"
-          />
-          <img
-            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-1.99.9-1.99 2L3 20c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm0 10c-2.76 0-5-2.24-5-5h2c0 1.66 1.34 3 3 3s3-1.34 3-3h2c0 2.76-2.24 5-5 5z'/%3E%3C/svg%3E"
-            alt="cart"
-          />
+          <a href="account.html">
+            <img
+              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E"
+              alt="account"
+            />
+          </a>
+          <a href="trash.html">
+            <img
+              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-1.99.9-1.99 2L3 20c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm0 10c-2.76 0-5-2.24-5-5h2c0 1.66 1.34 3 3 3s3-1.34 3-3h2c0 2.76-2.24 5-5 5z'/%3E%3C/svg%3E"
+              alt="cart"
+            />
+          </a>
         </div>
       </div>
     </header>
@@ -105,8 +109,6 @@
           только ваше удобство!
         </p>
       </div>
-
-      <!-- Блок с картой -->
       <div class="map container" id="map">
         <h3 class="map_h">ПОСТМАТЫ В ВАШЕМ ГОРОДЕ</h3>
         <script
@@ -117,32 +119,44 @@
         ></script>
       </div>
     </main>
-
-    <!-- Улучшенный подвал -->
     <footer>
-      <div class="footer_m container">
-        <div class="top-footer">
+      <div class="footer-content container">
+        <div class="footer-top">
           <div class="work-w-u">
             <h3>Готовы попробовать?</h3>
             <p>
               Присоединяйтесь к тысячам людей, которые уже экономят время с
               FOODPOST. Закажите свою первую порцию здоровой еды прямо сейчас!
             </p>
+
+            <button class="but_with" onclick="location.href = 'menu.html'">
+              Заказать еду
+            </button>
           </div>
-          <button class="but_with" onclick="location.href = 'menu.html'">
-            Заказать еду
-          </button>
+          <div class="footer-links">
+            <div class="footer-links-column" id="contacts">
+              <h4>Информация</h4>
+              <ul>
+                <li><a href="#">О нас</a></li>
+                <li><a href="#">Постаматы</a></li>
+                <li><a href="#">Доставка</a></li>
+                <li><a href="#">Контакты</a></li>
+              </ul>
+            </div>
+            <div class="footer-links-column">
+              <h4>Контакты</h4>
+              <ul>
+                <li>📞 +7 (999) 123-45-67</li>
+                <li>✉️ foodpost@mail.ru</li>
+                <li>📍 г. Москва, ул. Студенческая, 1</li>
+              </ul>
+            </div>
+          </div>
         </div>
-        <hr />
-        <div class="bottom-footer">
-          <ol class="bottom-footer-ol">
-            <li><a href="#about_us">О нас</a></li>
-            <li>Как это работает</li>
-            <li>Доставка</li>
-            <li>Контакты</li>
-          </ol>
-          <p class="bottom-footer-p">
-            © 2026 FOODPOST. Все права защищены. Еда в постаматы для студентов.
+        <div class="footer-bottom">
+          <p>
+            © 2026 FOODPOST. Все права защищены. Закажи еду в постамат — экономь
+            время!
           </p>
         </div>
       </div>
