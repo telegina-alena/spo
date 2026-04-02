@@ -21,6 +21,15 @@ class UserResponse(BaseModel):
         from_attributes = True
 
 
+
+# ==================== BALANCE SCHEMAS ===================
+class BalanceTopUp (BaseModel):
+    """Схема для пополнения счета пользователя"""
+    amount: float
+class BalanceResponce(BaseModel):
+    """Вывод текущего баланса пользователя"""
+    uesr_id: int
+    balance: float
 # ==================== MENU SCHEMAS ====================
 
 class MenuItemCreate(BaseModel):
@@ -67,3 +76,69 @@ class CartResponse(BaseModel):
 
     class Config:
         from_attributes = True
+# ==================== ORDER SCHEMAS =====================
+
+class OrderCreate(BaseModel):
+    """Схема для оформления заказа после оплаты корзины"""
+    postomat_id: int
+    comment: Optional[str] = None
+
+class OrderItemResponse(BaseModel):
+    """Схема для состава заказа"""
+    id: int
+    menu_item_id: int
+    name: str
+    quantity: int
+    price_at_time: float
+    subtotal: float
+    
+    class Config:
+        from_attributes = True
+        
+class OrderResponse(BaseModel):
+    """Схема для ответа с данными заказа"""
+    id: int
+    user_id: int
+    postomat_id: int
+    postomat_address: str
+    postomat_city: str
+    order_date: datetime
+    status: str
+    total_amount: float
+    comment: Optional[str]= None
+    items: List[OrderItemResponse]= []
+    
+    class Config:
+        from_attributes = True
+
+# ================= POSTOMAT SCHEMAS ==================
+
+class PostomatCreate(BaseModel):
+    """Схема для создания постомата"""
+    address: str
+    city: str
+    description: Optional[str]= None
+    
+class PostomatUpdate(BaseModel):
+    """Схема для обновления данных о постамате"""
+    address: Optional[str]= None
+    city:Optional[str]= None
+    is_active: Optional[bool] = None
+    description: Optional[str] = None
+
+class PostomatResponse(BaseModel):
+    """Схема для ответа с данными постомата"""
+    id: int
+    address:str
+    city: str
+    is_active: bool
+    description: Optional[str] = None
+    
+    class Config:
+        from_attributes = True
+
+# ================== ADMIN SCHEMAS =====================
+
+class UserBlockRequest(BaseModel):
+    """Схема для блокировки/разблокировки пользователей"""
+    is_active: bool
