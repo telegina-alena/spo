@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FOODPOST | Личный кабинет</title>
+    <!-- Bootstrap 5 CSS (для модальных окон и стилей) -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../style/account_style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="nav container">
+        <div class="nav__left">
+          <img
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23ffd966'/%3E%3Ctext x='50' y='70' text-anchor='middle' fill='%232c5e2e' font-size='40' font-weight='bold'%3EFP%3C/text%3E%3C/svg%3E"
+            alt="FOODPOST"
+          />
+        </div>
+        <div class="nav__center">
+          <a href="main.html">Главная</a>
+          <a href="menu.html">Меню</a>
+          <a href="#" class="active">Личный кабинет</a>
+        </div>
+        <div class="nav__right">
+          <img
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E"
+            alt="account"
+          />
+          <a href="trash.html">
+            <img
+              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-1.99.9-1.99 2L3 20c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm0 10c-2.76 0-5-2.24-5-5h2c0 1.66 1.34 3 3 3s3-1.34 3-3h2c0 2.76-2.24 5-5 5z'/%3E%3C/svg%3E"
+              alt="cart"
+            />
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Герой личного кабинета -->
+      <div class="cabinet-hero">
+        <div class="container cabinet-title">
+          <h1>Ваш личный кабинет</h1>
+          <p>
+            Управляйте заказами, получайте цифровые коды и наслаждайтесь быстрой
+            едой в постаматах
+          </p>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="action-grid">
+          <div
+            class="action-card"
+            data-bs-toggle="modal"
+            data-bs-target="#registerModal"
+          >
+            <h3>Регистрация</h3>
+            <p>Создайте аккаунт FOODPOST и получайте бонусы за первый заказ</p>
+            <button class="btn-foodpost">Создать аккаунт</button>
+          </div>
+
+          <div
+            class="action-card"
+            data-bs-toggle="modal"
+            data-bs-target="#loginModal"
+          >
+            <h3>Вход в аккаунт</h3>
+            <p>Уже зарегистрированы? Войдите и отслеживайте заказы</p>
+            <button class="btn-foodpost">Войти</button>
+          </div>
+        </div>
+
+        <!-- Элементы <a> для перехода на страницы "актуальные заказы" и "история заказов" -->
+        <div class="orders-links">
+          <h2><i class="fas fa-clipboard-list"></i> Ваши заказы</h2>
+          <div class="link-group">
+            <a href="curr_orders.html" class="order-link" id="activeOrdersLink">
+              <i class="fas fa-spinner fa-fw"></i> Актуальные заказы
+            </a>
+            <a
+              href="history_orders.html"
+              class="order-link"
+              id="historyOrdersLink"
+            >
+              <i class="fas fa-history fa-fw"></i> История заказов
+            </a>
+          </div>
+          <p style="margin-top: 20px; color: #6c757d; font-size: 14px"></p>
+        </div>
+
+        <!-- Отображение сгенерированного кода -->
+        <div class="code-generator">
+          <i class="fas fa-barcode" style="font-size: 40px; color: #ffd966"></i>
+          <h3 style="margin-top: 10px; color: #2c5e2e">
+            Генератор кода получения
+          </h3>
+          <p>
+            Нажмите кнопку, чтобы получить уникальный 6-значный код для
+            постамата
+          </p>
+          <div class="code-display" id="codeDisplay">———</div>
+          <button class="btn-code" id="generateCodeMainBtn">
+            <i class="fas fa-sync-alt"></i> Сгенерировать новый код
+          </button>
+          <p class="mt-3 small text-muted">
+            Код действителен 24 часа для выбранного постамата
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Модальное окно для РЕГИСТРАЦИИ (Bootstrap) -->
+    <div
+      class="modal fade"
+      id="registerModal"
+      tabindex="-1"
+      aria-labelledby="registerModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div
+          class="modal-content"
+          style="border-radius: 28px; overflow: hidden"
+        >
+          <div
+            class="modal-header"
+            style="background: #2c5e2e; color: white; border-bottom: none"
+          >
+            <h5 class="modal-title" id="registerModalLabel">
+              <i class="fas fa-user-plus me-2"></i>Регистрация FOODPOST
+            </h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" style="padding: 30px">
+            <form id="registerForm">
+              <div class="mb-3">
+                <label class="form-label">Имя и фамилия</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="regName"
+                  placeholder="Анна Смирнова"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="regEmail"
+                  placeholder="example@foodpost.ru"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Пароль</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="regPassword"
+                  placeholder="минимум 6 символов"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Подтвердите пароль</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="regPasswordConfirm"
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                class="btn-foodpost w-100 py-2"
+                style="background: #ffd966; font-weight: bold"
+              >
+                Зарегистрироваться
+              </button>
+            </form>
+            <div class="mt-3 text-center text-muted small">
+              Уже есть аккаунт?
+              <a
+                href="#"
+                data-bs-dismiss="modal"
+                data-bs-toggle="modal"
+                data-bs-target="#loginModal"
+                style="color: #2c5e2e; font-weight: 500"
+                >Войти</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Модальное окно для ВХОДА -->
+    <div
+      class="modal fade"
+      id="loginModal"
+      tabindex="-1"
+      aria-labelledby="loginModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 28px">
+          <div class="modal-header" style="background: #2c5e2e; color: white">
+            <h5 class="modal-title" id="loginModalLabel">
+              <i class="fas fa-sign-in-alt me-2"></i>Вход в личный кабинет
+            </h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" style="padding: 30px">
+            <form id="loginForm">
+              <div class="mb-3">
+                <label class="form-label">Email или телефон</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="loginEmail"
+                  placeholder="example@foodpost.ru"
+                  required
+                />
+              </div>
+              <div class="mb-4">
+                <label class="form-label">Пароль</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="loginPassword"
+                  placeholder="••••••"
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                class="btn-foodpost w-100 py-2"
+                style="background: #ffd966"
+              >
+                Войти
+              </button>
+            </form>
+            <div class="mt-3 text-center">
+              <a href="#" style="color: #2c5e2e">Забыли пароль?</a>
+            </div>
+            <hr />
+            <div class="text-center">
+              <small
+                >Нет аккаунта?
+                <a
+                  href="#"
+                  data-bs-dismiss="modal"
+                  data-bs-toggle="modal"
+                  data-bs-target="#registerModal"
+                  style="color: #2c5e2e"
+                  >Зарегистрируйтесь</a
+                ></small
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer_m container">
+        <hr />
+        <div
+          style="
+            text-align: center;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+          "
+        >
+          © 2026 FOODPOST. Личный кабинет — еда в постаматы для тех, кто ценит
+          время.
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      const registerModalElem = document.getElementById("registerModal");
+      const loginModalElem = document.getElementById("loginModal");
+
+      // Функция показа уведомлений (простой alert с имитацией, но стилизован)
+      function showMessage(title, message, isSuccess = true) {
+        alert(`${isSuccess ? "✅" : "⚠️"} ${title}\n${message}`);
+      }
+
+      // Регистрация
+      const registerForm = document.getElementById("registerForm");
+      if (registerForm) {
+        registerForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          const name = document.getElementById("regName").value.trim();
+          const email = document.getElementById("regEmail").value.trim();
+          const pwd = document.getElementById("regPassword").value;
+          const pwdConfirm =
+            document.getElementById("regPasswordConfirm").value;
+          if (!name || !email || !pwd) {
+            showMessage("Ошибка", "Пожалуйста, заполните все поля", false);
+            return;
+          }
+          if (pwd !== pwdConfirm) {
+            showMessage("Ошибка", "Пароли не совпадают", false);
+            return;
+          }
+          if (pwd.length < 6) {
+            showMessage(
+              "Ошибка",
+              "Пароль должен содержать минимум 6 символов",
+              false,
+            );
+            return;
+          }
+          showMessage(
+            "Регистрация успешна!",
+            `Добро пожаловать, ${name}! Теперь вы можете войти.`,
+          );
+          const modal = bootstrap.Modal.getInstance(registerModalElem);
+          if (modal) modal.hide();
+          registerForm.reset();
+        });
+      }
+
+      // Вход
+      const loginForm = document.getElementById("loginForm");
+      if (loginForm) {
+        loginForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          const login = document.getElementById("loginEmail").value.trim();
+          const pwd = document.getElementById("loginPassword").value;
+          if (!login || !pwd) {
+            showMessage("Ошибка", "Введите email/телефон и пароль", false);
+            return;
+          }
+          showMessage(
+            "Вход выполнен",
+            `Рады видеть снова! Вы вошли в аккаунт ${login}`,
+          );
+          const modal = bootstrap.Modal.getInstance(loginModalElem);
+          if (modal) modal.hide();
+          loginForm.reset();
+        });
+      }
+      // генерация кода
+      const codeDisplaySpan = document.getElementById("codeDisplay");
+      function generateDigitalCode() {
+        const code = Math.floor(100000 + Math.random() * 900000).toString();
+        if (codeDisplaySpan) {
+          codeDisplaySpan.textContent = code;
+        }
+        return code;
+      }
+
+      // Вешаем обработчики на кнопки генерации
+      const genCodeBtnCard = document.getElementById("genCodeBtn");
+      const genCodeMainBtn = document.getElementById("generateCodeMainBtn");
+
+      if (genCodeBtnCard) {
+        genCodeBtnCard.addEventListener("click", (e) => {
+          e.stopPropagation();
+          generateDigitalCode();
+        });
+      }
+      if (genCodeMainBtn) {
+        genCodeMainBtn.addEventListener("click", () => {
+          generateDigitalCode();
+        });
+      }
+
+      const activeLink = document.getElementById("activeOrdersLink");
+      const historyLink = document.getElementById("historyOrdersLink");
+      if (activeLink) {
+        activeLink.addEventListener("click", (e) => {
+          e.preventDefault();
+          showActiveOrders();
+        });
+      }
+      if (historyLink) {
+        historyLink.addEventListener("click", (e) => {
+          e.preventDefault();
+          showHistoryOrders();
+        });
+      }
+    </script>
+  </body>
+</html>
