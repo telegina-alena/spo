@@ -1,0 +1,144 @@
+from pydantic import BaseModel, EmailStr
+from typing import Optional, List
+from datetime import datetime
+
+
+# ==================== USER SCHEMAS ====================
+
+class UserCreate(BaseModel):
+    """Схема для создания пользователя"""
+    email: EmailStr
+
+
+class UserResponse(BaseModel):
+    """Схема для ответа с данными пользователя"""
+    id: int
+    email: str
+    created_at: datetime
+    is_active: bool
+
+    class Config:
+        from_attributes = True
+
+
+
+# ==================== BALANCE SCHEMAS ===================
+class BalanceTopUp (BaseModel):
+    """Схема для пополнения счета пользователя"""
+    amount: float
+class BalanceResponce(BaseModel):
+    """Вывод текущего баланса пользователя"""
+    uesr_id: int
+    balance: float
+# ==================== MENU SCHEMAS ====================
+
+class MenuItemCreate(BaseModel):
+    """Схема для создания блюда"""
+    name: str
+    price: float
+    category: Optional[str] = None
+    description: Optional[str] = None
+    image_url: Optional[str] = None
+
+
+class MenuItemResponse(BaseModel):
+    """Схема для ответа с данными блюда"""
+    id: int
+    name: str
+    price: float
+    category: Optional[str] = None
+    description: Optional[str] = None
+    is_available: bool
+    image_url: Optional[str] = None
+    created_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+
+# ==================== CART SCHEMAS ====================
+
+class CartItem(BaseModel):
+    """Схема для добавления товара в корзину"""
+    menu_item_id: int
+    quantity: int = 1
+
+
+class CartResponse(BaseModel):
+    """Схема для ответа с содержимым корзины"""
+    id: int
+    menu_item_id: int
+    name: str
+    quantity: int
+    price: float
+    subtotal: float
+    added_at: datetime
+
+    class Config:
+        from_attributes = True
+# ==================== ORDER SCHEMAS =====================
+
+class OrderCreate(BaseModel):
+    """Схема для оформления заказа после оплаты корзины"""
+    postomat_id: int
+    comment: Optional[str] = None
+
+class OrderItemResponse(BaseModel):
+    """Схема для состава заказа"""
+    id: int
+    menu_item_id: int
+    name: str
+    quantity: int
+    price_at_time: float
+    subtotal: float
+    
+    class Config:
+        from_attributes = True
+        
+class OrderResponse(BaseModel):
+    """Схема для ответа с данными заказа"""
+    id: int
+    user_id: int
+    postomat_id: int
+    postomat_address: str
+    postomat_city: str
+    order_date: datetime
+    status: str
+    total_amount: float
+    comment: Optional[str]= None
+    items: List[OrderItemResponse]= []
+    
+    class Config:
+        from_attributes = True
+
+# ================= POSTOMAT SCHEMAS ==================
+
+class PostomatCreate(BaseModel):
+    """Схема для создания постомата"""
+    address: str
+    city: str
+    description: Optional[str]= None
+    
+class PostomatUpdate(BaseModel):
+    """Схема для обновления данных о постамате"""
+    address: Optional[str]= None
+    city:Optional[str]= None
+    is_active: Optional[bool] = None
+    description: Optional[str] = None
+
+class PostomatResponse(BaseModel):
+    """Схема для ответа с данными постомата"""
+    id: int
+    address:str
+    city: str
+    is_active: bool
+    description: Optional[str] = None
+    
+    class Config:
+        from_attributes = True
+
+# ================== ADMIN SCHEMAS =====================
+
+class UserBlockRequest(BaseModel):
+    """Схема для блокировки/разблокировки пользователей"""
+    is_active: bool
