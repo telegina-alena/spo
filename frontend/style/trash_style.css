@@ -40,7 +40,6 @@ header {
   transform: scale(1.05);
 }
 
-/* Навигационные ссылки */
 .nav__center {
   display: flex;
   gap: 35px;

@@ -11,28 +11,28 @@
       <div class="nav container">
         <div class="nav__left">
           <img
-            src="../img/logo.svg"
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23ffd966'/%3E%3Ctext x='50' y='70' text-anchor='middle' fill='%232c5e2e' font-size='40' font-weight='bold'%3EFP%3C/text%3E%3C/svg%3E"
             alt="FOODPOST"
-            onclick="location.href = 'index.html'"
-            style="cursor: pointer"
+            style="height: 50px"
           />
         </div>
         <div class="nav__center">
-          <a href="index.html">Главная</a>
+          <a href="main.html">Главная</a>
           <a href="menu.html">Меню</a>
-          <a href="#">Постаматы</a>
-          <a href="#">О нас</a>
-          <a href="#">Контакты</a>
+          <a href="#" class="active">Корзина</a>
         </div>
         <div class="nav__right">
-          <img src="../img/menu.svg" alt="menu" />
           <img
-            src="../img/account.svg"
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E"
             alt="account"
             onclick="location.href = 'account.html'"
             style="cursor: pointer"
           />
-          <img src="../img/trash.png" alt="cart" class="active" />
+          <img
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-1.99.9-1.99 2L3 20c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm0 10c-2.76 0-5-2.24-5-5h2c0 1.66 1.34 3 3 3s3-1.34 3-3h2c0 2.76-2.24 5-5 5z'/%3E%3C/svg%3E"
+            alt="cart"
+            class="active"
+          />
         </div>
       </div>
     </header>
@@ -170,14 +170,14 @@
             <div class="delivery-info">
               <label>📍 Выберите постамат</label>
               <select id="postamat-select">
-                <option value="ул. Ломоносова, 9 (корпус А)">
-                  ул. Ломоносова, 9 (корпус А) — у главного входа
+                <option value="ул. Покрышкина, 4">
+                  ул. Покрышкина, 4 — у главного входа
                 </option>
-                <option value="ул. Ленина, 23 (корпус Б)">
-                  ул. Ленина, 23 (корпус Б) — рядом с библиотекой
+                <option value="проспект Вернадского, 84с1">
+                  проспект Вернадского, 84с1 — рядом с библиотекой
                 </option>
-                <option value="пр. Мира, 15 (студенческий центр)">
-                  пр. Мира, 15 (студенческий центр) — 1 этаж
+                <option value="проспект Вернадского, 78">
+                  проспект Вернадского, 78 — 1 этаж
                 </option>
               </select>
 
@@ -196,15 +196,6 @@
                 </select>
                 <p>📌 Заказы на утро принимаются до 23:59 предыдущего дня</p>
               </div>
-            </div>
-
-            <div class="promo-code">
-              <input type="text" placeholder="Промокод" id="promo-input" />
-              <button onclick="applyPromo()">Применить промокод</button>
-              <p
-                id="promo-message"
-                style="font-size: 12px; color: #888; margin-top: 5px"
-              ></p>
             </div>
 
             <div class="summary-row total">
@@ -232,26 +223,8 @@
 
     <footer>
       <div class="footer_m container">
-        <div class="top-footer">
-          <div class="work-w-u">
-            <h3>Готовы попробовать?</h3>
-            <p>
-              Присоединяйтесь к тысячам студентов, которые уже экономят время с
-              FOODPOST. Закажите свою первую порцию здоровой еды прямо сейчас!
-            </p>
-          </div>
-          <button class="but_with" onclick="location.href = 'menu.html'">
-            Заказать еду
-          </button>
-        </div>
         <hr />
         <div class="bottom-footer">
-          <ol class="bottom-footer-ol">
-            <li>О нас</li>
-            <li>Как это работает</li>
-            <li>Доставка</li>
-            <li>Контакты</li>
-          </ol>
           <p class="bottom-footer-p">
             © 2024 FOODPOST. Все права защищены. Еда в постаматы для студентов.
           </p>
