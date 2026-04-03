@@ -1,0 +1,289 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", "Lato", sans-serif;
+  background: #fef8f0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.logo span {
+  color: #ffd966;
+}
+
+header {
+  background: linear-gradient(135deg, #2c5e2e 0%, #1e3a1f 100%);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+}
+
+.nav__left img {
+  height: 50px;
+  transition: transform 0.3s;
+}
+
+.nav__left img:hover {
+  transform: scale(1.05);
+}
+
+/* Навигационные ссылки (как на главной) */
+.nav__center {
+  display: flex;
+  gap: 35px;
+  align-items: center;
+}
+
+.nav__center a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+  transition: color 0.3s;
+  position: relative;
+}
+
+.nav__center a:hover {
+  color: #ffd966;
+}
+
+.nav__center a.active {
+  color: #ffd966;
+}
+
+.nav__center a.active::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #ffd966;
+  border-radius: 2px;
+}
+
+.nav__center a::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #ffd966;
+  transition: width 0.3s;
+  border-radius: 2px;
+}
+
+.nav__center a:hover::after {
+  width: 100%;
+}
+
+.nav__right {
+  display: flex;
+  gap: 25px;
+  align-items: center;
+}
+
+.nav__right img {
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.nav__right img:hover {
+  transform: scale(1.1);
+}
+
+/* Секции */
+.section {
+  background: white;
+  border-radius: 25px;
+  padding: 25px;
+  margin-bottom: 35px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+}
+
+.section h2 {
+  color: #2c5e2e;
+  border-left: 5px solid #ffd966;
+  padding-left: 18px;
+  margin-bottom: 20px;
+  font-size: 26px;
+}
+
+/* Карточка заказа */
+.order-card {
+  background: #fefaf5;
+  border-radius: 20px;
+  padding: 18px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  border: 1px solid #f0e6d8;
+  transition: 0.2s;
+}
+
+.order-card:hover {
+  border-color: #ffd966;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed #eee;
+}
+
+.order-id {
+  font-weight: bold;
+  color: #2c5e2e;
+  background: #eaf4ea;
+  padding: 4px 12px;
+  border-radius: 30px;
+  font-size: 14px;
+}
+
+.order-date {
+  color: #888;
+  font-size: 14px;
+}
+
+.order-status {
+  font-weight: bold;
+  padding: 4px 14px;
+  border-radius: 30px;
+  font-size: 13px;
+  background: #f0f0f0;
+}
+
+.status-waiting {
+  background: #fff3e0;
+  color: #e67e22;
+}
+
+.status-ready {
+  background: #e0f2e9;
+  color: #2c5e2e;
+}
+
+.status-received {
+  background: #e0e7ff;
+  color: #3b4b9e;
+}
+
+.order-items {
+  margin: 12px 0;
+  font-size: 15px;
+  color: #444;
+}
+
+.order-total {
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: right;
+  font-size: 18px;
+  color: #2c5e2e;
+}
+
+.qrcode-btn {
+  background: #2c5e2e;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 40px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 12px;
+  transition: 0.2s;
+}
+
+.qrcode-btn:hover {
+  background: #1e3a1f;
+}
+
+.empty-msg {
+  text-align: center;
+  padding: 45px 20px;
+  color: #aaa;
+  font-size: 16px;
+}
+
+/* Симулятор изменения статуса (только для демо) */
+.demo-panel {
+  background: #f0f0f0;
+  border-radius: 20px;
+  padding: 20px;
+  margin-top: 25px;
+  text-align: center;
+}
+
+.demo-panel p {
+  margin-bottom: 12px;
+  color: #555;
+  font-size: 14px;
+}
+
+.demo-btn {
+  background: #ffd966;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 30px;
+  margin: 0 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.demo-btn:hover {
+  background: #ffcd4d;
+}
+
+footer {
+  background: #1e3a1f;
+  margin-top: 60px;
+}
+
+.footer_m {
+  padding: 40px 0 25px;
+}
+
+hr {
+  border: none;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 25px 0;
+}
+
+@media (max-width: 650px) {
+  body {
+    padding: 12px;
+  }
+  .order-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
