@@ -79,11 +79,15 @@
         <div class="orders-links">
           <h2><i class="fas fa-clipboard-list"></i> Ваши заказы</h2>
           <div class="link-group">
-            <a href="curr_orders.html" class="order-link" id="activeOrdersLink">
+            <a
+              href="curr_and_history_orders.html"
+              class="order-link"
+              id="activeOrdersLink"
+            >
               <i class="fas fa-spinner fa-fw"></i> Актуальные заказы
             </a>
             <a
-              href="history_orders.html"
+              href="curr_and_history_orders.html"
               class="order-link"
               id="historyOrdersLink"
             >
@@ -257,9 +261,6 @@
                 Войти
               </button>
             </form>
-            <div class="mt-3 text-center">
-              <a href="#" style="color: #2c5e2e">Забыли пароль?</a>
-            </div>
             <hr />
             <div class="text-center">
               <small
@@ -385,21 +386,6 @@
       if (genCodeMainBtn) {
         genCodeMainBtn.addEventListener("click", () => {
           generateDigitalCode();
-        });
-      }
-
-      const activeLink = document.getElementById("activeOrdersLink");
-      const historyLink = document.getElementById("historyOrdersLink");
-      if (activeLink) {
-        activeLink.addEventListener("click", (e) => {
-          e.preventDefault();
-          showActiveOrders();
-        });
-      }
-      if (historyLink) {
-        historyLink.addEventListener("click", (e) => {
-          e.preventDefault();
-          showHistoryOrders();
         });
       }
     </script>

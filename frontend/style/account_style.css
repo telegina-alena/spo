@@ -302,42 +302,6 @@ footer {
   padding: 40px 0 25px;
 }
 
-.bottom-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.bottom-footer-ol {
-  display: flex;
-  gap: 40px;
-  list-style: none;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 16px;
-  padding-left: 0;
-}
-
-.bottom-footer-ol li {
-  cursor: pointer;
-  transition: color 0.3s;
-}
-
-.bottom-footer-ol li a {
-  text-decoration: none;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.bottom-footer-ol li:hover {
-  color: #ffd966;
-}
-
-.bottom-footer-p {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 14px;
-}
-
 hr {
   border: none;
   height: 1px;
