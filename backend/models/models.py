@@ -26,9 +26,9 @@ class UserResponse(BaseModel):
 class BalanceTopUp (BaseModel):
     """Схема для пополнения счета пользователя"""
     amount: float
-class BalanceResponce(BaseModel):
+class BalanceResponse(BaseModel):
     """Вывод текущего баланса пользователя"""
-    uesr_id: int
+    user_id: int
     balance: float
 # ==================== MENU SCHEMAS ====================
 

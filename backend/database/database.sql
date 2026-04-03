@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS cart (
 CREATE TABLE IF NOT EXISTS orders (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
-    postomat_id INTEGER NOT NULL,
+    postomat_id INTEGER,
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status TEXT DEFAULT 'new',              -- Статус: new, cooking, ready, delivered, cancelled
     total_amount DECIMAL(10, 2) NOT NULL,
