@@ -4,6 +4,9 @@ from fastapi import FastAPI, Depends, HTTPException, Header
 from typing import List, Optional
 import sqlite3
 from contextlib import contextmanager
+from fastapi.staticfiles import StaticFiles
+from pathlib import Path
+from fastapi.responses import FileResponse
 
 from models.models import (
     UserCreate,
@@ -29,6 +32,15 @@ app = FastAPI(title="Food Delivery API")
 
 # Создаем глобальный экземпляр БД
 db = FoodDeliveryDB("delivery.db")
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+FRONTEND_DIR = BASE_DIR / "frontend"
+HTML_DIR = FRONTEND_DIR / "html"
+STYLE_DIR = FRONTEND_DIR / "style"
+IMG_DIR = FRONTEND_DIR / "img"
+
+app.mount("/style", StaticFiles(directory=str(STYLE_DIR)), name="style")
+app.mount("/img", StaticFiles(directory=str(IMG_DIR)), name="img")
 
 
 # ==================== HELPERS ====================
@@ -447,3 +459,25 @@ def admin_delete_postomat(admin_id: int, postomat_id: int):
         raise HTTPException(status_code=400, detail="Cannot delete postomat (not found or has linked orders)")
 
     return {"message": f"Postomat {postomat_id} deleted"}
+
+# ========================FRONTEND================================
+
+@app.get("/")
+async def root():
+    return FileResponse(str(HTML_DIR / "main.html"))
+
+@app.get("/menu")
+async def root():
+    return FileResponse(str(HTML_DIR / "menu.html"))
+
+@app.get("/account")
+async def root():
+    return FileResponse(str(HTML_DIR / "account.html"))
+
+@app.get("/cart")
+async def root():
+    return FileResponse(str(HTML_DIR / "cart.html"))
+
+@app.get("/orders")
+async def root():
+    return FileResponse(str(HTML_DIR / "curr_and_history_orders.html"))
