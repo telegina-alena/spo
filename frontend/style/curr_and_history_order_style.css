@@ -49,7 +49,6 @@ header {
   transform: scale(1.05);
 }
 
-/* Навигационные ссылки (как на главной) */
 .nav__center {
   display: flex;
   gap: 35px;
@@ -117,7 +116,6 @@ header {
   transform: scale(1.1);
 }
 
-/* Секции */
 .section {
   background: white;
   border-radius: 25px;
@@ -134,7 +132,6 @@ header {
   font-size: 26px;
 }
 
-/* Карточка заказа */
 .order-card {
   background: #fefaf5;
   border-radius: 20px;
@@ -210,7 +207,7 @@ header {
   color: #2c5e2e;
 }
 
-.qrcode-btn {
+.digital-code-btn {
   background: #2c5e2e;
   color: white;
   border: none;
@@ -220,10 +217,14 @@ header {
   font-size: 14px;
   margin-top: 12px;
   transition: 0.2s;
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
 }
 
-.qrcode-btn:hover {
+.digital-code-btn:hover {
   background: #1e3a1f;
+  color: white;
 }
 
 .empty-msg {
@@ -233,7 +234,6 @@ header {
   font-size: 16px;
 }
 
-/* Симулятор изменения статуса (только для демо) */
 .demo-panel {
   background: #f0f0f0;
   border-radius: 20px;
@@ -256,6 +256,7 @@ header {
   margin: 0 8px;
   cursor: pointer;
   font-weight: bold;
+  transition: 0.2s;
 }
 
 .demo-btn:hover {
@@ -276,6 +277,27 @@ hr {
   height: 1px;
   background: rgba(255, 255, 255, 0.2);
   margin: 25px 0;
+}
+
+.digital-code-btn {
+  background: #2c5e2e;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 40px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 12px;
+  transition: 0.2s;
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+}
+
+.digital-code-btn:hover {
+  background: #1e3a1f;
+  color: white;
+  text-decoration: none;
 }
 
 @media (max-width: 650px) {
