@@ -36,8 +36,11 @@ class MenuItemCreate(BaseModel):
     """Схема для создания блюда"""
     name: str
     price: float
-    category: Optional[str] = None
-    description: Optional[str] = None
+    category: str
+    calories: int
+    proteins: int
+    fats: int
+    carbs: int
     image_url: Optional[str] = None
 
 
@@ -46,8 +49,11 @@ class MenuItemResponse(BaseModel):
     id: int
     name: str
     price: float
-    category: Optional[str] = None
-    description: Optional[str] = None
+    category: str
+    calories: int
+    proteins: int
+    fats: int
+    carbs: int
     is_available: bool
     image_url: Optional[str] = None
     created_at: Optional[datetime] = None
