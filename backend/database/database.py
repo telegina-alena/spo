@@ -181,15 +181,15 @@ class FoodDeliveryDB:
             conn.close()
     # ==================== РАБОТА С МЕНЮ ====================
 
-    def add_menu_item(self, name, price, category=None, description=None, image_url=None):
+    def add_menu_item(self, name, price, calories, proteins, fats, carbs, image_url=None, category=None,):
         """Добавление блюда в меню"""
         conn = sqlite3.connect(self.db_name)
         cursor = conn.cursor()
 
         cursor.execute("""
-            INSERT INTO menu (name, description, price, category, image_url)
-            VALUES (?, ?, ?, ?, ?)
-        """, (name, description, price, category, image_url))
+            INSERT INTO menu (name, calories, proteins, fats, carbs, price, category, image_url)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """, (name, calories, proteins, fats, carbs, price, category, image_url))
         conn.commit()
         menu_id = cursor.lastrowid
         conn.close()
@@ -226,7 +226,10 @@ class FoodDeliveryDB:
                 'name': row['name'],
                 'price': float(row['price']),  # убедимся что float
                 'category': row['category'],
-                'description': row['description'],
+                'calories': row['calories'],
+                'proteins': row['proteins'],
+                'fats': row['fats'],
+                'carbs': row['carbs'],
                 'is_available': bool(row['is_available']),
                 'image_url': row['image_url'],
                 'created_at': row['created_at']

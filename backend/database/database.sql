@@ -26,10 +26,13 @@ CREATE TABLE IF NOT EXISTS postomats (
 -- =====================================================
 CREATE TABLE IF NOT EXISTS menu (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    description TEXT,
+    name TEXT NOT NULL UNIQUE,
     price DECIMAL(10, 2) NOT NULL,
-    category TEXT,
+    category TEXT NOT NULL,
+    calories NUMERIC NOT NULL,
+    proteins NUMERIC NOT NULL,
+    fats NUMERIC NOT NULL,
+    carbs NUMERIC NOT NULL,
     is_available BOOLEAN DEFAULT 1,
     image_url TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -79,3 +82,22 @@ CREATE TABLE IF NOT EXISTS order_items (
     FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
     FOREIGN KEY (menu_item_id) REFERENCES menu(id) ON DELETE RESTRICT
 );
+
+-- =====================================================
+-- 7. Заполнение таблицы menu
+-- ===================================================== 
+INSERT OR IGNORE INTO menu(name, price, category, calories, proteins, fats, carbs, image_url) VALUES ('Рис с курицей и овощами', 320, 'gain', 600, 35, 15, 75, '../img/menu/ris-ovoshhi-kuricza.jpg');
+INSERT OR IGNORE INTO menu(name, price, category, calories, proteins, fats, carbs, image_url) VALUES ('Говядина с картофелем', 380, 'gain', 720, 42, 28, 65, '../img/menu/beef-potato.jpg');
+INSERT OR IGNORE INTO menu(name, price, category, calories, proteins, fats, carbs, image_url) VALUES ('Протеиновый коктейль', 250, 'gain', 450, 45, 8, 50, '../img/menu/protein-cocktail.jpg');
+
+INSERT OR IGNORE INTO menu(name, price, category, calories, proteins, fats, carbs, image_url) VALUES ('Греческий салат', 220, 'loss', 180, 8, 12, 10, '../img/menu/greek-salad.jpg');
+INSERT OR IGNORE INTO menu(name, price, category, calories, proteins, fats, carbs, image_url) VALUES ('Запечённая рыба с овощами', 340, 'loss', 250, 28, 12, 15, '../img/menu/ryba-zapechennaja-s-ovoshhamii.jpg');
+INSERT OR IGNORE INTO menu(name, price, category, calories, proteins, fats, carbs, image_url) VALUES ('Овощной суп-пюре', 190, 'loss', 190, 5, 3, 18, '../img/menu/veg-soup.jpg');
+
+INSERT OR IGNORE INTO menu(name, price, category, calories, proteins, fats, carbs, image_url) VALUES ('Паста с курицей и грибами', 350, 'maintain', 480, 32, 14, 58, '../img/menu/Pasta-fetuchini-kuritsa-s-gribami-v-slivochnom-souse.jpg');
+INSERT OR IGNORE INTO menu(name, price, category, calories, proteins, fats, carbs, image_url) VALUES ('Тост с яйцом и авокадо', 270, 'maintain', 320, 14, 22, 24, '../img/menu/tost-s-avokado-i-yaicom.jpg');
+INSERT OR IGNORE INTO menu(name, price, category, calories, proteins, fats, carbs, image_url) VALUES ('Гречка с куриной котлетой', 300, 'maintain', 450, 28, 16, 52, '../img/menu/grechka-chicken.jpg');
+
+INSERT OR IGNORE INTO menu(name, price, category, calories, proteins, fats, carbs, image_url) VALUES ('Нут с тушеными овощами', 290, 'vegan', 380, 14, 8, 62, '../img/menu/nut-tushenyi-s-ovoshchami.jpg');
+INSERT OR IGNORE INTO menu(name, price, category, calories, proteins, fats, carbs, image_url) VALUES ('Вегетерианский бургер', 310, 'vegan', 420, 16, 14, 58, '../img/menu/vegan_burger.jpg');
+INSERT OR IGNORE INTO menu(name, price, category, calories, proteins, fats, carbs, image_url) VALUES ('Киноа с запечёнными овощами', 340, 'vegan', 350, 12, 10, 54, '../img/menu/kinoa-baked-veges.jpg');

@@ -200,7 +200,10 @@ def create_menu_item(
         name=item.name,
         price=item.price,
         category=item.category,
-        description=item.description,
+        calories=item.calories,
+        proteins=item.proteins,
+        fats=item.fats,
+        carbs=item.carbs,
         image_url=item.image_url
     )
     return db.get_menu_item(item_id)
