@@ -506,6 +506,13 @@ hr {
   font-size: 14px;
 }
 
+.modal-backdrop {
+  z-index: 1040 !important;
+}
+.modal {
+  z-index: 1050 !important;
+}
+
 /* Адаптивность */
 @media (max-width: 992px) {
   .nav__center {

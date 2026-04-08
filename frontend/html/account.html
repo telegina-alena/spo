@@ -79,41 +79,14 @@
         <div class="orders-links">
           <h2><i class="fas fa-clipboard-list"></i> Ваши заказы</h2>
           <div class="link-group">
-            <a
-              href="/orders"
-              class="order-link"
-              id="activeOrdersLink"
-            >
+            <a href="/orders" class="order-link" id="activeOrdersLink">
               <i class="fas fa-spinner fa-fw"></i> Актуальные заказы
             </a>
-            <a
-              href="/orders"
-              class="order-link"
-              id="historyOrdersLink"
-            >
+            <a href="/orders" class="order-link" id="historyOrdersLink">
               <i class="fas fa-history fa-fw"></i> История заказов
             </a>
           </div>
           <p style="margin-top: 20px; color: #6c757d; font-size: 14px"></p>
-        </div>
-
-        <!-- Отображение сгенерированного кода -->
-        <div class="code-generator">
-          <i class="fas fa-barcode" style="font-size: 40px; color: #ffd966"></i>
-          <h3 style="margin-top: 10px; color: #2c5e2e">
-            Генератор кода получения
-          </h3>
-          <p>
-            Нажмите кнопку, чтобы получить уникальный 6-значный код для
-            постамата
-          </p>
-          <div class="code-display" id="codeDisplay">———</div>
-          <button class="btn-code" id="generateCodeMainBtn">
-            <i class="fas fa-sync-alt"></i> Сгенерировать новый код
-          </button>
-          <p class="mt-3 small text-muted">
-            Код действителен 24 часа для выбранного постамата
-          </p>
         </div>
       </div>
     </main>
@@ -302,7 +275,6 @@
       const registerModalElem = document.getElementById("registerModal");
       const loginModalElem = document.getElementById("loginModal");
 
-      // Функция показа уведомлений (простой alert с имитацией, но стилизован)
       function showMessage(title, message, isSuccess = true) {
         alert(`${isSuccess ? "✅" : "⚠️"} ${title}\n${message}`);
       }
@@ -363,31 +335,31 @@
           loginForm.reset();
         });
       }
-      // генерация кода
-      const codeDisplaySpan = document.getElementById("codeDisplay");
-      function generateDigitalCode() {
-        const code = Math.floor(100000 + Math.random() * 900000).toString();
-        if (codeDisplaySpan) {
-          codeDisplaySpan.textContent = code;
-        }
-        return code;
-      }
+      // // генерация кода
+      // const codeDisplaySpan = document.getElementById("codeDisplay");
+      // function generateDigitalCode() {
+      //   const code = Math.floor(100000 + Math.random() * 900000).toString();
+      //   if (codeDisplaySpan) {
+      //     codeDisplaySpan.textContent = code;
+      //   }
+      //   return code;
+      // }
 
-      // Вешаем обработчики на кнопки генерации
-      const genCodeBtnCard = document.getElementById("genCodeBtn");
-      const genCodeMainBtn = document.getElementById("generateCodeMainBtn");
+      // // Вешаем обработчики на кнопки генерации
+      // const genCodeBtnCard = document.getElementById("genCodeBtn");
+      // const genCodeMainBtn = document.getElementById("generateCodeMainBtn");
 
-      if (genCodeBtnCard) {
-        genCodeBtnCard.addEventListener("click", (e) => {
-          e.stopPropagation();
-          generateDigitalCode();
-        });
-      }
-      if (genCodeMainBtn) {
-        genCodeMainBtn.addEventListener("click", () => {
-          generateDigitalCode();
-        });
-      }
+      // if (genCodeBtnCard) {
+      //   genCodeBtnCard.addEventListener("click", (e) => {
+      //     e.stopPropagation();
+      //     generateDigitalCode();
+      //   });
+      // }
+      // if (genCodeMainBtn) {
+      //   genCodeMainBtn.addEventListener("click", () => {
+      //     generateDigitalCode();
+      //   });
+      // }
     </script>
   </body>
 </html>
