@@ -9,6 +9,7 @@ from pathlib import Path
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 
+
 from models.models import (
     UserCreate,
     UserResponse,
