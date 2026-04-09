@@ -57,7 +57,11 @@ class MenuItemCreate(BaseModel):
     name: str
     price: float
     category: Optional[str] = None
-    description: Optional[str] = None
+    calories: Optional[int] = None
+    proteins: Optional[int] = None
+    fats: Optional[int] = None
+    carbs: Optional[int] = None
+    is_vegan: Optional[bool] = None
     image_url: Optional[str] = None
 
 
@@ -67,7 +71,11 @@ class MenuItemResponse(BaseModel):
     name: str
     price: float
     category: Optional[str] = None
-    description: Optional[str] = None
+    calories: Optional[int] = None
+    proteins: Optional[int] = None
+    fats: Optional[int] = None
+    carbs: Optional[int] = None
+    is_vegan: Optional[bool] = None
     is_available: bool
     image_url: Optional[str] = None
     created_at: Optional[datetime] = None

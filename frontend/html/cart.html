@@ -398,7 +398,7 @@
     }
 
     // Оформление заказа - с модальным окном Bootstrap (alert заменён)
-    function checkout() {
+    async function checkout() {
       const cartItems = document.querySelectorAll(".cart-item");
       const totalElement = document.getElementById("total");
       const total = totalElement ? totalElement.innerText : "0 ₽";
@@ -421,8 +421,37 @@
         return;
       }
 
-      const message = `✅ Заказ оформлен!\n\nСумма: ${total}\n📍 Постамат: ${postamat}\n⏰ Время получения: ${deliveryTime}\n\n📱 Цифровой код указан на странице с заказами.\n\nСпасибо за заказ!`;
-      showModal(message, "Заказ подтверждён");
+      // Отправка заказа на бэкенд
+      try {
+        const response = await fetch(`/orders/${CURRENT_USER_ID}/checkout`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-User-Id": String(CURRENT_USER_ID),
+          },
+          body: JSON.stringify({
+            postomat_id: parseInt(selectedOption.value),
+            comment: `Время получения: ${deliveryTime}`
+          }),
+        });
+
+        if (!response.ok) {
+          const error = await response.json().catch(() => null);
+          throw new Error(error?.detail || "Ошибка при оформлении заказа");
+        }
+
+        const orderData = await response.json();
+        const message = `✅ Заказ оформлен!\n\nID заказа: #${orderData.id}\nСумма: ${total}\n📍 Постамат: ${postamat}\n⏰ Время получения: ${deliveryTime}\n\n📱 Цифровой код: ${orderData.pickup_code || "генерируется..."}\n\nСпасибо за заказ!`;
+        showModal(message, "Заказ подтверждён");
+
+        // Перезагрузить корзину
+        setTimeout(() => {
+          loadCart();
+        }, 1000);
+      } catch (error) {
+        console.error("Ошибка:", error);
+        showModal(`❌ ${error.message}`, "Ошибка при оформлении заказа");
+      }
     }
 
     // Проверка при загрузке страницы
