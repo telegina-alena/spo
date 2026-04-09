@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, field_validator
 from typing import Optional, List
 from datetime import datetime
 
@@ -8,7 +8,36 @@ from datetime import datetime
 class UserCreate(BaseModel):
     """Схема для создания пользователя"""
     email: EmailStr
+    password: str
+    
+    @field_validator('password')
+    @classmethod
+    def validate_password(cls, v):
+        if len(v) < 6:
+            raise ValueError('Пароль должен быть не менее 6 символов')
+        return v
 
+class UserLogin(BaseModel):
+    """Схема для входа"""
+    email: EmailStr
+    password: str
+    
+class LoginResponse(BaseModel):
+    """Ответ при успешном логине"""
+    message: str
+    user_id: int
+    email: str
+    role: str
+    
+class UserResponse(BaseModel):
+    """Схема для ответа с данными пользователя"""
+    id: int
+    email: str
+    created_at: datetime
+    is_active: bool
+    
+    class Config:
+        from_attributes = True
 
 class UserResponse(BaseModel):
     """Схема для ответа с данными пользователя"""
@@ -88,6 +117,22 @@ class OrderCreate(BaseModel):
     """Схема для оформления заказа после оплаты корзины"""
     postomat_id: int
     comment: Optional[str] = None
+    
+class OrderStatusUpdate(BaseModel):
+    """Схема для смены статуса заказа администратором"""
+    status: str
+    
+    @field_validator('status')
+    @classmethod
+    def validate_status(cls, v):
+        allowed = ('paid', 'in_transit', 'delivered', 'completed')
+        if v not in allowed:
+            raise ValueError(f'Статус должен быть одним из: {", ".join(allowed)}')
+        return v
+
+class PickupCode(BaseModel):
+    """Схема для ввода кода полусения"""
+    code: str
 
 class OrderItemResponse(BaseModel):
     """Схема для состава заказа"""
@@ -111,11 +156,14 @@ class OrderResponse(BaseModel):
     order_date: datetime
     status: str
     total_amount: float
+    pickup_code: Optional[str] = None
     comment: Optional[str]= None
     items: List[OrderItemResponse]= []
     
     class Config:
         from_attributes = True
+        
+    
 
 # ================= POSTOMAT SCHEMAS ==================
 

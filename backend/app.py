@@ -20,10 +20,14 @@ from models.models import (
     OrderCreate,
     OrderResponse,
     OrderItemResponse,
+    OrderStatusUpdate,
+    PickupCode,
     PostomatCreate,
     PostomatUpdate,
     PostomatResponse,
     UserBlockRequest,
+    UserLogin,
+    LoginResponse
 )
 from database import database
 from database.database import FoodDeliveryDB
@@ -79,10 +83,30 @@ def require_self_or_admin(requester_id: int, target_user_id: int):
 @app.post("/users/", response_model=UserResponse)
 def create_user(user: UserCreate):
     """Создание пользователя"""
-    user_id = db.add_user(user.email)
+    user_id = db.add_user(user.email, user.password)
     if not user_id:
         raise HTTPException(status_code=400, detail="Email already exists")
     return db.get_user(user_id=user_id)
+
+@app.post("/login", response_model=LoginResponse)
+def login(data: UserLogin):
+    """Авторизация пользователя"""
+    user = db.authenticate_user(data.email, data.password)
+
+    if not user:
+        raise HTTPException(status_code=401, detail="Неверный email или пароль")
+
+    if not user['is_active']:
+        raise HTTPException(status_code=403, detail="Аккаунт заблокирован")
+
+    return {
+        "message": "Успешный вход",
+        "user_id": user['id'],
+        "email": user['email'],
+        "role": user['role']
+    }
+
+
 
 
 @app.get("/users/{user_id}", response_model=UserResponse)
@@ -150,6 +174,34 @@ def admin_set_role(admin_id: int, user_id: int, role: str):
         raise HTTPException(status_code=404, detail="User not found")
 
     return {"message": f"User {user_id} role set to '{role}'"}
+
+@app.patch("/admin/{admin_id}/orders/{order_id}/status")
+def admin_update_order_status(admin_id: int, order_id: int, data: OrderStatusUpdate):
+    """
+    [ADMIN] Смена статуса заказа.
+    Допустимые переходы:
+      paid → in_transit → delivered → completed
+    """
+    require_admin(admin_id)
+
+    result = db.update_order_status(order_id, data.status)
+
+    if "error" in result:
+        error_map = {
+            "not_found": 404,
+            "already_completed": 400,
+            "invalid_transition": 400,
+            "internal": 500,
+        }
+        status = error_map.get(result["error"], 400)
+        raise HTTPException(status_code=status, detail=result["message"])
+
+    return {
+        "message": f"Статус заказа #{order_id} изменён",
+        "old_status": result["old_status"],
+        "new_status": result["new_status"]
+    }
+
 
 # ==================== BALANCE ====================
 
@@ -394,6 +446,34 @@ def get_order_detail(
 
     require_self_or_admin(requester_id, order["user_id"])
     return order
+
+@app.post("/postomats/{postomat_id}/pickup")
+def pickup_order(postomat_id: int, data: PickupCode):
+    """
+    Ввод кода получения на постомате.
+    Меняет статус с 'delivered' на 'completed'.
+    """
+    postomat = db.get_postomat(postomat_id)
+    if not postomat:
+        raise HTTPException(status_code=404, detail="Постомат не найден")
+
+    if not postomat['is_active']:
+        raise HTTPException(status_code=400, detail="Постомат неактивен")
+
+    result = db.complete_order_by_code(postomat_id, data.code)
+
+    if "error" in result:
+        error_map = {
+            "not_found": 404,
+            "already_completed": 400,
+            "not_ready": 409,
+            "internal": 500,
+        }
+        status = error_map.get(result["error"], 400)
+        raise HTTPException(status_code=status, detail=result["message"])
+
+    return result
+
 
 
 # ==================== POSTOMATS ====================

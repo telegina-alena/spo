@@ -4,6 +4,7 @@
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     email TEXT UNIQUE,
+    password_hash TEXT NOT NULL,
     balance DECIMAL(10,2) DEFAULT 0.00,
     role TEXT DEFAULT 'user',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -60,8 +61,9 @@ CREATE TABLE IF NOT EXISTS orders (
     user_id INTEGER NOT NULL,
     postomat_id INTEGER,
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status TEXT DEFAULT 'new',              -- Статус: new, cooking, ready, delivered, cancelled
+    status TEXT DEFAULT 'paid',   
     total_amount DECIMAL(10, 2) NOT NULL,
+    pickup_code TEXT,
     delivery_address TEXT,
     comment TEXT,
 

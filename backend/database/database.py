@@ -1,6 +1,7 @@
 import sqlite3
 import os
-
+import bcrypt
+import secrets
 
 class FoodDeliveryDB:
     def __init__(self, db_name='delivery.db'):
@@ -24,25 +25,54 @@ class FoodDeliveryDB:
 
     # ==================== РАБОТА С ПОЛЬЗОВАТЕЛЯМИ ====================
 
-    def add_user(self, email):
-        """Добавление пользователя (только email)"""
+    def add_user(self, email, password):
+        """Добавление пользователя с хешированным паролем"""
         conn = sqlite3.connect(self.db_name)
         cursor = conn.cursor()
 
+        # Хешируем пароль
+        password_hash = bcrypt.hashpw(
+            password.encode('utf-8'),
+            bcrypt.gensalt()
+        ).decode('utf-8')
+
         try:
             cursor.execute("""
-                INSERT INTO users (email)
-                VALUES (?)
-            """, (email,))
+                INSERT INTO users (email, password_hash)
+                VALUES (?, ?)
+            """, (email, password_hash))
             conn.commit()
             user_id = cursor.lastrowid
             print(f"Пользователь с email {email} добавлен с ID {user_id}")
             return user_id
-        except sqlite3.IntegrityError as e:
+        except sqlite3.IntegrityError:
             print(f"Ошибка: пользователь с таким email уже существует")
             return None
         finally:
             conn.close()
+            
+    def authenticate_user(self, email, password):
+        """Проверка логина и пароля. Возвращает пользователя или None"""
+        conn = sqlite3.connect(self.db_name)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT * FROM users WHERE email = ?", (email,))
+        user = cursor.fetchone()
+        conn.close()
+
+        if user is None:
+            return None
+
+        # Проверяем пароль через bcrypt
+        password_bytes = password.encode('utf-8')
+        hash_bytes = user['password_hash'].encode('utf-8')
+
+        if bcrypt.checkpw(password_bytes, hash_bytes):
+            return dict(user)
+        return None
+
+
 
     def get_user(self, user_id=None, email=None):
         """Получение информации о пользователе"""
@@ -421,42 +451,33 @@ class FoodDeliveryDB:
 # ==================== ЗАКАЗЫ =======================
 
     def create_order_from_cart(self, user_id, postomat_id, comment=None):
-        """Оформление заказа:"""
+        """Оформление заказа"""
         conn = sqlite3.connect(self.db_name)
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
 
         try:
-            # Проверка на постомат 
             if not postomat_id:
                 return {"error": "postomat_required", "message": "Необходимо выбрать постомат для доставки"}
 
-            # Проверка, что постомат существует и активен
             cursor.execute("SELECT id, address, city FROM postomats WHERE id = ? AND is_active = 1", (postomat_id,))
             postomat = cursor.fetchone()
             if postomat is None:
                 return {"error": "postomat_not_found", "message": "Постомат не найден или неактивен"}
 
-            # Содержимое корзины
             cursor.execute("""
-                SELECT 
-                    c.menu_item_id,
-                    c.quantity,
-                    m.price
+                SELECT c.menu_item_id, c.quantity, m.price
                 FROM cart c
                 JOIN menu m ON c.menu_item_id = m.id
                 WHERE c.user_id = ?
             """, (user_id,))
-
             cart_items = cursor.fetchall()
 
             if not cart_items:
                 return {"error": "cart_empty", "message": "Корзина пуста"}
 
-            # Подсчет общей суммы
             total = sum(row['quantity'] * float(row['price']) for row in cart_items)
 
-            # Проверка баланса
             cursor.execute("SELECT balance FROM users WHERE id = ?", (user_id,))
             user_row = cursor.fetchone()
             if user_row is None:
@@ -469,33 +490,32 @@ class FoodDeliveryDB:
                     "message": f"Недостаточно средств. Баланс: {balance}, сумма заказа: {total}"
                 }
 
-            # Списание денег
             cursor.execute(
                 "UPDATE users SET balance = balance - ? WHERE id = ?",
                 (total, user_id)
             )
 
-            #Создание заказа
+            # ── Генерация кода получения ──
+            pickup_code = self._generate_pickup_code()
+
             cursor.execute("""
-                INSERT INTO orders (user_id, postomat_id, total_amount, comment)
-                VALUES (?, ?, ?, ?)
-            """, (user_id, postomat_id, total, comment))
+                INSERT INTO orders (user_id, postomat_id, total_amount, pickup_code, status, comment)
+                VALUES (?, ?, ?, ?, 'paid', ?)
+            """, (user_id, postomat_id, total, pickup_code, comment))
 
             order_id = cursor.lastrowid
 
-            # Перенос корзины в order_items
             for item in cart_items:
                 cursor.execute("""
                     INSERT INTO order_items (order_id, menu_item_id, quantity, price_at_time)
                     VALUES (?, ?, ?, ?)
                 """, (order_id, item['menu_item_id'], item['quantity'], float(item['price'])))
 
-            # Очиcтка корзины
             cursor.execute("DELETE FROM cart WHERE user_id = ?", (user_id,))
 
             conn.commit()
-            print(f"Заказ #{order_id} создан. Постомат: {postomat['address']}, {postomat['city']}. Сумма: {total}")
-            return {"order_id": order_id, "total": total}
+            print(f"Заказ #{order_id} создан. Код получения: {pickup_code}. Сумма: {total}")
+            return {"order_id": order_id, "total": total, "pickup_code": pickup_code}
 
         except Exception as e:
             conn.rollback()
@@ -503,6 +523,7 @@ class FoodDeliveryDB:
             return {"error": "internal", "message": str(e)}
         finally:
             conn.close()
+
     def get_order(self, order_id):
         """Информация о заказе, включая состав заказа и постамат"""
         conn = sqlite3.connect(self.db_name)
@@ -581,6 +602,58 @@ class FoodDeliveryDB:
 
         conn.close()
         return orders
+    
+    def _generate_pickup_code(self):
+        """Генерация кода получения"""
+        return f"{secrets.randbelow(1000000):06d}"
+    
+    def complete_order_by_code(self, postomat_id, code):
+        """Завершение заказа по коду получения на постомате"""
+        conn = sqlite3.connect(self.db_name)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+
+        try:
+            cursor.execute("""
+                SELECT id, status, user_id
+                FROM orders
+                WHERE postomat_id = ? AND pickup_code = ?
+            """, (postomat_id, code))
+
+            order = cursor.fetchone()
+
+            if order is None:
+                return {"error": "not_found", "message": "Заказ с таким кодом не найден на этом постомате"}
+
+            if order['status'] == 'completed':
+                return {"error": "already_completed", "message": "Заказ уже получен"}
+
+            if order['status'] != 'delivered':
+                status_messages = {
+                    'paid': 'Заказ ещё не отправлен',
+                    'in_transit': 'Заказ ещё в пути',
+                }
+                msg = status_messages.get(order['status'], f"Текущий статус: {order['status']}")
+                return {"error": "not_ready", "message": msg}
+
+            cursor.execute(
+                "UPDATE orders SET status = 'completed' WHERE id = ?",
+                (order['id'],)
+            )
+            conn.commit()
+            print(f"Заказ #{order['id']} завершён по коду {code}")
+            return {
+                "success": True,
+                "order_id": order['id'],
+                "message": "Заказ успешно получен!"
+            }
+
+        except Exception as e:
+            print(f"Ошибка завершения заказа: {e}")
+            return {"error": "internal", "message": str(e)}
+        finally:
+            conn.close()
+
 
     # ==================== ПОСТОМАТЫ ====================
 
@@ -736,8 +809,56 @@ class FoodDeliveryDB:
             return False
         finally:
             conn.close()
+            
+    def update_order_status(self, order_id, new_status):
+        """Обновление статуса заказа с проверкой допустимых переходов"""
+        # Допустимые переходы статусов
+        allowed_transitions = {
+            'paid': 'in_transit',
+            'in_transit': 'delivered',
+            'delivered': 'completed',
+        }
 
-    def ensure_admin_exists(self, email="admin@delivery.local"):
+        conn = sqlite3.connect(self.db_name)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+
+        try:
+            cursor.execute("SELECT status FROM orders WHERE id = ?", (order_id,))
+            row = cursor.fetchone()
+
+            if row is None:
+                return {"error": "not_found", "message": "Заказ не найден"}
+
+            current_status = row['status']
+
+            if current_status == 'completed':
+                return {"error": "already_completed", "message": "Заказ уже завершён"}
+
+            expected_next = allowed_transitions.get(current_status)
+            if new_status != expected_next:
+                return {
+                    "error": "invalid_transition",
+                    "message": f"Нельзя сменить статус с '{current_status}' на '{new_status}'. "
+                            f"Допустимый следующий статус: '{expected_next}'"
+                }
+
+            cursor.execute(
+                "UPDATE orders SET status = ? WHERE id = ?",
+                (new_status, order_id)
+            )
+            conn.commit()
+            print(f"Заказ #{order_id}: {current_status} → {new_status}")
+            return {"success": True, "old_status": current_status, "new_status": new_status}
+
+        except Exception as e:
+            print(f"Ошибка смены статуса: {e}")
+            return {"error": "internal", "message": str(e)}
+        finally:
+            conn.close()
+
+
+    def ensure_admin_exists(self, email="admin@delivery.local", password="admin123"):
         """Создаёт админа, если в системе нет ни одного"""
         conn = sqlite3.connect(self.db_name)
         cursor = conn.cursor()
@@ -746,14 +867,20 @@ class FoodDeliveryDB:
         count = cursor.fetchone()[0]
 
         if count == 0:
+            password_hash = bcrypt.hashpw(
+                password.encode('utf-8'),
+                bcrypt.gensalt()
+            ).decode('utf-8')
+
             cursor.execute(
-                "INSERT OR IGNORE INTO users (email, role) VALUES (?, 'admin')",
-                (email,)
+                "INSERT OR IGNORE INTO users (email, password_hash, role) VALUES (?, ?, 'admin')",
+                (email, password_hash)
             )
             conn.commit()
-            print(f"Создан начальный админ: {email}")
+            print(f"Создан начальный админ: {email} / {password}")
 
         conn.close()
+
 
 def main():
     db = FoodDeliveryDB()
