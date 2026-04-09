@@ -50,26 +50,14 @@ class UserResponse(BaseModel):
         from_attributes = True
 
 
-
-# ==================== BALANCE SCHEMAS ===================
-class BalanceTopUp (BaseModel):
-    """Схема для пополнения счета пользователя"""
-    amount: float
-class BalanceResponse(BaseModel):
-    """Вывод текущего баланса пользователя"""
-    user_id: int
-    balance: float
 # ==================== MENU SCHEMAS ====================
 
 class MenuItemCreate(BaseModel):
     """Схема для создания блюда"""
     name: str
     price: float
-    category: str
-    calories: int
-    proteins: int
-    fats: int
-    carbs: int
+    category: Optional[str] = None
+    description: Optional[str] = None
     image_url: Optional[str] = None
 
 
@@ -78,11 +66,8 @@ class MenuItemResponse(BaseModel):
     id: int
     name: str
     price: float
-    category: str
-    calories: int
-    proteins: int
-    fats: int
-    carbs: int
+    category: Optional[str] = None
+    description: Optional[str] = None
     is_available: bool
     image_url: Optional[str] = None
     created_at: Optional[datetime] = None
@@ -104,6 +89,12 @@ class CartResponse(BaseModel):
     id: int
     menu_item_id: int
     name: str
+    category: Optional[str] = None
+    image_url: Optional[str] = None
+    calories: Optional[int] = None
+    proteins: Optional[int] = None
+    fats: Optional[int] = None
+    carbs: Optional[int] = None
     quantity: int
     price: float
     subtotal: float
@@ -111,6 +102,28 @@ class CartResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class UpdateQuantityRequest(BaseModel):
+    """Схема для обновления количества товара в корзине"""
+    quantity: int
+
+    @field_validator('quantity')
+    @classmethod
+    def validate_quantity(cls, value):
+        if value < 0:
+            raise ValueError('Количество должно быть неотрицательным')
+        return value
+
+# ==================== BALANCE SCHEMAS ===================
+class BalanceTopUp (BaseModel):
+    """Схема для пополнения счета пользователя"""
+    amount: float
+
+class BalanceResponse(BaseModel):
+    """Вывод текущего баланса пользователя"""
+    user_id: int
+    balance: float
+
 # ==================== ORDER SCHEMAS =====================
 
 class OrderCreate(BaseModel):
@@ -196,3 +209,15 @@ class PostomatResponse(BaseModel):
 class UserBlockRequest(BaseModel):
     """Схема для блокировки/разблокировки пользователей"""
     is_active: bool
+
+class UserLogin(BaseModel):
+    """Схема для входа"""
+    email: EmailStr
+    password: str
+    
+class LoginResponse(BaseModel):
+    """Ответ при успешном логине"""
+    message: str
+    user_id: int
+    email: str
+    role: str

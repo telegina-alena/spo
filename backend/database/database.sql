@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS users (
 -- =====================================================
 CREATE TABLE IF NOT EXISTS postomats (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    address TEXT NOT NULL,
+    address TEXT NOT NULL UNIQUE,
     city TEXT NOT NULL,
     is_active BOOLEAN DEFAULT 1,
     description TEXT
@@ -103,3 +103,11 @@ INSERT OR IGNORE INTO menu(name, price, category, calories, proteins, fats, carb
 INSERT OR IGNORE INTO menu(name, price, category, calories, proteins, fats, carbs, image_url) VALUES ('Нут с тушеными овощами', 290, 'vegan', 380, 14, 8, 62, '../img/menu/nut-tushenyi-s-ovoshchami.jpg');
 INSERT OR IGNORE INTO menu(name, price, category, calories, proteins, fats, carbs, image_url) VALUES ('Вегетерианский бургер', 310, 'vegan', 420, 16, 14, 58, '../img/menu/vegan_burger.jpg');
 INSERT OR IGNORE INTO menu(name, price, category, calories, proteins, fats, carbs, image_url) VALUES ('Киноа с запечёнными овощами', 340, 'vegan', 350, 12, 10, 54, '../img/menu/kinoa-baked-veges.jpg');
+
+-- ========================================================
+-- 8. Заполнение таблицы postomats
+-- ========================================================
+
+INSERT OR IGNORE INTO postomats (address, city, description) VALUES ("ул. Покрышкина, 4", "Москва", "Находится у главного входа");
+INSERT OR IGNORE INTO postomats (address, city, description) VALUES ("пр-кт. Вернадского, 84с1", "Москва", "Рядом с библиотекой");
+INSERT OR IGNORE INTO postomats (address, city, description) VALUES ("пр-кт. Вернадского, 78", "Москва", "1 этаж");

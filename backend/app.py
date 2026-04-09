@@ -9,7 +9,6 @@ from pathlib import Path
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-
 from models.models import (
     UserCreate,
     UserResponse,
@@ -17,6 +16,7 @@ from models.models import (
     MenuItemResponse,
     CartItem,
     CartResponse,
+    UpdateQuantityRequest,
     BalanceTopUp,
     BalanceResponse,
     OrderCreate,
@@ -31,19 +31,10 @@ from models.models import (
     UserLogin,
     LoginResponse
 )
-
 from database import database
 from database.database import FoodDeliveryDB
 
 app = FastAPI(title="Food Delivery API")
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 # Создаем глобальный экземпляр БД
 db = FoodDeliveryDB("delivery.db")
@@ -57,6 +48,13 @@ IMG_DIR = FRONTEND_DIR / "img"
 app.mount("/style", StaticFiles(directory=str(STYLE_DIR)), name="style")
 app.mount("/img", StaticFiles(directory=str(IMG_DIR)), name="img")
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # ==================== HELPERS ====================
 
@@ -386,6 +384,32 @@ def remove_cart_item(
     if db.remove_from_cart(cart_id):
         return {"message": "Item removed"}
     raise HTTPException(status_code=404, detail="Item not found")
+
+@app.put("/cart/{user_id}/items/{cart_id}")
+def update_cart_item_quantity(
+    user_id: int,
+    cart_id: int,
+    request: UpdateQuantityRequest,
+    requester_id: int = Header(..., alias="X-User-Id")
+):
+    """Обновление количества товара в корзине пользователя"""
+    require_self_or_admin(requester_id, user_id)
+    require_active_user(user_id)
+
+    cart_item = db.get_cart_item(cart_id)
+    if not cart_item:
+        raise HTTPException(status_code=404, detail="Item not found")
+    if cart_item["user_id"] != user_id:
+        raise HTTPException(status_code=403, detail="Access denied")
+
+    if request.quantity == 0:
+        if db.remove_from_cart(cart_id):
+            return {"message": "Item removed from cart"}
+        raise HTTPException(status_code=404, detail="Item not found")
+
+    if db.update_cart_item(cart_id, request.quantity):
+        return {"message": "Cart item quantity updated", "quantity": request.quantity}
+    raise HTTPException(status_code=400, detail="Failed to update cart item")
 
 
 # ==================== ORDERS (CHECKOUT) ====================

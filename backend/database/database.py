@@ -10,14 +10,12 @@ class FoodDeliveryDB:
         self.ensure_admin_exists()  # ← добавить
 
 
-
     def init_database(self):
         """Инициализация БД"""
         current_dir = os.path.dirname(os.path.abspath(__file__))
         sql_file_path = os.path.join(current_dir, 'database.sql')
         with open(sql_file_path, 'r', encoding='utf-8') as f:
             schema = f.read()
-
 
         conn = sqlite3.connect(self.db_name)
         conn.execute("PRAGMA journal_mode=DELETE;")
@@ -360,6 +358,11 @@ class FoodDeliveryDB:
                 m.name,
                 m.price,
                 m.category,
+                m.image_url,
+                m.calories,
+                m.proteins,
+                m.fats,
+                m.carbs,
                 (c.quantity * m.price) as subtotal
             FROM cart c
             JOIN menu m ON c.menu_item_id = m.id
