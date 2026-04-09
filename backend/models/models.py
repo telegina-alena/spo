@@ -60,6 +60,12 @@ class CartResponse(BaseModel):
     id: int
     menu_item_id: int
     name: str
+    category: Optional[str] = None
+    image_url: Optional[str] = None
+    calories: Optional[int] = None
+    proteins: Optional[int] = None
+    fats: Optional[int] = None
+    carbs: Optional[int] = None
     quantity: int
     price: float
     subtotal: float
@@ -67,3 +73,125 @@ class CartResponse(BaseModel):
 
     class Config:
         from_attributes = True
+<<<<<<< Updated upstream
+=======
+
+class UpdateQuantityRequest(BaseModel):
+    """Схема для обновления количества товара в корзине"""
+    quantity: int
+
+    @field_validator('quantity')
+    @classmethod
+    def validate_quantity(cls, value):
+        if value < 0:
+            raise ValueError('Количество должно быть неотрицательным')
+        return value
+
+# ==================== BALANCE SCHEMAS ===================
+class BalanceTopUp (BaseModel):
+    """Схема для пополнения счета пользователя"""
+    amount: float
+
+class BalanceResponse(BaseModel):
+    """Вывод текущего баланса пользователя"""
+    user_id: int
+    balance: float
+
+# ==================== ORDER SCHEMAS =====================
+
+class OrderCreate(BaseModel):
+    """Схема для оформления заказа после оплаты корзины"""
+    postomat_id: int
+    comment: Optional[str] = None
+    
+class OrderStatusUpdate(BaseModel):
+    """Схема для смены статуса заказа администратором"""
+    status: str
+    
+    @field_validator('status')
+    @classmethod
+    def validate_status(cls, v):
+        allowed = ('paid', 'in_transit', 'delivered', 'completed')
+        if v not in allowed:
+            raise ValueError(f'Статус должен быть одним из: {", ".join(allowed)}')
+        return v
+
+class PickupCode(BaseModel):
+    """Схема для ввода кода полусения"""
+    code: str
+
+class OrderItemResponse(BaseModel):
+    """Схема для состава заказа"""
+    id: int
+    menu_item_id: int
+    name: str
+    quantity: int
+    price_at_time: float
+    subtotal: float
+    
+    class Config:
+        from_attributes = True
+        
+class OrderResponse(BaseModel):
+    """Схема для ответа с данными заказа"""
+    id: int
+    user_id: int
+    postomat_id: int
+    postomat_address: str
+    postomat_city: str
+    order_date: datetime
+    status: str
+    total_amount: float
+    pickup_code: Optional[str] = None
+    comment: Optional[str]= None
+    items: List[OrderItemResponse]= []
+    
+    class Config:
+        from_attributes = True
+        
+    
+
+# ================= POSTOMAT SCHEMAS ==================
+
+class PostomatCreate(BaseModel):
+    """Схема для создания постомата"""
+    address: str
+    city: str
+    description: Optional[str]= None
+    
+class PostomatUpdate(BaseModel):
+    """Схема для обновления данных о постамате"""
+    address: Optional[str]= None
+    city:Optional[str]= None
+    is_active: Optional[bool] = None
+    description: Optional[str] = None
+
+class PostomatResponse(BaseModel):
+    """Схема для ответа с данными постомата"""
+    id: int
+    address:str
+    city: str
+    is_active: bool
+    description: Optional[str] = None
+    
+    class Config:
+        from_attributes = True
+
+# ================== ADMIN SCHEMAS =====================
+
+class UserBlockRequest(BaseModel):
+    """Схема для блокировки/разблокировки пользователей"""
+    is_active: bool
+
+class UserLogin(BaseModel):
+    """Схема для входа"""
+    email: EmailStr
+    password: str
+    
+class LoginResponse(BaseModel):
+    """Ответ при успешном логине"""
+    message: str
+    user_id: int
+    email: str
+    role: str
+>>>>>>> Stashed changes
