@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>FOODPOST – Мои заказы</title>
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../style/curr_and_history_order_style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="nav container">
+        <div class="nav__left">
+          <img
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23ffd966'/%3E%3Ctext x='50' y='70' text-anchor='middle' fill='%232c5e2e' font-size='40' font-weight='bold'%3EFP%3C/text%3E%3C/svg%3E"
+            alt="FOODPOST"
+          />
+        </div>
+        <div class="nav__center">
+          <a href="/">Главная</a>
+          <a href="/menu">Меню</a>
+          <a href="#" class="active">Заказы</a>
+        </div>
+        <div class="nav__right">
+          <a href="/account">
+            <img
+              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E"
+              alt="account"
+            />
+          </a>
+          <a href="/cart">
+            <img
+              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-1.99.9-1.99 2L3 20c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm0 10c-2.76 0-5-2.24-5-5h2c0 1.66 1.34 3 3 3s3-1.34 3-3h2c0 2.76-2.24 5-5 5z'/%3E%3C/svg%3E"
+              alt="cart"
+            />
+          </a>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="container">
+        <!-- БЛОК 1: АКТУАЛЬНЫЕ ЗАКАЗЫ (оплачены, ещё не получены) -->
+        <div class="section">
+          <h2>📦 Активные заказы</h2>
+          <div id="activeOrdersContainer">
+            <!-- сюда динамически будут подставляться карточки активных заказов -->
+          </div>
+        </div>
+
+        <!-- БЛОК 2: ИСТОРИЯ ПОКУПОК (завершённые заказы) -->
+        <div class="section">
+          <h2>📜 История заказов</h2>
+          <div id="historyContainer">
+            <!-- сюда динамически будут подставляться завершённые заказы -->
+          </div>
+        </div>
+
+        <div class="demo-panel">
+          <p>
+            ⚙️ <strong>Демо-режим</strong> – для проверки обновления статусов
+          </p>
+          <button class="demo-btn" id="simulateReadyBtn">
+            ✅ Сделать первый активный заказ "ГОТОВ К ВЫДАЧЕ"
+          </button>
+          <button class="demo-btn" id="simulateReceiveBtn">
+            🎁 Завершить первый активный заказ
+          </button>
+          <button class="demo-btn" id="resetDemoBtn">
+            🔄 Сбросить к исходным данным
+          </button>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <div class="footer_m container">
+        <hr />
+        <div
+          style="
+            text-align: center;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+          "
+        >
+          © 2026 FOODPOST. Личный кабинет — еда в постаматы для тех, кто ценит
+          время.
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap Modal -->
+    <div class="modal fade" id="messageModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div
+            class="modal-header"
+            id="modalHeader"
+            style="background: #2c5e2e; color: white"
+          >
+            <h5 class="modal-title" id="modalTitle">Уведомление</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" id="modalMessage">Сообщение</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              style="background: #2c5e2e; border-color: #2c5e2e"
+              data-bs-dismiss="modal"
+            >
+              Хорошо
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      const STORAGE_KEY = "foodpost_orders";
+      let messageModal;
+
+      function getInitialOrders() {
+        const now = new Date();
+        const todayStr = now.toLocaleDateString("ru-RU");
+        const yesterdayStr = new Date(
+          now.setDate(now.getDate() - 1),
+        ).toLocaleDateString("ru-RU");
+        const twoDaysAgo = new Date(
+          now.setDate(now.getDate() - 1),
+        ).toLocaleDateString("ru-RU");
+
+        return {
+          active: [
+            {
+              id: "FP-2401",
+              date: todayStr,
+              items: "🥗 Греческий салат, 🍚 Рис с курицей",
+              code: 736940,
+              total: 540,
+              status: "waiting",
+            },
+            {
+              id: "FP-2402",
+              date: todayStr,
+              items: "🌱 Киноа с овощами, 🥛 Протеиновый коктейль",
+              code: 293846,
+              total: 590,
+              status: "ready",
+            },
+          ],
+          history: [
+            {
+              id: "FP-2395",
+              date: yesterdayStr,
+              items: "🍝 Паста с курицей, 🥑 Тосты с авокадо",
+              code: 293846,
+              total: 620,
+              status: "received",
+              receivedAt: "вчера, 13:45",
+            },
+            {
+              id: "FP-2389",
+              date: twoDaysAgo,
+              items: "🥗 Греческий салат, 🍚 Рис с курицей",
+              code: 293846,
+              total: 540,
+              status: "received",
+              receivedAt: "2 дня назад, 10:20",
+            },
+          ],
+        };
+      }
+
+      function loadOrdersData() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+          return JSON.parse(stored);
+        } else {
+          const initial = getInitialOrders();
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
+          return initial;
+        }
+      }
+
+      function saveOrdersData(data) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      }
+
+      function showMessage(title, message, isError = false) {
+        const modalTitle = document.getElementById("modalTitle");
+        const modalMessage = document.getElementById("modalMessage");
+        const modalHeader = document.getElementById("modalHeader");
+
+        modalTitle.textContent = title;
+        modalMessage.textContent = message;
+
+        if (isError) {
+          modalHeader.style.background = "#dc3545";
+        } else {
+          modalHeader.style.background = "#2c5e2e";
+        }
+
+        messageModal.show();
+      }
+
+      function renderOrders() {
+        const data = loadOrdersData();
+        const activeContainer = document.getElementById(
+          "activeOrdersContainer",
+        );
+        const historyContainer = document.getElementById("historyContainer");
+
+        // ------ ОТРИСОВКА АКТИВНЫХ ЗАКАЗОВ ------
+        if (!data.active || data.active.length === 0) {
+          activeContainer.innerHTML =
+            '<div class="empty-msg">✨ Нет активных заказов. Закажите что-нибудь в меню!</div>';
+        } else {
+          activeContainer.innerHTML = "";
+          data.active.forEach((order) => {
+            const statusText =
+              order.status === "waiting"
+                ? "⏳ Ожидает выдачи"
+                : "✅ Готов к выдаче!";
+            const statusClass =
+              order.status === "waiting" ? "status-waiting" : "status-ready";
+
+            const card = document.createElement("div");
+            card.className = "order-card";
+            card.innerHTML = `
+              <div class="order-header">
+                <span class="order-id">${order.id}</span>
+                <span class="order-date">${order.date}</span>
+                <span class="order-code">Код для выдачи заказа: ${order.code}</span>
+                <span class="order-status ${statusClass}">${statusText}</span>
+              </div>
+              <div class="order-items">${order.items}</div>
+              <div class="order-total">${order.total} ₽</div>
+            `;
+            activeContainer.appendChild(card);
+          });
+        }
+
+        if (!data.history || data.history.length === 0) {
+          historyContainer.innerHTML =
+            '<div class="empty-msg">🕰️ История заказов пуста</div>';
+        } else {
+          historyContainer.innerHTML = "";
+          data.history.forEach((order) => {
+            const card = document.createElement("div");
+            card.className = "order-card";
+            card.innerHTML = `
+              <div class="order-header">
+                <span class="order-id">${order.id}</span>
+                <span class="order-date">${order.date}</span>
+                <span class="order-status status-received">✅ Получен</span>
+              </div>
+              <div class="order-items">${order.items}</div>
+              <div class="order-total">${order.total} ₽</div>
+              <div style="font-size:12px; color:#888; margin-top:8px;">Забрали: ${order.receivedAt}</div>
+            `;
+            historyContainer.appendChild(card);
+          });
+        }
+      }
+
+      function setFirstWaitingToReady() {
+        const data = loadOrdersData();
+        const waitingIndex = data.active.findIndex(
+          (order) => order.status === "waiting",
+        );
+        if (waitingIndex !== -1) {
+          data.active[waitingIndex].status = "ready";
+          saveOrdersData(data);
+          renderOrders();
+          showMessage("✅ Статус обновлён", "Заказ готов к выдаче!");
+        } else {
+          showMessage(
+            "⚠️ Внимание",
+            "Нет заказов в статусе ожидает выдачи",
+            true,
+          );
+        }
+      }
+
+      function completeFirstReadyOrder() {
+        const data = loadOrdersData();
+        const readyIndex = data.active.findIndex(
+          (order) => order.status === "ready",
+        );
+        if (readyIndex !== -1) {
+          const completedOrder = { ...data.active[readyIndex] };
+          completedOrder.status = "received";
+          completedOrder.receivedAt =
+            new Date().toLocaleDateString("ru-RU") +
+            ", " +
+            new Date().toLocaleTimeString("ru-RU", {
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+          data.active.splice(readyIndex, 1);
+          data.history.unshift(completedOrder);
+          saveOrdersData(data);
+          renderOrders();
+          showMessage(
+            "🎉 Заказ получен!",
+            "Заказ успешно получен и перемещён в историю.",
+          );
+        } else {
+          showMessage(
+            "⚠️ Внимание",
+            "Нет заказов со статусом готов к выдаче",
+            true,
+          );
+        }
+      }
+
+      function resetToInitial() {
+        const initial = getInitialOrders();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
+        renderOrders();
+        showMessage("🔄 Сброс выполнен", "Данные успешно сброшены к исходным.");
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        messageModal = new bootstrap.Modal(
+          document.getElementById("messageModal"),
+        );
+        renderOrders();
+
+        document
+          .getElementById("simulateReadyBtn")
+          .addEventListener("click", setFirstWaitingToReady);
+        document
+          .getElementById("simulateReceiveBtn")
+          .addEventListener("click", completeFirstReadyOrder);
+        document
+          .getElementById("resetDemoBtn")
+          .addEventListener("click", resetToInitial);
+      });
+    </script>
+  </body>
+</html>

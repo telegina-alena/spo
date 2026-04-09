@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, field_validator
 from typing import Optional, List
 from datetime import datetime
 
@@ -8,7 +8,36 @@ from datetime import datetime
 class UserCreate(BaseModel):
     """Схема для создания пользователя"""
     email: EmailStr
+    password: str
+    
+    @field_validator('password')
+    @classmethod
+    def validate_password(cls, v):
+        if len(v) < 6:
+            raise ValueError('Пароль должен быть не менее 6 символов')
+        return v
 
+class UserLogin(BaseModel):
+    """Схема для входа"""
+    email: EmailStr
+    password: str
+    
+class LoginResponse(BaseModel):
+    """Ответ при успешном логине"""
+    message: str
+    user_id: int
+    email: str
+    role: str
+    
+class UserResponse(BaseModel):
+    """Схема для ответа с данными пользователя"""
+    id: int
+    email: str
+    created_at: datetime
+    is_active: bool
+    
+    class Config:
+        from_attributes = True
 
 class UserResponse(BaseModel):
     """Схема для ответа с данными пользователя"""
@@ -21,14 +50,26 @@ class UserResponse(BaseModel):
         from_attributes = True
 
 
+
+# ==================== BALANCE SCHEMAS ===================
+class BalanceTopUp (BaseModel):
+    """Схема для пополнения счета пользователя"""
+    amount: float
+class BalanceResponse(BaseModel):
+    """Вывод текущего баланса пользователя"""
+    user_id: int
+    balance: float
 # ==================== MENU SCHEMAS ====================
 
 class MenuItemCreate(BaseModel):
     """Схема для создания блюда"""
     name: str
     price: float
-    category: Optional[str] = None
-    description: Optional[str] = None
+    category: str
+    calories: int
+    proteins: int
+    fats: int
+    carbs: int
     image_url: Optional[str] = None
 
 
@@ -37,8 +78,11 @@ class MenuItemResponse(BaseModel):
     id: int
     name: str
     price: float
-    category: Optional[str] = None
-    description: Optional[str] = None
+    category: str
+    calories: int
+    proteins: int
+    fats: int
+    carbs: int
     is_available: bool
     image_url: Optional[str] = None
     created_at: Optional[datetime] = None
@@ -73,30 +117,6 @@ class CartResponse(BaseModel):
 
     class Config:
         from_attributes = True
-<<<<<<< Updated upstream
-=======
-
-class UpdateQuantityRequest(BaseModel):
-    """Схема для обновления количества товара в корзине"""
-    quantity: int
-
-    @field_validator('quantity')
-    @classmethod
-    def validate_quantity(cls, value):
-        if value < 0:
-            raise ValueError('Количество должно быть неотрицательным')
-        return value
-
-# ==================== BALANCE SCHEMAS ===================
-class BalanceTopUp (BaseModel):
-    """Схема для пополнения счета пользователя"""
-    amount: float
-
-class BalanceResponse(BaseModel):
-    """Вывод текущего баланса пользователя"""
-    user_id: int
-    balance: float
-
 # ==================== ORDER SCHEMAS =====================
 
 class OrderCreate(BaseModel):
@@ -181,6 +201,7 @@ class PostomatResponse(BaseModel):
 
 class UserBlockRequest(BaseModel):
     """Схема для блокировки/разблокировки пользователей"""
+
     is_active: bool
 
 class UserLogin(BaseModel):
@@ -194,4 +215,4 @@ class LoginResponse(BaseModel):
     user_id: int
     email: str
     role: str
->>>>>>> Stashed changes
+    is_active: bool

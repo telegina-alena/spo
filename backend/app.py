@@ -7,6 +7,7 @@ from contextlib import contextmanager
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 from models.models import (
     UserCreate,
@@ -30,10 +31,19 @@ from models.models import (
     UserLogin,
     LoginResponse
 )
+
 from database import database
 from database.database import FoodDeliveryDB
 
 app = FastAPI(title="Food Delivery API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Создаем глобальный экземпляр БД
 db = FoodDeliveryDB("delivery.db")

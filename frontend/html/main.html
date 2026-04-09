@@ -3,127 +3,163 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="../style/style.css" />
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style/main_style.css" />
+    <title>FOODPOST - Готовая еда в постаматы</title>
   </head>
-
   <body>
     <header>
-      <!--logo + navigation НУЖНО БУДЕТ ПОМЕНЯТЬ ЛОГОТИП И КОРЗИНУ-->
       <div class="nav container">
         <div class="nav__left">
-          <img src="../img/logo.svg" alt="logotip" />
+          <img
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23ffd966'/%3E%3Ctext x='50' y='70' text-anchor='middle' fill='%232c5e2e' font-size='40' font-weight='bold'%3EFP%3C/text%3E%3C/svg%3E"
+            alt="FOODPOST"
+            style="height: 50px"
+          />
+        </div>
+        <!-- Навигационные ссылки (как на странице с меню) -->
+        <div class="nav__center">
+          <a href="#" class="active">Главная</a>
+          <a href="/menu">Меню</a>
+          <a href="#map">Постаматы</a>
+          <a href="#about_us">О нас</a>
+          <a href="#contacts">Контакты</a>
+          <!--будет вести на модальное окно-->
         </div>
         <div class="nav__right">
-          <!-- да будет мясо в виде выпадающего меню -->
-          <div class="dropdown" style="background-color: #123413;">
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-              <img src="../img/menu.svg" alt="menu">
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#menu">Меню</a></li>
-              <li><a class="dropdown-item" href="#contacts">Контакты</a></li>
-              <li><a class="dropdown-item" href="#map">Наши постаматы</a></li>
-              <li><a class="dropdown-item" href="#lets-talk">Обратная связь</a></li>
-            </ul>
-          </div>
-          <button><img src="../img/account.svg" alt="account" /></button>
-          <!-- модальное окно для входа в аккаунт и регистрации-->
-           <div class="modal">
-
-           </div>
-          <button><img src="../img/trash.png" alt="trash" /></button>
+          <a href="/account">
+            <img
+              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E"
+              alt="account"
+            />
+          </a>
+          <a href="/cart">
+            <img
+              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-1.99.9-1.99 2L3 20c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm0 10c-2.76 0-5-2.24-5-5h2c0 1.66 1.34 3 3 3s3-1.34 3-3h2c0 2.76-2.24 5-5 5z'/%3E%3C/svg%3E"
+              alt="cart"
+            />
+          </a>
         </div>
       </div>
     </header>
 
-    <!--content (intro + categories + why we + maps + button for order)-->
     <main>
-      <!--intro (name + some information)-->
+      <!-- Улучшенный intro блок с актуальным текстом -->
       <div class="intro">
         <div class="intro__info container">
           <div class="intro__text">
-            <h1>POWER CONTROL</h1>
-            <p>SOME HEALTHY FOOD</p>
+            <h1>FOODPOST</h1>
+            <p>Готовая еда в постаматы для людей, ценящих своё время</p>
+            <a href="/menu" class="intro-btn">Заказать сейчас</a>
           </div>
         </div>
       </div>
 
-      <!--categories-->
-      <div class="categories container" id="menu">
-        <h2 class="categ_h">КАТЕГОРИИ НАШЕГО МЕНЮ</h2>
+      <!-- Блок категорий (улучшенный) -->
+      <div class="categories container">
+        <h2 class="categ_h">КАТЕГОРИИ МЕНЮ</h2>
         <div class="categories__menu">
-          <!--для худых, чтобы набрать вес-->
           <div class="categ">
-            <button>
-            <img src="../img/baza.jpg" alt="skinny" />
-            <p>Для набора веса</p>
-          </button>
+            <a href="/menu#gain"><p>🍽️ МЕНЮ ДЛЯ НАБОРА ВЕСА</p></a>
           </div>
-          <!--для толстых, чтобы сбросить-->
           <div class="categ">
-            <button>
-            <img src="../img/poterya.jpg" alt="dieta" />
-            <p>Диетический</p>
-            </button>
+            <a href="/menu#loss"><p>🥗 МЕНЮ ДЛЯ СНИЖЕНИЯ ВЕСА</p></a>
           </div>
-          <!--для поддержание веса-->
           <div class="categ">
-            <button>
-            <img src="../img/nabor.jpg" alt="normal" />
-            <p>Для поддержание веса</p>
-            </button>
+            <a href="/menu#maintain"><p>⚖️ МЕНЮ ДЛЯ ПОДДЕРЖАНИЯ ВЕСА</p></a>
           </div>
         </div>
-        <!--вегатерианское меню-->
-        <!-- <div class="categ_veg">
-          <img src="../img/vegan.jpg" alt="vegan" />
-          <p>Вегатерианское меню</p>
-        </div> -->
+        <div class="categ_veg" id="about_us">
+          <a href="/menu#vegan"><p>🌱 ВЕГЕТАРИАНСКОЕ МЕНЮ</p></a>
+        </div>
       </div>
 
+      <!-- Блок преимуществ -->
+      <div class="container">
+        <div class="features">
+          <div class="feature-item">
+            <div class="feature-icon">📦</div>
+            <h4>Забирай в постамате</h4>
+            <p>Без очередей, в любое время</p>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">⏱️</div>
+            <h4>Экономия времени</h4>
+            <p>Закажи с вечера — получи за секунду утром</p>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🍱</div>
+            <h4>Сбалансированное питание</h4>
+            <p>Блюда с просчитанной калорийностью для любых целей</p>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">💳</div>
+            <h4>Оплата онлайн</h4>
+            <p>Без наличных — быстро и безопасно</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Блок "Почему мы" улучшенный -->
       <div class="why-we container">
-        <h2 class="why_h">ПОЧЕМУ МЫ</h2>
+        <h2 class="why_h">ПОЧЕМУ ЛЮДИ ВЫБИРАЮТ НАС</h2>
         <p class="why_p">
-          Забудьте про толпу в&nbsp;буфете на&nbsp;перемене. С&nbsp;нашим сервисом вы&nbsp;выбираете блюда вечером, а&nbsp;утром еда уже ждёт вас в&nbsp;постамате. Быстро, удобно и&nbsp;без лишнего стресса. Один QR-код&nbsp;&mdash; и&nbsp;вы&nbsp;сыты до&nbsp;обеда.
+          Мы понимаем, как важно для людей экономить время. FOODPOST — это
+          возможность заказать вкусную и полезную еду заранее и забрать её за
+          секунду в ближайшем постамате. Никаких очередей, никакой спешки —
+          только ваше удобство!
         </p>
       </div>
       <div class="map container" id="map">
-        <h3 class="map_h">ПОСТМАТЫ В ГОРОДЕ</h3>
-        <div style="display: flex;">
+        <h3 class="map_h">ПОСТМАТЫ В ВАШЕМ ГОРОДЕ</h3>
         <script
           type="text/javascript"
           charset="utf-8"
           async
-          src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A2b10a371c39ffa9bae16b860f2ff66aaccb4b316330df055601bf7530840d0d4&amp;width=650&amp;height=400&amp;lang=ru_RU&amp;scroll=true"
+          src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A2b10a371c39ffa9bae16b860f2ff66aaccb4b316330df055601bf7530840d0d4&amp;width=1140&amp;height=400&amp;lang=ru_RU&amp;scroll=true"
         ></script>
-        <div style="display: flex; flex-direction: column; margin-left: 50px; font-size: 22px; margin-top: 20px;">
-        <li>Проспект Вернадского, 76</li>
-        <li>ул. Покрышкина, 4</li>
-        <li>просп. Вернадского, 84, стр. 1</li>
-        </div>
-        </div>
       </div>
     </main>
     <footer>
-      <div class="footer_m container" id="contacts">
-        <div class="top-footer">
+      <div class="footer-content container">
+        <div class="footer-top">
           <div class="work-w-u">
-            <h3>Хотите работать с нашей командой?</h3>
+            <h3>Готовы попробовать?</h3>
+            <p>
+              Присоединяйтесь к тысячам людей, которые уже экономят время с
+              FOODPOST. Закажите свою первую порцию здоровой еды прямо сейчас!
+            </p>
+
+            <button class="but_with" onclick="location.href = '/menu'">
+              Заказать еду
+            </button>
           </div>
-          <button class="but_with">Свяжитесь с нами</button>
+          <div class="footer-links">
+            <div class="footer-links-column" id="contacts">
+              <h4>Информация</h4>
+              <ul>
+                <li><a href="#">О нас</a></li>
+                <li><a href="#">Постаматы</a></li>
+                <li><a href="#">Доставка</a></li>
+                <li><a href="#">Контакты</a></li>
+              </ul>
+            </div>
+            <div class="footer-links-column">
+              <h4>Контакты</h4>
+              <ul>
+                <li>📞 +7 (999) 123-45-67</li>
+                <li>✉️ foodpost@mail.ru</li>
+                <li>📍 г. Москва, ул. Студенческая, 1</li>
+              </ul>
+            </div>
+          </div>
         </div>
-      <hr />
-      <div class="bottom-footer" id="lets-talk">
-        <ol class="bottom-footer-ol">
-          <li>Проспект Вернадского, 78</li>
-          <li>+79771688655</li>
-          <li>mail@mail.ru</li>
-        </ol>
-        <p class="bottom-footer-p">Все права защищены</p>
+        <div class="footer-bottom">
+          <p>
+            © 2026 FOODPOST. Все права защищены. Закажи еду в постамат — экономь
+            время!
+          </p>
+        </div>
       </div>
     </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   </body>
 </html>

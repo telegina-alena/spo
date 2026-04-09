@@ -1,0 +1,47 @@
+# Виртуальное окружение Python
+.venv/
+venv/
+ENV/
+env/
+
+# Python кеш и байткод
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Файлы баз данных
+*.db
+*.sqlite3
+*.sqlite
+
+# Логи
+*.log
+*.log.*
+
+# Редакторы и IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Системные файлы
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Файлы конфигурации с секретами
+.env
+*.env
+config.local.json
+
+# Директории для сборки
+dist/
+build/
+*.egg-info/
+
+# Временные файлы
+temp/
+tmp/
+*.tmp
+*.temp

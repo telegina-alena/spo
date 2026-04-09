@@ -1,0 +1,330 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", "Lato", sans-serif;
+  background: #fef8f0;
+}
+
+/* Глобальный контейнер как на главной */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Шапка (копия стиля из предоставленного кода) */
+header {
+  background: linear-gradient(135deg, #2c5e2e 0%, #1e3a1f 100%);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+}
+
+.nav__left img {
+  height: 50px;
+  transition: transform 0.3s;
+}
+
+.nav__left img:hover {
+  transform: scale(1.05);
+}
+
+/* Навигационные ссылки (как на главной) */
+.nav__center {
+  display: flex;
+  gap: 35px;
+  align-items: center;
+}
+
+.nav__center a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+  transition: color 0.3s;
+  position: relative;
+}
+
+.nav__center a:hover {
+  color: #ffd966;
+}
+
+.nav__center a.active {
+  color: #ffd966;
+}
+
+.nav__center a.active::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #ffd966;
+  border-radius: 2px;
+}
+
+.nav__center a::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #ffd966;
+  transition: width 0.3s;
+  border-radius: 2px;
+}
+
+.nav__center a:hover::after {
+  width: 100%;
+}
+
+.nav__right {
+  display: flex;
+  gap: 25px;
+  align-items: center;
+}
+
+.nav__right img {
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.nav__right img:hover {
+  transform: scale(1.1);
+}
+
+/* Герой-секция личного кабинета (уютный блок) */
+.cabinet-hero {
+  background:
+    linear-gradient(135deg, rgba(44, 94, 46, 0.9), rgba(30, 58, 31, 0.9)),
+    url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDQwIDQwIj48cGF0aCBmaWxsPSIjZmZkNjk2IiBmaWxsLW9wYWNpdHk9IjAuMiIgZD0iTTAgMGw0MCA0MEwwIDQweiIvPjwvc3ZnPg==");
+  background-size: cover;
+  padding: 60px 0 50px;
+  border-radius: 0 0 40px 40px;
+  margin-bottom: 40px;
+}
+
+.cabinet-title {
+  text-align: center;
+  color: white;
+}
+
+.cabinet-title h1 {
+  font-size: 48px;
+  font-weight: 800;
+  margin-bottom: 15px;
+  letter-spacing: 1px;
+}
+
+.cabinet-title p {
+  font-size: 20px;
+  opacity: 0.9;
+}
+
+/* Карточки действий */
+.action-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  margin: 40px 0;
+}
+
+.action-card {
+  background: white;
+  border-radius: 28px;
+  padding: 30px 25px;
+  flex: 1;
+  min-width: 240px;
+  text-align: center;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.action-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.12);
+}
+
+.action-icon {
+  font-size: 48px;
+  background: #fef3e0;
+  width: 80px;
+  height: 80px;
+  line-height: 80px;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  color: #2c5e2e;
+}
+
+.action-card h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2c5e2e;
+  margin-bottom: 10px;
+}
+
+.action-card p {
+  color: #5a5a5a;
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+
+.btn-foodpost {
+  background: #ffd966;
+  border: none;
+  padding: 10px 28px;
+  border-radius: 50px;
+  font-weight: bold;
+  color: #2c5e2e;
+  transition: 0.2s;
+}
+
+.btn-foodpost:hover {
+  background: #ffcd4d;
+  transform: scale(1.02);
+}
+
+/* Секция со ссылками на заказы (актуальные и история) */
+.orders-links {
+  background: #ffffff;
+  border-radius: 32px;
+  padding: 40px;
+  margin: 40px 0 30px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.orders-links h2 {
+  font-size: 32px;
+  color: #1e3a1f;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.link-group {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.order-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: #fef8f0;
+  padding: 14px 32px;
+  border-radius: 60px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 18px;
+  color: #2c5e2e;
+  transition: all 0.2s;
+  border: 1px solid #ffd966;
+}
+
+.order-link i {
+  font-size: 22px;
+}
+
+.order-link:hover {
+  background: #ffd966;
+  color: #1e3a1f;
+  transform: translateY(-3px);
+}
+
+/* Секция для генерации кода */
+.code-generator {
+  background: linear-gradient(120deg, #f9f2e3, #fff7ed);
+  border-radius: 32px;
+  padding: 40px;
+  margin: 30px 0;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.03);
+}
+
+.code-display {
+  background: white;
+  border-radius: 60px;
+  padding: 15px 30px;
+  margin: 25px auto;
+  max-width: 400px;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  font-family: monospace;
+  color: #2c5e2e;
+  border: 2px dashed #ffd966;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.05);
+}
+
+.btn-code {
+  background: #2c5e2e;
+  color: white;
+  border: none;
+  padding: 12px 36px;
+  border-radius: 50px;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.2s;
+}
+
+.btn-code:hover {
+  background: #1e3a1f;
+  transform: scale(1.02);
+}
+
+/* футер в стиле главной */
+footer {
+  background: #1e3a1f;
+  margin-top: 60px;
+}
+
+.footer_m {
+  padding: 40px 0 25px;
+}
+
+hr {
+  border: none;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 25px 0;
+}
+
+/* адаптивность */
+@media (max-width: 768px) {
+  .nav__center {
+    display: none;
+  }
+  .action-grid {
+    flex-direction: column;
+  }
+  .link-group {
+    flex-direction: column;
+    align-items: center;
+  }
+  .cabinet-title h1 {
+    font-size: 32px;
+  }
+  .code-display {
+    font-size: 24px;
+  }
+}
