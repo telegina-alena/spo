@@ -149,6 +149,7 @@
               id: "FP-2401",
               date: todayStr,
               items: "🥗 Греческий салат, 🍚 Рис с курицей",
+              code: 736940,
               total: 540,
               status: "waiting",
             },
@@ -156,6 +157,7 @@
               id: "FP-2402",
               date: todayStr,
               items: "🌱 Киноа с овощами, 🥛 Протеиновый коктейль",
+              code: 293846,
               total: 590,
               status: "ready",
             },
@@ -165,6 +167,7 @@
               id: "FP-2395",
               date: yesterdayStr,
               items: "🍝 Паста с курицей, 🥑 Тосты с авокадо",
+              code: 293846,
               total: 620,
               status: "received",
               receivedAt: "вчера, 13:45",
@@ -173,6 +176,7 @@
               id: "FP-2389",
               date: twoDaysAgo,
               items: "🥗 Греческий салат, 🍚 Рис с курицей",
+              code: 293846,
               total: 540,
               status: "received",
               receivedAt: "2 дня назад, 10:20",
@@ -240,11 +244,11 @@
               <div class="order-header">
                 <span class="order-id">${order.id}</span>
                 <span class="order-date">${order.date}</span>
+                <span class="order-code">Код для выдачи заказа: ${order.code}</span>
                 <span class="order-status ${statusClass}">${statusText}</span>
               </div>
               <div class="order-items">${order.items}</div>
               <div class="order-total">${order.total} ₽</div>
-              <a href="account.html" class="digital-code-btn">🔢 Получить цифровой код</a>
             `;
             activeContainer.appendChild(card);
           });
