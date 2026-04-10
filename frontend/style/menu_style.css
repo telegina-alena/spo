@@ -309,21 +309,21 @@ footer {
 
 .footer-links {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 30px;
 }
 
+.footer-links-column li {
+  margin-bottom: 10px;
+}
+
 .footer-links-column h4 {
-  margin-bottom: 15px;
   color: #ffd966;
 }
 
 .footer-links-column ul {
   list-style: none;
-}
-
-.footer-links-column li {
-  margin-bottom: 10px;
+  padding-left: 0;
 }
 
 .footer-links-column a {
@@ -383,4 +383,3 @@ footer {
     grid-template-columns: 1fr;
   }
 }
-

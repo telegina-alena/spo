@@ -7,6 +7,9 @@
 body {
   font-family: "Segoe UI", "Lato", sans-serif;
   background: #fef8f0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Глобальный контейнер как на главной */
@@ -14,6 +17,11 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+}
+
+/* Основной контент должен растягиваться */
+main {
+  flex: 1;
 }
 
 /* Шапка (копия стиля из предоставленного кода) */
@@ -292,11 +300,11 @@ header {
   transform: scale(1.02);
 }
 
-/* футер в стиле главной */
+/* футер в стиле главной - теперь прижат к низу */
 footer {
   flex-shrink: 0;
   background: #1e3a1f;
-  margin-top: 60px;
+  margin-top: auto;
 }
 
 .footer_m {
@@ -309,7 +317,6 @@ hr {
   background: rgba(255, 255, 255, 0.2);
   margin: 25px 0;
 }
-
 
 /* адаптивность */
 @media (max-width: 768px) {
