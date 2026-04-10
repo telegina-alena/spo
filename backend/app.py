@@ -457,10 +457,10 @@ def checkout(
 @app.get("/orders/{user_id}", response_model=List[OrderResponse])
 def get_user_orders(
     user_id: int,
-    requester_id: int = Header(..., alias="X-User-Id"),             # ✅ добавлено
+    requester_id: int = Header(..., alias="X-User-Id"),             
 ):
     """Получить историю заказов пользователя"""
-    require_self_or_admin(requester_id, user_id)                     # ✅ добавлено
+    require_self_or_admin(requester_id, user_id)
 
     user = db.get_user(user_id=user_id)
     if not user:
@@ -508,6 +508,59 @@ def pickup_order(postomat_id: int, data: PickupCode):
         raise HTTPException(status_code=status, detail=result["message"])
 
     return result
+
+@app.post("/orders/{order_id}/cancel")
+def cancel_order(
+    order_id: int,
+    requester_id: int = Header(..., alias="X-User-Id"),
+):
+    """Отмена заказа пользователем (с возвратом средств)"""
+    order = db.get_order(order_id)
+    if not order:
+        raise HTTPException(status_code=404, detail="Заказ не найден")
+
+    require_self_or_admin(requester_id, order["user_id"])
+    require_active_user(order["user_id"])
+
+    result = db.cancel_order(order_id)
+
+    if "error" in result:
+        error_map = {
+            "not_found": 404,
+            "already_cancelled": 400,
+            "already_completed": 400,
+            "internal": 500,
+        }
+        status = error_map.get(result["error"], 400)
+        raise HTTPException(status_code=status, detail=result["message"])
+
+    return {
+        "message": f"Заказ #{order_id} отменён",
+        "refund": result["refund"]
+    }
+
+@app.post("/admin/{admin_id}/orders/{order_id}/cancel")
+def admin_cancel_order(admin_id: int, order_id: int):
+    """[ADMIN] Отмена заказа (с возвратом средств пользователю)"""
+    require_admin(admin_id)
+
+    result = db.cancel_order(order_id)
+
+    if "error" in result:
+        error_map = {
+            "not_found": 404,
+            "already_cancelled": 400,
+            "already_completed": 400,
+            "internal": 500,
+        }
+        status = error_map.get(result["error"], 400)
+        raise HTTPException(status_code=status, detail=result["message"])
+
+    return {
+        "message": f"Заказ #{order_id} отменён администратором",
+        "refund": result["refund"],
+        "user_id": result["user_id"]
+    }
 
 
 

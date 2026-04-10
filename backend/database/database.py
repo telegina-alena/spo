@@ -567,6 +567,7 @@ class FoodDeliveryDB:
         order['items'] = [dict(row) for row in cursor.fetchall()]
         conn.close()
         return order
+    
     def get_user_orders(self, user_id):
         """Получение истории заказов пользователя"""
         conn = sqlite3.connect(self.db_name)
@@ -658,6 +659,57 @@ class FoodDeliveryDB:
             return {"error": "internal", "message": str(e)}
         finally:
             conn.close()
+    
+    def cancel_order(self, order_id, cancelled_by_user_id=None):
+        """Отмена заказа с возвратом средств"""
+        conn = sqlite3.connect(self.db_name)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+
+        try:
+            cursor.execute(
+                "SELECT id, user_id, total_amount, status FROM orders WHERE id = ?",
+                (order_id,)
+            )
+            order = cursor.fetchone()
+
+            if order is None:
+                return {"error": "not_found", "message": "Заказ не найден"}
+
+            if order['status'] == 'cancelled':
+                return {"error": "already_cancelled", "message": "Заказ уже отменён"}
+
+            if order['status'] == 'completed':
+                return {"error": "already_completed", "message": "Нельзя отменить полученный заказ"}
+
+            # Возврат средств
+            cursor.execute(
+                "UPDATE users SET balance = balance + ? WHERE id = ?",
+                (float(order['total_amount']), order['user_id'])
+            )
+
+            # Смена статуса
+            cursor.execute(
+                "UPDATE orders SET status = 'cancelled' WHERE id = ?",
+                (order_id,)
+            )
+
+            conn.commit()
+            print(f"Заказ #{order_id} отменён. Возврат {order['total_amount']} пользователю {order['user_id']}")
+            return {
+                "success": True,
+                "order_id": order_id,
+                "refund": float(order['total_amount']),
+                "user_id": order['user_id']
+            }
+
+        except Exception as e:
+            conn.rollback()
+            print(f"Ошибка отмены заказа: {e}")
+            return {"error": "internal", "message": str(e)}
+        finally:
+            conn.close()
+
 
 
     # ==================== ПОСТОМАТЫ ====================
@@ -839,6 +891,10 @@ class FoodDeliveryDB:
 
             if current_status == 'completed':
                 return {"error": "already_completed", "message": "Заказ уже завершён"}
+            
+            if current_status == 'cancelled':
+                return {"error": "already_cancelled", "message": "Заказ отменён"}
+
 
             expected_next = allowed_transitions.get(current_status)
             if new_status != expected_next:
