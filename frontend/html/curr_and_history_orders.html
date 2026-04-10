@@ -1,652 +1,515 @@
 <!doctype html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=yes"
-    />
-    <title>FOODPOST – Мои заказы</title>
-    <!-- Bootstrap 5 CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="../style/curr_and_history_order_style.css" />
-  </head>
-  <body>
-    <header>
-      <div class="nav container">
-        <div class="nav__left">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>FOODPOST – Мои заказы</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../style/curr_and_history_order_style.css" />
+</head>
+
+<body>
+  <header>
+    <div class="nav container">
+      <div class="nav__left">
+        <img
+          src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23ffd966'/%3E%3Ctext x='50' y='70' text-anchor='middle' fill='%232c5e2e' font-size='40' font-weight='bold'%3EFP%3C/text%3E%3C/svg%3E"
+          alt="FOODPOST" />
+      </div>
+      <div class="nav__center">
+        <a href="/">Главная</a>
+        <a href="/menu">Меню</a>
+        <a href="#" class="active">Заказы</a>
+      </div>
+      <div class="nav__right">
+        <a href="/account">
           <img
-            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23ffd966'/%3E%3Ctext x='50' y='70' text-anchor='middle' fill='%232c5e2e' font-size='40' font-weight='bold'%3EFP%3C/text%3E%3C/svg%3E"
-            alt="FOODPOST"
-          />
-        </div>
-        <div class="nav__center">
-          <a href="/">Главная</a>
-          <a href="/menu">Меню</a>
-          <a href="#" class="active">Заказы</a>
-        </div>
-        <div class="nav__right">
-          <a href="/account">
-            <img
-              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E"
-              alt="account"
-            />
-          </a>
-          <a href="/cart">
-            <img
-              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-1.99.9-1.99 2L3 20c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm0 10c-2.76 0-5-2.24-5-5h2c0 1.66 1.34 3 3 3s3-1.34 3-3h2c0 2.76-2.24 5-5 5z'/%3E%3C/svg%3E"
-              alt="cart"
-            />
-          </a>
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E"
+            alt="account" />
+        </a>
+        <a href="/cart">
+          <img
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-1.99.9-1.99 2L3 20c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm0 10c-2.76 0-5-2.24-5-5h2c0 1.66 1.34 3 3 3s3-1.34 3-3h2c0 2.76-2.24 5-5 5z'/%3E%3C/svg%3E"
+            alt="cart" />
+        </a>
+      </div>
+    </div>
+  </header>
+  <main>
+    <div class="container">
+      <!-- БЛОК 1: АКТУАЛЬНЫЕ ЗАКАЗЫ (оплачены, ещё не получены) -->
+      <div class="section" id="active">
+        <h2>📦 Активные заказы</h2>
+        <div id="activeOrdersContainer">
+          <!-- сюда динамически будут подставляться карточки активных заказов -->
         </div>
       </div>
-    </header>
-    <main>
-      <div class="container">
-        <!-- БЛОК 1: АКТУАЛЬНЫЕ ЗАКАЗЫ (оплачены, ещё не получены) -->
-        <div class="section" id="active">
-          <h2>📦 Активные заказы</h2>
-          <div id="activeOrdersContainer">
-            <!-- сюда динамически будут подставляться карточки активных заказов -->
-          </div>
-        </div>
 
-        <!-- БЛОК 2: ИСТОРИЯ ПОКУПОК (завершённые заказы) -->
-        <div class="section" id="history">
-          <h2>📜 История заказов</h2>
-          <div id="historyContainer">
-            <!-- сюда динамически будут подставляться завершённые заказы -->
-          </div>
-        </div>
-
-        <div class="demo-panel">
-          <p>
-            ⚙️ <strong>Демо-режим</strong> – для проверки обновления статусов
-          </p>
-          <button class="demo-btn" id="simulateReadyBtn">
-            ✅ Сделать первый активный заказ "ГОТОВ К ВЫДАЧЕ"
-          </button>
-          <button class="demo-btn" id="simulateReceiveBtn">
-            🎁 Завершить первый активный заказ
-          </button>
-          <button class="demo-btn" id="resetDemoBtn">
-            🔄 Сбросить к исходным данным
-          </button>
+      <!-- БЛОК 2: ИСТОРИЯ ПОКУПОК (завершённые заказы) -->
+      <div class="section" id="history">
+        <h2>📜 История заказов</h2>
+        <div id="historyContainer">
+          <!-- сюда динамически будут подставляться завершённые заказы -->
         </div>
       </div>
-    </main>
-    <footer>
-      <div class="footer_m container">
-        <hr />
-        <div
-          style="
+
+      <div class="demo-panel">
+        <button class="demo-btn" id="nextStatusBtn">
+          🔄 Перевести первый активный заказ на следующий статус
+        </button>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <div class="footer_m container">
+      <hr />
+      <div style="
             text-align: center;
             font-size: 12px;
             color: rgba(255, 255, 255, 0.5);
-          "
-        >
-          © 2026 FOODPOST. Личный кабинет — еда в постаматы для тех, кто ценит
-          время.
-        </div>
+          ">
+        © 2026 FOODPOST. Личный кабинет — еда в постаматы для тех, кто ценит
+        время.
       </div>
-    </footer>
+    </div>
+  </footer>
 
-    <!-- Модальное окно для подтверждения отмены заказа -->
-    <div
-      class="modal fade"
-      id="cancelOrderModal"
-      tabindex="-1"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header" style="background: #dc3545; color: white">
-            <h5 class="modal-title">❓ Отмена заказа</h5>
-            <button
-              type="button"
-              class="btn-close btn-close-white"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            Вы действительно хотите отменить заказ
-            <strong id="cancelOrderId"></strong>? <br /><br />
-            <span class="text-muted">Это действие нельзя будет отменить.</span>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Назад
-            </button>
-            <button type="button" class="btn btn-danger" id="confirmCancelBtn">
-              Да, отменить
-            </button>
-          </div>
+  <!-- Модальное окно для подтверждения отмены заказа -->
+  <div class="modal fade" id="cancelOrderModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header" style="background: #dc3545; color: white">
+          <h5 class="modal-title">❓ Отмена заказа</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Вы действительно хотите отменить заказ
+          <strong id="cancelOrderId"></strong>? <br /><br />
+          <span class="text-muted">Это действие нельзя будет отменить.</span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Назад
+          </button>
+          <button type="button" class="btn btn-danger" id="confirmCancelBtn">
+            Да, отменить
+          </button>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Модальное окно для ввода кода получения заказа -->
-    <div
-      class="modal fade"
-      id="receiveCodeModal"
-      tabindex="-1"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header" style="background: #2c5e2e; color: white">
-            <h5 class="modal-title">🔐 Получение заказа</h5>
-            <button
-              type="button"
-              class="btn-close btn-close-white"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+  <!-- Модальное окно для ввода кода получения заказа -->
+  <div class="modal fade" id="receiveCodeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header" style="background: #2c5e2e; color: white">
+          <h5 class="modal-title">🔐 Получение заказа</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Для получения заказа <strong id="receiveOrderId"></strong> введите
+            цифровой код:
+          </p>
+          <input type="text" class="form-control" id="receiveCodeInput" placeholder="Введите 6-значный код"
+            maxlength="6" autocomplete="off" />
+          <div class="invalid-feedback" id="codeError" style="display: none">
+            Неверный код. Попробуйте снова.
           </div>
-          <div class="modal-body">
-            <p>
-              Для получения заказа <strong id="receiveOrderId"></strong> введите
-              цифровой код:
-            </p>
-            <input
-              type="text"
-              class="form-control"
-              id="receiveCodeInput"
-              placeholder="Введите 6-значный код"
-              maxlength="6"
-              autocomplete="off"
-            />
-            <div class="invalid-feedback" id="codeError" style="display: none">
-              Неверный код. Попробуйте снова.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Отмена
+          </button>
+          <button type="button" class="btn btn-success" id="confirmReceiveBtn">
+            Подтвердить
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Modal для общих уведомлений -->
+  <div class="modal fade" id="messageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header" id="modalHeader" style="background: #2c5e2e; color: white">
+          <h5 class="modal-title" id="modalTitle">Уведомление</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modalMessage">Сообщение</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" style="background: #2c5e2e; border-color: #2c5e2e"
+            data-bs-dismiss="modal">
+            Хорошо
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Глобальные переменные для модалок и текущих операций
+    let messageModal, cancelOrderModal, receiveCodeModal;
+    let currentCancelOrderId = null;
+    let currentReceiveOrder = null;
+
+    const API_URL = "";
+    localStorage.setItem("admin_id", "1");
+
+    // ==================== АВТОРИЗАЦИЯ ====================
+
+    function getUserId() {
+      return localStorage.getItem("user_id");
+    }
+
+    function isLoggedIn() {
+      return getUserId() !== null;
+    }
+
+    function showAuthModal() {
+      const modalHtml = `
+      <div class="modal fade" id="authModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header" style="background: #2c5e2e; color: white;">
+              <h5 class="modal-title">🔐 Требуется авторизация</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+              <p>Для просмотра заказов необходимо войти в аккаунт.</p>
+              <button class="btn btn-success mt-3" onclick="window.location.href='/account'">Войти</button>
             </div>
           </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Отмена
-            </button>
-            <button
-              type="button"
-              class="btn btn-success"
-              id="confirmReceiveBtn"
-            >
-              Подтвердить
-            </button>
-          </div>
         </div>
       </div>
-    </div>
-
-    <!-- Bootstrap Modal для общих уведомлений -->
-    <div class="modal fade" id="messageModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div
-            class="modal-header"
-            id="modalHeader"
-            style="background: #2c5e2e; color: white"
-          >
-            <h5 class="modal-title" id="modalTitle">Уведомление</h5>
-            <button
-              type="button"
-              class="btn-close btn-close-white"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body" id="modalMessage">Сообщение</div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-primary"
-              style="background: #2c5e2e; border-color: #2c5e2e"
-              data-bs-dismiss="modal"
-            >
-              Хорошо
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bootstrap 5 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script>
-      const STORAGE_KEY = "foodpost_orders";
-      let messageModal;
-      let cancelOrderModal;
-      let receiveCodeModal;
-
-      // Переменные для хранения текущего обрабатываемого заказа
-      let currentCancelOrderId = null;
-      let currentReceiveOrder = null;
-
-      // ==================== ХРАНИЛИЩЕ ====================
-
-      function isLoggedIn() {
-        return localStorage.getItem("user_id") !== null;
+      `;
+      if (!document.getElementById("authModal")) {
+        document.body.insertAdjacentHTML("beforeend", modalHtml);
       }
+      const modal = new bootstrap.Modal(document.getElementById("authModal"));
+      modal.show();
+    }
 
-      // ==================== МОДАЛКА АВТОРИЗАЦИИ ====================
+    // ==================== РАБОТА С API ====================
 
-      function showAuthModal() {
-        const modalHtml = `
-          <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-header" style="background: #2c5e2e; color: white;">
-                  <h5 class="modal-title" id="authModalLabel">🔐 Требуется авторизация</h5>
-                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center">
-                  <p>Для просмотра заказов необходимо войти в аккаунт или зарегистрироваться.</p>
-                  <button class="btn btn-success mt-3" onclick="window.location.href='/account'">Войти / Зарегистрироваться</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-
-        // Добавляем модалку в body, если её нет
-        if (!document.getElementById("authModal")) {
-          document.body.insertAdjacentHTML("beforeend", modalHtml);
-        }
-
-        const modal = new bootstrap.Modal(document.getElementById("authModal"));
-        modal.show();
-      }
-
-      function getInitialOrders() {
-        const now = new Date();
-        const todayStr = now.toLocaleDateString("ru-RU");
-        const yesterdayStr = new Date(
-          now.setDate(now.getDate() - 1),
-        ).toLocaleDateString("ru-RU");
-        const twoDaysAgo = new Date(
-          now.setDate(now.getDate() - 1),
-        ).toLocaleDateString("ru-RU");
+    async function loadOrdersFromServer() {
+      const userId = getUserId();
+      try {
+        const response = await fetch(`/orders/${userId}`, {
+          method: 'GET',
+          headers: { 'X-User-Id': userId }
+        });
+        if (!response.ok) throw new Error("Ошибка загрузки");
+        const allOrders = await response.json();
 
         return {
-          active: [
-            {
-              id: "FP-2401",
-              date: todayStr,
-              items: "🥗 Греческий салат, 🍚 Рис с курицей",
-              code: 736940,
-              total: 540,
-              status: "waiting",
-            },
-            {
-              id: "FP-2402",
-              date: todayStr,
-              items: "🌱 Киноа с овощами, 🥛 Протеиновый коктейль",
-              code: 293846,
-              total: 590,
-              status: "ready",
-            },
-          ],
-          history: [
-            {
-              id: "FP-2395",
-              date: yesterdayStr,
-              items: "🍝 Паста с курицей, 🥑 Тосты с авокадо",
-              code: 293846,
-              total: 620,
-              status: "received",
-              receivedAt: "вчера, 13:45",
-            },
-            {
-              id: "FP-2389",
-              date: twoDaysAgo,
-              items: "🥗 Греческий салат, 🍚 Рис с курицей",
-              code: 293846,
-              total: 540,
-              status: "received",
-              receivedAt: "2 дня назад, 10:20",
-            },
-          ],
+          active: allOrders.filter(o => ['paid', 'in_transit', 'delivered'].includes(o.status)),
+          history: allOrders.filter(o => ['completed', 'cancelled'].includes(o.status))
         };
+      } catch (error) {
+        console.error("Ошибка при получении заказов:", error);
+        return { active: [], history: [] };
       }
+    }
 
-      function loadOrdersData() {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-          return JSON.parse(stored);
-        } else {
-          const initial = getInitialOrders();
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
-          return initial;
-        }
-      }
-
-      function saveOrdersData(data) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-      }
-
-      function showMessage(title, message, isError = false) {
-        const modalTitle = document.getElementById("modalTitle");
-        const modalMessage = document.getElementById("modalMessage");
-        const modalHeader = document.getElementById("modalHeader");
-
-        modalTitle.textContent = title;
-        modalMessage.textContent = message;
-
-        if (isError) {
-          modalHeader.style.background = "#dc3545";
-        } else {
-          modalHeader.style.background = "#2c5e2e";
-        }
-
-        messageModal.show();
-      }
-
-      // Функция отмены заказа
-      function cancelOrder(orderId) {
-        const data = loadOrdersData();
-        const orderIndex = data.active.findIndex(
-          (order) => order.id === orderId,
-        );
-
-        if (orderIndex !== -1) {
-          // Удаляем заказ из активных (отмена)
-          data.active.splice(orderIndex, 1);
-          saveOrdersData(data);
+    async function apiCancelOrder(orderId) {
+      const userId = getUserId();
+      try {
+        const response = await fetch(`${API_URL}/orders/${orderId}/cancel`, {
+          method: 'POST',
+          headers: { 'X-User-Id': userId }
+        });
+        if (response.ok) {
+          showMessage("❌ Отменено", `Заказ #${orderId} успешно отменён.`);
           renderOrders();
-          showMessage(
-            "❌ Заказ отменён",
-            `Заказ ${orderId} успешно отменён. Средства будут возвращены в ближайшее время.`,
-          );
         } else {
-          showMessage("⚠️ Ошибка", "Заказ не найден", true);
+          const err = await response.json();
+          showMessage("⚠️ Ошибка", err.detail || "Не удалось отменить", true);
         }
-      }
+      } catch (e) { showMessage("Ошибка", "Нет связи с сервером", true); }
+    }
 
-      // Функция получения заказа по коду
-      function receiveOrderWithCode(order, enteredCode) {
-        const expectedCode = String(order.code);
-        const enteredCodeStr = String(enteredCode).trim();
+    async function apiPickupOrder(orderId, postomatId, code) {
+      const userId = getUserId();
 
-        if (expectedCode === enteredCodeStr) {
-          const data = loadOrdersData();
-          const orderIndex = data.active.findIndex((o) => o.id === order.id);
+      const response = await fetch(`/postomats/${postomatId}/pickup`, {
+        method: 'POST',
+        headers: {
+          'X-User-Id': userId,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ code, order_id: orderId }) // 👈 ВОТ ЭТО ВАЖНО
+      });
 
-          if (orderIndex !== -1) {
-            const completedOrder = { ...data.active[orderIndex] };
-            completedOrder.status = "received";
-            completedOrder.receivedAt =
-              new Date().toLocaleDateString("ru-RU") +
-              ", " +
-              new Date().toLocaleTimeString("ru-RU", {
-                hour: "2-digit",
-                minute: "2-digit",
-              });
-            data.active.splice(orderIndex, 1);
-            data.history.unshift(completedOrder);
-            saveOrdersData(data);
-            renderOrders();
-            showMessage(
-              "🎉 Заказ получен!",
-              `Заказ ${order.id} успешно получен. Приятного аппетита!`,
-            );
-            return true;
-          } else {
-            showMessage("⚠️ Ошибка", "Заказ уже неактивен", true);
-            return false;
-          }
-        } else {
-          return false;
-        }
-      }
-
-      function renderOrders() {
-        const data = loadOrdersData();
-        const activeContainer = document.getElementById(
-          "activeOrdersContainer",
-        );
-        const historyContainer = document.getElementById("historyContainer");
-
-        // ------ ОТРИСОВКА АКТИВНЫХ ЗАКАЗОВ ------
-        if (!data.active || data.active.length === 0) {
-          activeContainer.innerHTML =
-            '<div class="empty-msg">✨ Нет активных заказов. Закажите что-нибудь в меню!</div>';
-        } else {
-          activeContainer.innerHTML = "";
-          data.active.forEach((order) => {
-            const statusText =
-              order.status === "waiting"
-                ? "⏳ Ожидает выдачи"
-                : "✅ Готов к выдаче!";
-            const statusClass =
-              order.status === "waiting" ? "status-waiting" : "status-ready";
-
-            const card = document.createElement("div");
-            card.className = "order-card";
-            card.innerHTML = `
-              <div class="order-header">
-                <span class="order-id">${order.id}</span>
-                <span class="order-date">${order.date}</span>
-                <span class="order-code">Код для выдачи заказа: ${order.code}</span>
-                <span class="order-status ${statusClass}">${statusText}</span>
-              </div>
-              <div class="order-items">${order.items}</div>
-              <div class="order-total">${order.total} ₽</div>
-              <div class="order-actions">
-                <button class="action-btn cancel-btn" data-order-id="${order.id}">❌ Отменить заказ</button>
-                <button class="action-btn receive-btn" data-order-id="${order.id}" data-order-code="${order.code}" data-order-status="${order.status}">📦 Получить заказ</button>
-              </div>
-            `;
-            activeContainer.appendChild(card);
-          });
-
-          // Добавляем обработчики для кнопок отмены
-          document.querySelectorAll(".cancel-btn").forEach((btn) => {
-            btn.addEventListener("click", (e) => {
-              e.stopPropagation();
-              const orderId = btn.getAttribute("data-order-id");
-              currentCancelOrderId = orderId;
-              document.getElementById("cancelOrderId").textContent = orderId;
-              cancelOrderModal.show();
-            });
-          });
-
-          // Добавляем обработчики для кнопок получения заказа
-          document.querySelectorAll(".receive-btn").forEach((btn) => {
-            btn.addEventListener("click", (e) => {
-              e.stopPropagation();
-              const orderId = btn.getAttribute("data-order-id");
-              const orderCode = btn.getAttribute("data-order-code");
-              const orderStatus = btn.getAttribute("data-order-status");
-
-              // Находим полный объект заказа
-              const data = loadOrdersData();
-              const order = data.active.find((o) => o.id === orderId);
-
-              if (order) {
-                // Проверяем статус заказа
-                if (order.status !== "ready") {
-                  showMessage(
-                    "⚠️ Заказ ещё не готов",
-                    "Заказ пока не готов к выдаче. Дождитесь изменения статуса на 'Готов к выдаче'",
-                    true,
-                  );
-                  return;
-                }
-
-                currentReceiveOrder = order;
-                document.getElementById("receiveOrderId").textContent =
-                  order.id;
-                document.getElementById("receiveCodeInput").value = "";
-                document.getElementById("codeError").style.display = "none";
-                receiveCodeModal.show();
-              } else {
-                showMessage("⚠️ Ошибка", "Заказ не найден", true);
-              }
-            });
-          });
-        }
-
-        if (!data.history || data.history.length === 0) {
-          historyContainer.innerHTML =
-            '<div class="empty-msg">🕰️ История заказов пуста</div>';
-        } else {
-          historyContainer.innerHTML = "";
-          data.history.forEach((order) => {
-            const card = document.createElement("div");
-            card.className = "order-card";
-            card.innerHTML = `
-              <div class="order-header">
-                <span class="order-id">${order.id}</span>
-                <span class="order-date">${order.date}</span>
-                <span class="order-status status-received">✅ Получен</span>
-              </div>
-              <div class="order-items">${order.items}</div>
-              <div class="order-total">${order.total} ₽</div>
-              <div style="font-size:12px; color:#888; margin-top:8px;">Забрали: ${order.receivedAt}</div>
-            `;
-            historyContainer.appendChild(card);
-          });
-        }
-      }
-
-      function setFirstWaitingToReady() {
-        const data = loadOrdersData();
-        const waitingIndex = data.active.findIndex(
-          (order) => order.status === "waiting",
-        );
-        if (waitingIndex !== -1) {
-          data.active[waitingIndex].status = "ready";
-          saveOrdersData(data);
-          renderOrders();
-          showMessage("✅ Статус обновлён", "Заказ готов к выдаче!");
-        } else {
-          showMessage(
-            "⚠️ Внимание",
-            "Нет заказов в статусе ожидает выдачи",
-            true,
-          );
-        }
-      }
-
-      function completeFirstReadyOrder() {
-        const data = loadOrdersData();
-        const readyIndex = data.active.findIndex(
-          (order) => order.status === "ready",
-        );
-        if (readyIndex !== -1) {
-          const completedOrder = { ...data.active[readyIndex] };
-          completedOrder.status = "received";
-          completedOrder.receivedAt =
-            new Date().toLocaleDateString("ru-RU") +
-            ", " +
-            new Date().toLocaleTimeString("ru-RU", {
-              hour: "2-digit",
-              minute: "2-digit",
-            });
-          data.active.splice(readyIndex, 1);
-          data.history.unshift(completedOrder);
-          saveOrdersData(data);
-          renderOrders();
-          showMessage(
-            "🎉 Заказ получен!",
-            "Заказ успешно получен и перемещён в историю.",
-          );
-        } else {
-          showMessage(
-            "⚠️ Внимание",
-            "Нет заказов со статусом готов к выдаче",
-            true,
-          );
-        }
-      }
-
-      function resetToInitial() {
-        const initial = getInitialOrders();
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
+      if (response.ok) {
+        showMessage("🎉 Готово", `Заказ #${orderId} получен.`);
         renderOrders();
-        showMessage("🔄 Сброс выполнен", "Данные успешно сброшены к исходным.");
+        return true;
+      } else {
+        const err = await response.json();
+        showMessage("Ошибка", err.detail || "Неверный код", true);
+        return false;
+      }
+    }
+
+    // ==================== ЛОГИКА ИНТЕРФЕЙСА ====================
+
+    function showMessage(title, message, isError = false) {
+      document.getElementById("modalTitle").textContent = title;
+      document.getElementById("modalMessage").textContent = message;
+      document.getElementById("modalHeader").style.background = isError ? "#dc3545" : "#2c5e2e";
+      messageModal.show();
+    }
+
+    function getStatusMeta(status) {
+      switch (status) {
+        case "paid":
+          return { text: "💳 Оплачен", cls: "status-paid" };
+
+        case "in_transit":
+          return { text: "🚚 В пути", cls: "status-transit" };
+
+        case "delivered":
+          return { text: "📦 Готов к выдаче", cls: "status-ready" };
+
+        case "completed":
+          return { text: "✅ Получен", cls: "status-received" };
+
+        case "cancelled":
+          return { text: "❌ Отменён", cls: "status-cancelled" };
+
+        default:
+          return { text: status, cls: "status-waiting" };
+      }
+    }
+
+    async function renderOrders() {
+      const data = await loadOrdersFromServer();
+      const activeContainer = document.getElementById("activeOrdersContainer");
+      const historyContainer = document.getElementById("historyContainer");
+
+      // Активные заказы
+      if (data.active.length === 0) {
+        activeContainer.innerHTML = '<div class="empty-msg">✨ У вас пока нет активных заказов.</div>';
+      } else {
+        activeContainer.innerHTML = "";
+        data.active.forEach(order => {
+
+          const meta = getStatusMeta(order.status);
+
+          // Собираем названия блюд из списка items
+          const itemsText = order.items && order.items.length > 0
+            ? order.items.map(i => i.name || "Блюдо").join(", ")
+            : "Заказ из FOODPOST";
+
+          const card = document.createElement("div");
+          card.className = "order-card";
+          card.innerHTML = `
+      <div class="order-header">
+        <span class="order-id">#${order.id}</span>
+        <span class="order-date">${new Date(order.order_date).toLocaleDateString('ru-RU')}</span>
+        <span class="order-code">Код: ${order.pickup_code || '---'}</span>
+        <span class="order-status ${meta.cls}">${meta.text}</span>
+      </div>
+      <div class="order-items">${itemsText}</div>
+      <div class="order-total">${order.total_amount} ₽</div>
+      <div style="font-size: 11px; color: #666; margin-bottom: 10px;">📍 ${order.postomat_address}</div>
+      <div class="order-actions">
+        ${order.status === 'paid' ? `<button class="action-btn cancel-btn" onclick="openCancelModal(${order.id})">❌ Отменить</button>` : ''}
+        <button class="action-btn receive-btn" onclick="openReceiveModal(${order.id})">📦 Получить</button>
+      </div>
+      `;
+          activeContainer.appendChild(card);
+        });
       }
 
-      document.addEventListener("DOMContentLoaded", () => {
-        messageModal = new bootstrap.Modal(
-          document.getElementById("messageModal"),
-        );
-        cancelOrderModal = new bootstrap.Modal(
-          document.getElementById("cancelOrderModal"),
-        );
-        receiveCodeModal = new bootstrap.Modal(
-          document.getElementById("receiveCodeModal"),
-        );
+      // История
+      if (data.history.length === 0) {
+        historyContainer.innerHTML = '<div class="empty-msg">🕰️ История заказов пуста.</div>';
+      } else {
+        historyContainer.innerHTML = "";
+        data.history.forEach(order => {
 
-        // Проверяем авторизацию перед загрузкой заказов
-        if (!isLoggedIn()) {
-          showAuthModal();
+          const itemsText = order.items && order.items.length > 0
+            ? order.items.map(i => i.name || "Блюдо").join(", ")
+            : "Заказ из FOODPOST";
+
+          const card = document.createElement("div");
+          card.className = "order-card";
+          card.innerHTML = `
+  <div class="order-header">
+    <span class="order-id">#${order.id}</span>
+    <span class="order-status ${order.status === 'completed' ? 'status-received' : 'text-danger'}">
+      ${order.status === 'completed' ? '✅ Получен' : '❌ Отменен'}
+    </span>
+  </div>
+
+  <div class="order-items">${itemsText}</div>
+
+  <div class="order-total">${order.total_amount} ₽</div>
+  <div style="font-size: 11px; color: #999;">
+    ${new Date(order.order_date).toLocaleDateString('ru-RU')}
+  </div>`;
+          historyContainer.appendChild(card);
+        });
+      }
+    }
+
+    // Функции-обработчики для модалок
+    window.openCancelModal = (id) => {
+      currentCancelOrderId = id;
+      document.getElementById("cancelOrderId").textContent = "#" + id;
+      cancelOrderModal.show();
+    };
+
+    window.openReceiveModal = async (id) => {
+      try {
+        const userId = getUserId();
+
+        const response = await fetch(`/orders/detail/${id}`, {
+          headers: { 'X-User-Id': userId }
+        });
+
+        if (!response.ok) {
+          showMessage("Ошибка", "Не удалось получить заказ", true);
           return;
         }
 
+        const order = await response.json();
+
+        if (order.status !== 'delivered') {
+          showMessage(
+            "⏳ Пожалуйста, подождите",
+            "Заказ можно забрать только в статусе 'Готов к выдаче'.",
+            true
+          );
+          return;
+        }
+
+        currentReceiveOrder = {
+          id: order.id,
+          postomat_id: order.postomat_id
+        };
+
+        document.getElementById("receiveOrderId").textContent =
+          "#" + order.id;
+
+        document.getElementById("receiveCodeInput").value = "";
+        document.getElementById("codeError").style.display = "none";
+
+        receiveCodeModal.show();
+
+      } catch (e) {
+        showMessage("Ошибка", "Нет связи с сервером", true);
+      }
+    };
+    // ==================== ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ ====================
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Инициализация модалок Bootstrap
+      messageModal = new bootstrap.Modal(document.getElementById("messageModal"));
+      cancelOrderModal = new bootstrap.Modal(document.getElementById("cancelOrderModal"));
+      receiveCodeModal = new bootstrap.Modal(document.getElementById("receiveCodeModal"));
+
+      if (!isLoggedIn()) {
+        showAuthModal();
+      } else {
         renderOrders();
+      }
 
-        // Обработчик подтверждения отмены
-        document
-          .getElementById("confirmCancelBtn")
-          .addEventListener("click", () => {
-            if (currentCancelOrderId) {
-              cancelOrder(currentCancelOrderId);
-              cancelOrderModal.hide();
-              currentCancelOrderId = null;
-            }
-          });
-
-        // Обработчик подтверждения получения заказа
-        document
-          .getElementById("confirmReceiveBtn")
-          .addEventListener("click", () => {
-            if (currentReceiveOrder) {
-              const enteredCode =
-                document.getElementById("receiveCodeInput").value;
-              const success = receiveOrderWithCode(
-                currentReceiveOrder,
-                enteredCode,
-              );
-
-              if (success) {
-                receiveCodeModal.hide();
-                currentReceiveOrder = null;
-                document.getElementById("receiveCodeInput").value = "";
-              } else {
-                document.getElementById("codeError").style.display = "block";
-              }
-            }
-          });
-
-        // Очищаем ошибку при вводе кода
-        document
-          .getElementById("receiveCodeInput")
-          .addEventListener("input", () => {
-            document.getElementById("codeError").style.display = "none";
-          });
-
-        document
-          .getElementById("simulateReadyBtn")
-          .addEventListener("click", setFirstWaitingToReady);
-        document
-          .getElementById("simulateReceiveBtn")
-          .addEventListener("click", completeFirstReadyOrder);
-        document
-          .getElementById("resetDemoBtn")
-          .addEventListener("click", resetToInitial);
+      // Кнопка подтверждения отмены
+      document.getElementById("confirmCancelBtn").addEventListener("click", () => {
+        if (currentCancelOrderId) {
+          apiCancelOrder(currentCancelOrderId);
+          cancelOrderModal.hide();
+        }
       });
-    </script>
-  </body>
+
+      // Кнопка подтверждения получения (код)
+      document.getElementById("confirmReceiveBtn").addEventListener("click", async () => {
+        const code = document.getElementById("receiveCodeInput").value.trim();
+        const success = await apiPickupOrder(currentReceiveOrder.id, currentReceiveOrder.postomat_id, code);
+        if (!code || isNaN(code)) {
+          document.getElementById("codeError").style.display = "block";
+          return;
+        }
+        if (success) {
+          receiveCodeModal.hide();
+        } else {
+          document.getElementById("codeError").style.display = "block";
+        }
+      });
+
+      // Очистка ошибки при вводе
+      document.getElementById("receiveCodeInput").addEventListener("input", () => {
+        document.getElementById("codeError").style.display = "none";
+      });
+
+      // Демонстрационная кнопка для админов (переводит первый активный заказ на следующий статус)
+      document.getElementById("nextStatusBtn").onclick = async () => {
+        const data = await loadOrdersFromServer();
+
+        if (data.active.length === 0) {
+          showMessage("Демо", "Нет активных заказов", true);
+          return;
+        }
+
+        const order = data.active[0];
+        const nextStatus = getNextStatus(order.status);
+
+        if (!nextStatus) {
+          showMessage("Демо", "Заказ уже завершён", false);
+          return;
+        }
+
+        await demoUpdateOrderStatus(order.id, nextStatus);
+      };
+    });
+
+    async function demoUpdateOrderStatus(orderId, status) {
+      const adminId = localStorage.getItem("admin_id");
+
+      if (!adminId) {
+        showMessage("Ошибка", "Добавь admin_id в localStorage", true);
+        return;
+      }
+
+      try {
+        const response = await fetch(`/admin/${adminId}/orders/${orderId}/status`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ status })
+        });
+
+        if (response.ok) {
+          renderOrders(); // просто обновляем UI
+        } else {
+          const err = await response.json();
+          showMessage("Ошибка", err.detail || "Не удалось обновить статус", true);
+        }
+      } catch (e) {
+        showMessage("Ошибка", "Нет связи с сервером", true);
+      }
+    }
+
+    function getNextStatus(current) {
+      const flow = ['paid', 'in_transit', 'delivered', 'completed'];
+      const index = flow.indexOf(current);
+
+      if (index === -1 || index === flow.length - 1) return null;
+
+      return flow[index + 1];
+    }
+  </script>
+</body>
+
 </html>
