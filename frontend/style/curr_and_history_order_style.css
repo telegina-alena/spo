@@ -212,6 +212,51 @@ header {
   color: #2c5e2e;
 }
 
+/* Стили для блока с кнопками действий */
+.order-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 15px;
+  padding-top: 12px;
+  border-top: 1px solid #f0e6d8;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  padding: 8px 20px;
+  border-radius: 40px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: 0.2s;
+  border: none;
+  background: none;
+}
+
+.cancel-btn {
+  background: #fff0f0;
+  color: #dc3545;
+  border: 1px solid #ffcdcd;
+}
+
+.cancel-btn:hover {
+  background: #dc3545;
+  color: white;
+  border-color: #dc3545;
+}
+
+.receive-btn {
+  background: #e8f5e9;
+  color: #2c5e2e;
+  border: 1px solid #c8e6c9;
+}
+
+.receive-btn:hover {
+  background: #2c5e2e;
+  color: white;
+  border-color: #2c5e2e;
+}
+
 .digital-code-btn {
   background: #2c5e2e;
   color: white;
@@ -284,27 +329,6 @@ hr {
   margin: 25px 0;
 }
 
-.digital-code-btn {
-  background: #2c5e2e;
-  color: white;
-  border: none;
-  padding: 8px 20px;
-  border-radius: 40px;
-  cursor: pointer;
-  font-size: 14px;
-  margin-top: 12px;
-  transition: 0.2s;
-  display: inline-block;
-  text-decoration: none;
-  text-align: center;
-}
-
-.digital-code-btn:hover {
-  background: #1e3a1f;
-  color: white;
-  text-decoration: none;
-}
-
 @media (max-width: 650px) {
   body {
     padding: 12px;
@@ -312,5 +336,12 @@ hr {
   .order-header {
     flex-direction: column;
     align-items: flex-start;
+  }
+  .order-actions {
+    flex-direction: column;
+  }
+  .action-btn {
+    width: 100%;
+    text-align: center;
   }
 }

@@ -94,7 +94,101 @@
       </div>
     </footer>
 
-    <!-- Bootstrap Modal -->
+    <!-- Модальное окно для подтверждения отмены заказа -->
+    <div
+      class="modal fade"
+      id="cancelOrderModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header" style="background: #dc3545; color: white">
+            <h5 class="modal-title">❓ Отмена заказа</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            Вы действительно хотите отменить заказ
+            <strong id="cancelOrderId"></strong>? <br /><br />
+            <span class="text-muted">Это действие нельзя будет отменить.</span>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Назад
+            </button>
+            <button type="button" class="btn btn-danger" id="confirmCancelBtn">
+              Да, отменить
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Модальное окно для ввода кода получения заказа -->
+    <div
+      class="modal fade"
+      id="receiveCodeModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header" style="background: #2c5e2e; color: white">
+            <h5 class="modal-title">🔐 Получение заказа</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Для получения заказа <strong id="receiveOrderId"></strong> введите
+              цифровой код:
+            </p>
+            <input
+              type="text"
+              class="form-control"
+              id="receiveCodeInput"
+              placeholder="Введите 6-значный код"
+              maxlength="6"
+              autocomplete="off"
+            />
+            <div class="invalid-feedback" id="codeError" style="display: none">
+              Неверный код. Попробуйте снова.
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Отмена
+            </button>
+            <button
+              type="button"
+              class="btn btn-success"
+              id="confirmReceiveBtn"
+            >
+              Подтвердить
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap Modal для общих уведомлений -->
     <div class="modal fade" id="messageModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -132,11 +226,17 @@
     <script>
       const STORAGE_KEY = "foodpost_orders";
       let messageModal;
+      let cancelOrderModal;
+      let receiveCodeModal;
+
+      // Переменные для хранения текущего обрабатываемого заказа
+      let currentCancelOrderId = null;
+      let currentReceiveOrder = null;
 
       // ==================== ХРАНИЛИЩЕ ====================
 
       function isLoggedIn() {
-        return localStorage.getItem('user_id') !== null;
+        return localStorage.getItem("user_id") !== null;
       }
 
       // ==================== МОДАЛКА АВТОРИЗАЦИИ ====================
@@ -160,11 +260,11 @@
         `;
 
         // Добавляем модалку в body, если её нет
-        if (!document.getElementById('authModal')) {
-          document.body.insertAdjacentHTML('beforeend', modalHtml);
+        if (!document.getElementById("authModal")) {
+          document.body.insertAdjacentHTML("beforeend", modalHtml);
         }
 
-        const modal = new bootstrap.Modal(document.getElementById('authModal'));
+        const modal = new bootstrap.Modal(document.getElementById("authModal"));
         modal.show();
       }
 
@@ -252,6 +352,64 @@
         messageModal.show();
       }
 
+      // Функция отмены заказа
+      function cancelOrder(orderId) {
+        const data = loadOrdersData();
+        const orderIndex = data.active.findIndex(
+          (order) => order.id === orderId,
+        );
+
+        if (orderIndex !== -1) {
+          // Удаляем заказ из активных (отмена)
+          data.active.splice(orderIndex, 1);
+          saveOrdersData(data);
+          renderOrders();
+          showMessage(
+            "❌ Заказ отменён",
+            `Заказ ${orderId} успешно отменён. Средства будут возвращены в ближайшее время.`,
+          );
+        } else {
+          showMessage("⚠️ Ошибка", "Заказ не найден", true);
+        }
+      }
+
+      // Функция получения заказа по коду
+      function receiveOrderWithCode(order, enteredCode) {
+        const expectedCode = String(order.code);
+        const enteredCodeStr = String(enteredCode).trim();
+
+        if (expectedCode === enteredCodeStr) {
+          const data = loadOrdersData();
+          const orderIndex = data.active.findIndex((o) => o.id === order.id);
+
+          if (orderIndex !== -1) {
+            const completedOrder = { ...data.active[orderIndex] };
+            completedOrder.status = "received";
+            completedOrder.receivedAt =
+              new Date().toLocaleDateString("ru-RU") +
+              ", " +
+              new Date().toLocaleTimeString("ru-RU", {
+                hour: "2-digit",
+                minute: "2-digit",
+              });
+            data.active.splice(orderIndex, 1);
+            data.history.unshift(completedOrder);
+            saveOrdersData(data);
+            renderOrders();
+            showMessage(
+              "🎉 Заказ получен!",
+              `Заказ ${order.id} успешно получен. Приятного аппетита!`,
+            );
+            return true;
+          } else {
+            showMessage("⚠️ Ошибка", "Заказ уже неактивен", true);
+            return false;
+          }
+        } else {
+          return false;
+        }
+      }
+
       function renderOrders() {
         const data = loadOrdersData();
         const activeContainer = document.getElementById(
@@ -284,8 +442,58 @@
               </div>
               <div class="order-items">${order.items}</div>
               <div class="order-total">${order.total} ₽</div>
+              <div class="order-actions">
+                <button class="action-btn cancel-btn" data-order-id="${order.id}">❌ Отменить заказ</button>
+                <button class="action-btn receive-btn" data-order-id="${order.id}" data-order-code="${order.code}" data-order-status="${order.status}">📦 Получить заказ</button>
+              </div>
             `;
             activeContainer.appendChild(card);
+          });
+
+          // Добавляем обработчики для кнопок отмены
+          document.querySelectorAll(".cancel-btn").forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+              e.stopPropagation();
+              const orderId = btn.getAttribute("data-order-id");
+              currentCancelOrderId = orderId;
+              document.getElementById("cancelOrderId").textContent = orderId;
+              cancelOrderModal.show();
+            });
+          });
+
+          // Добавляем обработчики для кнопок получения заказа
+          document.querySelectorAll(".receive-btn").forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+              e.stopPropagation();
+              const orderId = btn.getAttribute("data-order-id");
+              const orderCode = btn.getAttribute("data-order-code");
+              const orderStatus = btn.getAttribute("data-order-status");
+
+              // Находим полный объект заказа
+              const data = loadOrdersData();
+              const order = data.active.find((o) => o.id === orderId);
+
+              if (order) {
+                // Проверяем статус заказа
+                if (order.status !== "ready") {
+                  showMessage(
+                    "⚠️ Заказ ещё не готов",
+                    "Заказ пока не готов к выдаче. Дождитесь изменения статуса на 'Готов к выдаче'",
+                    true,
+                  );
+                  return;
+                }
+
+                currentReceiveOrder = order;
+                document.getElementById("receiveOrderId").textContent =
+                  order.id;
+                document.getElementById("receiveCodeInput").value = "";
+                document.getElementById("codeError").style.display = "none";
+                receiveCodeModal.show();
+              } else {
+                showMessage("⚠️ Ошибка", "Заказ не найден", true);
+              }
+            });
           });
         }
 
@@ -374,6 +582,12 @@
         messageModal = new bootstrap.Modal(
           document.getElementById("messageModal"),
         );
+        cancelOrderModal = new bootstrap.Modal(
+          document.getElementById("cancelOrderModal"),
+        );
+        receiveCodeModal = new bootstrap.Modal(
+          document.getElementById("receiveCodeModal"),
+        );
 
         // Проверяем авторизацию перед загрузкой заказов
         if (!isLoggedIn()) {
@@ -382,6 +596,46 @@
         }
 
         renderOrders();
+
+        // Обработчик подтверждения отмены
+        document
+          .getElementById("confirmCancelBtn")
+          .addEventListener("click", () => {
+            if (currentCancelOrderId) {
+              cancelOrder(currentCancelOrderId);
+              cancelOrderModal.hide();
+              currentCancelOrderId = null;
+            }
+          });
+
+        // Обработчик подтверждения получения заказа
+        document
+          .getElementById("confirmReceiveBtn")
+          .addEventListener("click", () => {
+            if (currentReceiveOrder) {
+              const enteredCode =
+                document.getElementById("receiveCodeInput").value;
+              const success = receiveOrderWithCode(
+                currentReceiveOrder,
+                enteredCode,
+              );
+
+              if (success) {
+                receiveCodeModal.hide();
+                currentReceiveOrder = null;
+                document.getElementById("receiveCodeInput").value = "";
+              } else {
+                document.getElementById("codeError").style.display = "block";
+              }
+            }
+          });
+
+        // Очищаем ошибку при вводе кода
+        document
+          .getElementById("receiveCodeInput")
+          .addEventListener("input", () => {
+            document.getElementById("codeError").style.display = "none";
+          });
 
         document
           .getElementById("simulateReadyBtn")
