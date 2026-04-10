@@ -260,6 +260,7 @@ class FoodDeliveryDB:
                 'proteins': row['proteins'],
                 'fats': row['fats'],
                 'carbs': row['carbs'],
+                'is_vegan': bool(row['is_vegan']),
                 'is_available': bool(row['is_available']),
                 'image_url': row['image_url'],
                 'created_at': row['created_at']

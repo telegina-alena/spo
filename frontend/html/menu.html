@@ -123,7 +123,7 @@
           ? dish.image_url
           : svgImage;
 
-          const isVegan = dish.category === 'vegan';
+          const isVegan = dish.is_vegan;
 
         return `
             <div class="food-card" data-dish-id="${dish.id}" data-category="${dish.category}">
