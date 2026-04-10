@@ -352,11 +352,12 @@
       const item = currentCartItems[index];
       if (!item) return;
 
+      const userId = getUserId();
       try {
         const response = await fetch(`/cart/item/${item.id}`, {
           method: "DELETE",
           headers: {
-            "X-User-Id": String(CURRENT_USER_ID),
+            "X-User-Id": userId,
           },
         });
 
@@ -451,6 +452,7 @@
 
     // Оформление заказа - с модальным окном Bootstrap (alert заменён)
     async function checkout() {
+      const userId = getUserId();
       const cartItems = document.querySelectorAll(".cart-item");
       const totalElement = document.getElementById("total");
       const total = totalElement ? totalElement.innerText : "0 ₽";
