@@ -47,7 +47,7 @@
     <main>
       <div class="container">
         <!-- БЛОК 1: АКТУАЛЬНЫЕ ЗАКАЗЫ (оплачены, ещё не получены) -->
-        <div class="section">
+        <div class="section" id="active">
           <h2>📦 Активные заказы</h2>
           <div id="activeOrdersContainer">
             <!-- сюда динамически будут подставляться карточки активных заказов -->
@@ -55,7 +55,7 @@
         </div>
 
         <!-- БЛОК 2: ИСТОРИЯ ПОКУПОК (завершённые заказы) -->
-        <div class="section">
+        <div class="section" id="history">
           <h2>📜 История заказов</h2>
           <div id="historyContainer">
             <!-- сюда динамически будут подставляться завершённые заказы -->
@@ -132,6 +132,41 @@
     <script>
       const STORAGE_KEY = "foodpost_orders";
       let messageModal;
+
+      // ==================== ХРАНИЛИЩЕ ====================
+
+      function isLoggedIn() {
+        return localStorage.getItem('user_id') !== null;
+      }
+
+      // ==================== МОДАЛКА АВТОРИЗАЦИИ ====================
+
+      function showAuthModal() {
+        const modalHtml = `
+          <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header" style="background: #2c5e2e; color: white;">
+                  <h5 class="modal-title" id="authModalLabel">🔐 Требуется авторизация</h5>
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                  <p>Для просмотра заказов необходимо войти в аккаунт или зарегистрироваться.</p>
+                  <button class="btn btn-success mt-3" onclick="window.location.href='/account'">Войти / Зарегистрироваться</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        // Добавляем модалку в body, если её нет
+        if (!document.getElementById('authModal')) {
+          document.body.insertAdjacentHTML('beforeend', modalHtml);
+        }
+
+        const modal = new bootstrap.Modal(document.getElementById('authModal'));
+        modal.show();
+      }
 
       function getInitialOrders() {
         const now = new Date();
@@ -339,6 +374,13 @@
         messageModal = new bootstrap.Modal(
           document.getElementById("messageModal"),
         );
+
+        // Проверяем авторизацию перед загрузкой заказов
+        if (!isLoggedIn()) {
+          showAuthModal();
+          return;
+        }
+
         renderOrders();
 
         document

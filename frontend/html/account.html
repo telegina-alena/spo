@@ -92,10 +92,6 @@
         <div class="modal-body" style="padding: 30px">
           <form id="registerForm">
             <div class="mb-3">
-              <label class="form-label">Имя и фамилия</label>
-              <input type="text" class="form-control" id="regName" placeholder="Анна Смирнова" required />
-            </div>
-            <div class="mb-3">
               <label class="form-label">Email</label>
               <input type="email" class="form-control" id="regEmail" placeholder="example@foodpost.ru" required />
             </div>
@@ -173,7 +169,6 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-    const API_URL = 'http://localhost:8000';
     const registerModalElem = document.getElementById('registerModal');
     const loginModalElem = document.getElementById('loginModal');
 
@@ -183,12 +178,26 @@
       return localStorage.getItem('user_id');
     }
 
+    function getUserEmail() {
+      return localStorage.getItem('user_email');
+    }
+
+    function getUserRole() {
+      return localStorage.getItem('user_role');
+    }
+
     function isLoggedIn() {
       return localStorage.getItem('user_id') !== null;
     }
 
     function isAdmin() {
       return localStorage.getItem('user_role') === 'admin';
+    }
+
+    function saveUserData(userData) {
+      localStorage.setItem('user_id', userData.user_id);
+      localStorage.setItem('user_email', userData.email);
+      localStorage.setItem('user_role', userData.role);
     }
 
     function logout() {
@@ -201,7 +210,8 @@
     // ==================== UI ====================
 
     function showMessage(title, message, isSuccess = true) {
-      alert(`${isSuccess ? '✅' : '⚠️'} ${title}\n${message}`);
+      const icon = isSuccess ? '✅' : '⚠️';
+      alert(`${icon} ${title}\n${message}`);
     }
 
     function updateUI() {
@@ -210,15 +220,14 @@
 
       if (isLoggedIn()) {
         // Пользователь залогинен — показываем профиль вместо форм
-        const email = localStorage.getItem('user_email');
-        const role = localStorage.getItem('user_role');
+        const email = getUserEmail();
+        const role = getUserRole();
 
         actionGrid.innerHTML = `
         <div class="action-card">
           <h3>👋 Добро пожаловать!</h3>
           <p><strong>Email:</strong> ${email}</p>
           <p><strong>Роль:</strong> ${role === 'admin' ? 'Администратор' : 'Пользователь'}</p>
-          <button class="btn-foodpost" onclick="loadBalance()">Проверить баланс</button>
           <p id="balanceDisplay" style="margin-top: 10px; font-size: 18px; font-weight: bold;"></p>
         </div>
         <div class="action-card">
@@ -259,7 +268,7 @@
     async function loadBalance() {
       const userId = getUserId();
       try {
-        const response = await fetch(`${API_URL}/users/${userId}/balance`, {
+        const response = await fetch(`/users/${userId}/balance`, {
           headers: { 'X-User-Id': userId }
         });
         if (!response.ok) throw new Error('Ошибка загрузки баланса');
@@ -267,7 +276,8 @@
         const el = document.getElementById('balanceDisplay');
         if (el) el.textContent = `Баланс: ${data.balance.toFixed(2)} ₽`;
       } catch (e) {
-        console.error(e);
+        console.error('Ошибка загрузки баланса:', e);
+        showMessage('Ошибка', 'Не удалось загрузить баланс', false);
       }
     }
 
@@ -281,7 +291,7 @@
       }
 
       try {
-        const response = await fetch(`${API_URL}/users/${userId}/balance/topup`, {
+        const response = await fetch(`/users/${userId}/balance/topup`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -308,12 +318,11 @@
       registerForm.addEventListener('submit', async function (e) {
         e.preventDefault();
 
-        const name = document.getElementById('regName').value.trim();
         const email = document.getElementById('regEmail').value.trim();
         const pwd = document.getElementById('regPassword').value;
         const pwdConfirm = document.getElementById('regPasswordConfirm').value;
 
-        if (!name || !email || !pwd) {
+        if (!email || !pwd) {
           showMessage('Ошибка', 'Пожалуйста, заполните все поля', false);
           return;
         }
@@ -327,7 +336,7 @@
         }
 
         try {
-          const response = await fetch(`${API_URL}/users/`, {
+          const response = await fetch('/users/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: email, password: pwd })
@@ -338,7 +347,7 @@
             throw new Error(err.detail || 'Ошибка регистрации');
           }
 
-          showMessage('Регистрация успешна!', `Добро пожаловать, ${name}! Теперь войдите в аккаунт.`);
+          showMessage('Регистрация успешна!', 'Добро пожаловать! Теперь войдите в аккаунт.');
 
           const modal = bootstrap.Modal.getInstance(registerModalElem);
           if (modal) modal.hide();
@@ -366,7 +375,7 @@
         }
 
         try {
-          const response = await fetch(`${API_URL}/login`, {
+          const response = await fetch('/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: email, password: pwd })
@@ -379,10 +388,8 @@
 
           const data = await response.json();
 
-          // Сохраняем в localStorage
-          localStorage.setItem('user_id', data.user_id);
-          localStorage.setItem('user_email', data.email);
-          localStorage.setItem('user_role', data.role);
+          // Сохраняем данные пользователя в localStorage
+          saveUserData(data);
 
           const modal = bootstrap.Modal.getInstance(loginModalElem);
           if (modal) modal.hide();
@@ -399,7 +406,15 @@
 
     // ==================== ИНИЦИАЛИЗАЦИЯ ====================
 
-    updateUI();
+    // Проверяем состояние при загрузке страницы
+    document.addEventListener('DOMContentLoaded', function() {
+      updateUI();
+    });
+
+    // Также обновляем UI при возвращении на страницу (из других вкладок)
+    window.addEventListener('focus', function() {
+      updateUI();
+    });
   </script>
 </body>
 

@@ -151,7 +151,50 @@
 
   <script>
     let currentCartItems = [];
-    const CURRENT_USER_ID = 1;
+
+    // ==================== ХРАНИЛИЩЕ ====================
+
+    function getUserId() {
+      return localStorage.getItem('user_id');
+    }
+
+    function isLoggedIn() {
+      return localStorage.getItem('user_id') !== null;
+    }
+
+    // ==================== МОДАЛКА АВТОРИЗАЦИИ ====================
+
+    function showAuthModal() {
+      const modalHtml = `
+        <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header" style="background: #2c5e2e; color: white;">
+                <h5 class="modal-title" id="authModalLabel">🔐 Требуется авторизация</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body text-center">
+                <p>Для просмотра корзины необходимо войти в аккаунт или зарегистрироваться.</p>
+                <button class="btn btn-success mt-3" onclick="window.location.href='/account'">Войти / Зарегистрироваться</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Добавляем модалку в body, если её нет
+      if (!document.getElementById('authModal')) {
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+      }
+
+      const modal = new bootstrap.Modal(document.getElementById('authModal'));
+      modal.show();
+
+      // При закрытии модалки перенаправляем на главную
+      document.getElementById('authModal').addEventListener('hidden.bs.modal', function () {
+        window.location.href = '/';
+      });
+    }
 
     // Функция для показа модального окна вместо alert
     function showModal(message, title = "FOODPOST") {
@@ -197,10 +240,17 @@
     }
 
     async function loadCart() {
+      // Проверяем авторизацию
+      if (!isLoggedIn()) {
+        showAuthModal();
+        return;
+      }
+
+      const userId = getUserId();
       try {
-        const response = await fetch(`/cart/${CURRENT_USER_ID}`, {
+        const response = await fetch(`/cart/${userId}`, {
           headers: {
-            "X-User-Id": String(CURRENT_USER_ID),
+            "X-User-Id": userId,
           },
         });
 
@@ -265,6 +315,7 @@
 
     // Обновление количества товара
     async function updateQuantity(btn, delta) {
+      const userId = getUserId();
       const cartItem = btn.closest(".cart-item");
       const itemIndex = Number(cartItem.dataset.index);
       const cartId = currentCartItems[itemIndex]?.id;
@@ -274,11 +325,11 @@
       const newQuantity = Math.max(0, currentQuantity + delta);
 
       try {
-        const response = await fetch(`/cart/${CURRENT_USER_ID}/items/${cartId}`, {
+        const response = await fetch(`/cart/${userId}/items/${cartId}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            "X-User-Id": String(CURRENT_USER_ID),
+            "X-User-Id": userId,
           },
           body: JSON.stringify({ quantity: newQuantity }),
         });
@@ -324,10 +375,11 @@
 
     // Обновление итоговых сумм
     async function updateCartTotals() {
+      const userId = getUserId();
       try {
-        const response = await fetch(`/cart/${CURRENT_USER_ID}/total`, {
+        const response = await fetch(`/cart/${userId}/total`, {
           headers: {
-            "X-User-Id": String(CURRENT_USER_ID),
+            "X-User-Id": userId,
           },
         });
 
@@ -423,11 +475,11 @@
 
       // Отправка заказа на бэкенд
       try {
-        const response = await fetch(`/orders/${CURRENT_USER_ID}/checkout`, {
+        const response = await fetch(`/orders/${userId}/checkout`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "X-User-Id": String(CURRENT_USER_ID),
+            "X-User-Id": userId,
           },
           body: JSON.stringify({
             postomat_id: parseInt(selectedOption.value),
