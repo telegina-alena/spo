@@ -290,7 +290,7 @@ footer {
 }
 
 .footer-top {
-  width: 1200px;
+  max-width: 1200px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 90px;
@@ -382,4 +382,47 @@ footer {
   .cards-grid {
     grid-template-columns: 1fr;
   }
+
+    /* Блок с инструкцией */
+  .instruction-block {
+    height: auto !important;
+    min-height: 350px;
+    padding: 30px 20px !important;
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+  
+  .instruction-block p {
+    font-size: 18px !important;
+    margin-bottom: 30px !important;
+  }
+  
+  /* Блок с картой */
+  .map-block {
+    margin-left: 0 !important;
+    width: 100% !important;
+    padding: 0 15px;
+  }
+  
+  /* Контейнер карты */
+  .map-container {
+    width: 100% !important;
+    height: 300px !important;
+  }
+  
+  /* Яндекс карта */
+  .map-container iframe,
+  .ymaps-container {
+    width: 100% !important;
+    height: 300px !important;
+  }
+  
+  /* Кнопка постамата */
+  .postamat-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
 }
+

@@ -28,7 +28,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 80px;
+  min-height: 80px;
 }
 
 .nav__left img {
@@ -387,7 +387,7 @@ footer {
 }
 
 .footer-top {
-  width: 1200px;
+  max-width: 1200px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 90px;
@@ -501,8 +501,14 @@ hr {
 
 /* Адаптивность */
 @media (max-width: 992px) {
+  .nav {
+    align-items: start;
+    padding: 10px;
+  }
+  
   .nav__center {
-    display: none;
+    display: flex;
+    flex-direction: column;
   }
 
   .features {
@@ -511,6 +517,10 @@ hr {
 }
 
 @media (max-width: 768px) {
+  header{
+    position: static;
+  }
+  
   .categories__menu {
     grid-template-columns: 1fr;
   }
@@ -543,5 +553,11 @@ hr {
 
   .why_h {
     font-size: 32px;
+  }
+
+  .footer-top {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
   }
 }

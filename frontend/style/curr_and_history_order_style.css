@@ -314,8 +314,9 @@ header {
 }
 
 footer {
+  flex-shrink: 0;
   background: #1e3a1f;
-  margin-top: 60px;
+  margin-top: auto;
 }
 
 .footer_m {
@@ -330,9 +331,6 @@ hr {
 }
 
 @media (max-width: 650px) {
-  body {
-    padding: 12px;
-  }
   .order-header {
     flex-direction: column;
     align-items: flex-start;

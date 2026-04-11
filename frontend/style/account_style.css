@@ -321,7 +321,7 @@ hr {
 /* адаптивность */
 @media (max-width: 768px) {
   .nav__center {
-    display: none;
+    display: flex;
   }
   .action-grid {
     flex-direction: column;

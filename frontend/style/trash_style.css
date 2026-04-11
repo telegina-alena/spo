@@ -516,7 +516,7 @@ hr {
 /* Адаптивность */
 @media (max-width: 992px) {
   .nav__center {
-    display: none;
+    display: flex;
   }
 
   .cart-content {
